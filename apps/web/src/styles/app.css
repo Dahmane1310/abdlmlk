@@ -85,8 +85,11 @@
   --font-sans:
     'IBM Plex Sans Variable', 'IBM Plex Sans Arabic', ui-sans-serif, system-ui,
     sans-serif;
+  /* Plex Mono has no Arabic letters; without Plex Sans Arabic next, browsers
+     fall back to a system monospace font that renders Arabic disconnected. */
   --font-mono:
-    'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    'IBM Plex Mono', 'IBM Plex Sans Arabic', ui-monospace, SFMono-Regular,
+    Menlo, Consolas, monospace;
 }
 
 /* Exposes the tokens as Tailwind colours (bg-primary, text-muted-foreground, border-input…). */

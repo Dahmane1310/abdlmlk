@@ -12,6 +12,9 @@ export const getProfile = createServerFn({ method: 'GET' })
   .handler(async ({ data }) => {
     const response = await getStrapiClient()
       .single('profile')
-      .find({ locale: data.lang, populate: { socials: true } })
+      .find({
+        locale: data.lang,
+        populate: { socials: true, highlights: true, resume: true },
+      })
     return singleResponse(profileSchema).parse(response).data
   })

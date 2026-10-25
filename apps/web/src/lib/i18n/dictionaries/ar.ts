@@ -15,8 +15,15 @@ export const ar = {
     home: 'الرئيسية',
   },
   home: {
-    title: 'الموقع قيد الإنشاء',
-    description: 'يُبنى هذا الموقع خطوة بخطوة. عُد قريبًا.',
+    emailMe: 'راسلني',
+    downloadCv: 'تحميل السيرة الذاتية',
+    highlights: 'أبرز الأرقام',
+  },
+  availability: {
+    open_to_both: 'متاح لوظائف عن بُعد ولمشاريع العمل الحر',
+    open_to_work: 'متاح لفرص عمل جديدة',
+    open_to_freelance: 'متاح لمشاريع العمل الحر',
+    not_available: 'غير متاح حاليًا',
   },
   notFound: {
     title: 'الصفحة غير موجودة',

@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+import { mediaSchema } from '@/lib/strapi/schemas'
+
 const SOCIAL_PLATFORMS = [
   'linkedin',
   'github',
@@ -57,9 +59,26 @@ const socialLinkSchema = z
     label: socialLabel(link),
   }))
 
+export const availabilitySchema = z.enum([
+  'open_to_both',
+  'open_to_work',
+  'open_to_freelance',
+  'not_available',
+])
+
 /** The "Profile" single type. Fields are added as pages start using them. */
 export const profileSchema = z.object({
   fullName: z.string(),
   headline: z.string(),
+  intro: z.string(),
+  location: z.string().nullable(),
+  email: z.email().nullable(),
+  availability: availabilitySchema,
+  availabilityNote: z.string().nullable(),
+  highlights: z.array(z.object({ value: z.string(), label: z.string() })),
+  resume: mediaSchema.nullable(),
   socials: z.array(socialLinkSchema),
 })
+
+export type Profile = z.output<typeof profileSchema>
+export type Availability = z.output<typeof availabilitySchema>

@@ -15,8 +15,15 @@ export const fr = {
     home: 'Accueil',
   },
   home: {
-    title: 'Portfolio en construction',
-    description: 'Ce site est construit étape par étape. Revenez bientôt.',
+    emailMe: "M'écrire",
+    downloadCv: 'Télécharger le CV',
+    highlights: 'Chiffres clés',
+  },
+  availability: {
+    open_to_both: 'Ouvert aux postes en télétravail et aux missions freelance',
+    open_to_work: 'Ouvert à de nouvelles opportunités',
+    open_to_freelance: 'Disponible pour des missions freelance',
+    not_available: 'Indisponible pour le moment',
   },
   notFound: {
     title: 'Page introuvable',

@@ -14,8 +14,16 @@ export const en = {
     home: 'Home',
   },
   home: {
-    title: 'Portfolio under construction',
-    description: 'This site is being built step by step. Come back soon.',
+    emailMe: 'Email me',
+    downloadCv: 'Download CV',
+    highlights: 'Highlights',
+  },
+  // Shown when the CMS has no availability note.
+  availability: {
+    open_to_both: 'Open to remote roles and freelance projects',
+    open_to_work: 'Open to new roles',
+    open_to_freelance: 'Available for freelance projects',
+    not_available: 'Not available right now',
   },
   notFound: {
     title: 'Page not found',

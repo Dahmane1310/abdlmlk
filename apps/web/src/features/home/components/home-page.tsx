@@ -1,13 +1,19 @@
-import { Container } from '@/components/layout/container'
-import { useTranslation } from '@/lib/i18n/use-translation'
+import { useSuspenseQuery } from '@tanstack/react-query'
+
+import { profileQuery } from '@/features/profile/profile.queries'
+import { useLanguage } from '@/lib/i18n/use-language'
+
+import { Hero } from './hero'
+import { Highlights } from './highlights'
 
 export function HomePage() {
-  const t = useTranslation()
+  const lang = useLanguage()
+  const { data: profile } = useSuspenseQuery(profileQuery(lang))
 
   return (
-    <Container className="flex flex-col gap-4 py-24">
-      <h1 className="text-4xl font-semibold tracking-tight">{t.home.title}</h1>
-      <p className="text-muted-foreground">{t.home.description}</p>
-    </Container>
+    <>
+      <Hero profile={profile} />
+      <Highlights items={profile.highlights} />
+    </>
   )
 }

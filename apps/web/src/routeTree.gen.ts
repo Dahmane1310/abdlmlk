@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LangRouteRouteImport } from './routes/$lang/route'
-import { Route as DesignRouteImport } from './routes/design'
 import { Route as LangIndexRouteImport } from './routes/$lang/index'
 
 const IndexRoute = IndexRouteImport.update({
@@ -24,11 +23,6 @@ const LangRouteRoute = LangRouteRouteImport.update({
   path: '/$lang',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DesignRoute = DesignRouteImport.update({
-  id: '/design',
-  path: '/design',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const LangIndexRoute = LangIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -38,33 +32,29 @@ const LangIndexRoute = LangIndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$lang': typeof LangRouteRouteWithChildren
-  '/design': typeof DesignRoute
   '/$lang/': typeof LangIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/design': typeof DesignRoute
   '/$lang': typeof LangIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$lang': typeof LangRouteRouteWithChildren
-  '/design': typeof DesignRoute
   '/$lang/': typeof LangIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/$lang' | '/design' | '/$lang/'
+  fullPaths: '/' | '/$lang' | '/$lang/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/design' | '/$lang'
-  id: '__root__' | '/' | '/$lang' | '/design' | '/$lang/'
+  to: '/' | '/$lang'
+  id: '__root__' | '/' | '/$lang' | '/$lang/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LangRouteRoute: typeof LangRouteRouteWithChildren
-  DesignRoute: typeof DesignRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -81,13 +71,6 @@ declare module '@tanstack/react-router' {
       path: '/$lang'
       fullPath: '/$lang'
       preLoaderRoute: typeof LangRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/design': {
-      id: '/design'
-      path: '/design'
-      fullPath: '/design'
-      preLoaderRoute: typeof DesignRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$lang/': {
@@ -115,7 +98,6 @@ const LangRouteRouteWithChildren = LangRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LangRouteRoute: LangRouteRouteWithChildren,
-  DesignRoute: DesignRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
