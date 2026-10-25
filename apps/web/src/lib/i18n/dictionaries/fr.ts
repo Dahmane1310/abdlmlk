@@ -62,18 +62,13 @@ export const fr = {
     },
   },
   availability: {
-    open_to_both: 'Ouvert aux postes en télétravail et aux missions freelance',
-    open_to_work: 'Ouvert à de nouvelles opportunités',
-    open_to_freelance: 'Disponible pour des missions freelance',
-    not_available: 'Indisponible pour le moment',
-  },
-  availabilityShort: {
     open_to_both: 'Disponible',
     open_to_work: 'Disponible',
     open_to_freelance: 'Disponible en freelance',
     not_available: 'Indisponible',
   },
   projects: {
+    eyebrow: 'Travaux sélectionnés',
     title: 'Projets',
     description:
       "Des produits et des projets clients que j'ai réalisés, de la conception à la mise en production.",
@@ -95,7 +90,8 @@ export const fr = {
     role: 'Rôle',
     client: 'Client',
     builtAt: 'Réalisé chez',
-    results: 'Résultats',
+    dates: 'Période',
+    keyNumbers: 'Chiffres clés',
     techStack: 'Technologies',
     gallery: 'Galerie',
     moreProjects: 'Autres projets',

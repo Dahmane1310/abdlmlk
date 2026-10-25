@@ -61,21 +61,15 @@ export const en = {
       hybrid: 'Hybrid',
     },
   },
-  // Shown when the CMS has no availability note.
+  // Availability in a few words, after a coloured dot: "● Open to work".
   availability: {
-    open_to_both: 'Open to remote roles and freelance projects',
-    open_to_work: 'Open to new roles',
-    open_to_freelance: 'Available for freelance projects',
-    not_available: 'Not available right now',
-  },
-  // The same, in a few words, for small badges.
-  availabilityShort: {
     open_to_both: 'Open to work',
     open_to_work: 'Open to work',
     open_to_freelance: 'Open to freelance',
     not_available: 'Not available',
   },
   projects: {
+    eyebrow: 'Selected work',
     title: 'Projects',
     description:
       "Products and client work I've built, from planning to production.",
@@ -97,7 +91,8 @@ export const en = {
     role: 'Role',
     client: 'Client',
     builtAt: 'Built at',
-    results: 'Results',
+    dates: 'Dates',
+    keyNumbers: 'Key numbers',
     techStack: 'Tech stack',
     gallery: 'Gallery',
     moreProjects: 'More projects',

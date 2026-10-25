@@ -1,4 +1,5 @@
 import { ResponsiveImage } from '@/components/content/responsive-image'
+import { PageHeader } from '@/components/layout/page-header'
 import type { Career } from '@/features/career/career.functions'
 import { ProfileActions } from '@/features/profile/components/profile-actions'
 import type { ProfileDetails } from '@/features/profile/profile.functions'
@@ -18,30 +19,23 @@ export function AboutIntro({ profile, details, experience }: AboutIntroProps) {
   const t = useTranslation()
 
   return (
-    <header className="flex flex-col gap-10">
-      <div className="flex items-start justify-between gap-6">
-        <div className="flex flex-col gap-4">
-          <p className="font-mono text-xs tracking-wider text-muted-foreground uppercase">
-            {t.about.title}
-          </p>
-          <h1 className="text-3xl font-semibold tracking-tight md:text-5xl">
-            {profile.fullName}
-          </h1>
-          <p className="font-mono text-lg text-primary">{profile.headline}</p>
-        </div>
-        {/* No placeholder without a photo: the name is right beside it. */}
-        {details.avatar && (
+    <PageHeader
+      eyebrow={t.about.title}
+      title={profile.fullName}
+      subtitle={profile.headline}
+      media={
+        // No placeholder without a photo: the name is right beside it.
+        details.avatar && (
           <ResponsiveImage
             image={details.avatar}
             sizes="(min-width: 768px) 8rem, 6rem"
             priority
             className="size-24 shrink-0 rounded-xl border object-cover md:size-32"
           />
-        )}
-      </div>
-
+        )
+      }
+    >
       <ProfileFacts profile={profile} experience={experience} />
-
       <div className="flex flex-col gap-8">
         {/* Rendered and sanitized on the server (lib/markdown). The first
             paragraph is a larger lead, to give the eye a place to start. */}
@@ -53,6 +47,6 @@ export function AboutIntro({ profile, details, experience }: AboutIntroProps) {
         )}
         <ProfileActions profile={profile} />
       </div>
-    </header>
+    </PageHeader>
   )
 }

@@ -54,10 +54,11 @@ src/
                                site-layout (skip link + header + <main> + footer), site-header, site-footer,
                                mobile-menu, nav-items (the one list of nav links), language-switcher,
                                language-link, theme-toggle, container (page width), not-found-page,
-                               error-page (CMS unreachable; dictionaries only, no CMS data)
-    content/                   shared content display: content-blocks (CMS blocks), metric-grid (figures with
-                               labels), meta-line ("A · B · C" facts), tech-list (technology chips),
-                               responsive-image
+                               error-page (CMS unreachable; dictionaries only, no CMS data),
+                               and the page anatomy: page, page-header, page-section (see "Page anatomy")
+    content/                   shared content display: content-blocks (CMS blocks), facts-strip (key facts),
+                               metric-grid (figures with labels), meta-line ("A · B · C" facts),
+                               tech-list (technology chips), responsive-image
 
   lib/
     strapi/
@@ -185,6 +186,32 @@ There is no global store. Adding one needs a real cross-page state that none of 
 - **shadcn's `rtl` option** is on in `components.json`, so generated components use logical classes. Sheets open from `start` or `end`, not left or right.
 - **The language switcher** keeps the visitor on the same page and only swaps the prefix. Language names are always shown in their own language (العربية, Français), each marked with `lang` and `hreflang`.
 
+## Page anatomy
+
+Every page is built from the same pieces, so home, about and projects feel like one site. New pages use them instead of their own header or section markup.
+
+```
+<Page>                          frame: site width, space above and below, gap between blocks
+  <PageHeader
+    eyebrow    small label above the title: "About", "Selected work", "← All projects",
+               "● Open to work · Tlemcen, Algeria"
+    title      the h1, one size on every page (home included)
+    subtitle   optional mono line in the accent colour (a person's headline)
+    lead       optional one or two sentences
+    media      optional, at the end of the title row (the photo)
+  >
+    facts strip, buttons, filters
+  </PageHeader>
+  <PageSection title="Experience">   "01 Experience ───────", then the content
+  …
+</Page>
+```
+
+- **Labels** use the `mono-label` utility (`app.css`): mono, small, uppercase, letter-spaced, muted. That covers the label above the title, fact labels, filter labels and side-panel titles. Arabic labels use the sans font with normal spacing: Arabic has no capitals, and Plex Mono's space is far too wide between Arabic words.
+- **Key facts** go in a `FactsStrip`: on About, the current job, location, start year and status; on project pages, the type, client or university, role and dates. **Headline numbers** go in a `MetricGrid`. Both are bordered grids drawn with 1px gaps.
+- **Section numbers** come from a CSS counter on `<main>`, shared by `.section-title` (`PageSection`) and Markdown h2s, so a case study's own headings count along with the page's sections. `content: … / ""` keeps the numbers out of what screen readers announce. Side-panel titles (Tech stack) use `mono-label` instead and aren't counted.
+- **Availability** is always the short status, "● Open to work" (`AvailabilityStatus`). The CMS note ("Open to remote roles and freelance projects.") is shown under it in the About facts strip.
+
 ## Styling and UI
 
 - **Design:** modern and techy, flat. 1px borders, high contrast, one accent colour (electric blue), monospace for details (dates, labels, numbers). No gradients, glows or decorative shadows.
@@ -210,7 +237,6 @@ There is no global store. Adding one needs a real cross-page state that none of 
 - **Reading width:** long-form content (Markdown, blocks) is capped at `max-w-3xl` (48rem) for a comfortable line length.
 - **Grids with content use `grid-cols-1`** (`minmax(0, 1fr)`) rather than an implicit column. A grid column otherwise grows to fit its widest content, and one long code line would make the page wider than a phone screen instead of scrolling inside its code block.
 - **Whole-card links:** a project card is clickable everywhere through its title link, whose `::after` covers the card (a "stretched link"). Screen readers hear one link per card, not a link wrapping the whole card's text. Other links inside the card (Visit site) sit above it with `relative z-10`, and the card shows the focus ring when its title link has keyboard focus (`has-[a:focus-visible]`).
-- **Long pages get numbered section titles** ("01 Experience", with a rule running to the end of the line). The numbers are decoration (`aria-hidden`), so screen readers hear only the title, and they're counted from the sections actually shown.
 - **The accent colour marks what's current or measured,** never decoration: the current job's timeline marker and badge, filled steps of a language meter, achievement bullets.
 - **Visual-only indicators are hidden from screen readers** when the same information is written out next to them: language meters (the level is written below), organization initials tiles (the name is next to them).
 - **Durations that depend on today** (how long a job has lasted) are computed in the server function, not in the component. The server render and the browser then agree, so the page can't flip between two values on hydration.
@@ -285,5 +311,9 @@ There is no global store. Adding one needs a real cross-page state that none of 
 | Facts strip under the name, not a side card            | A short side card next to a long bio left a large empty gap and repeated the bio; a full-width strip is scannable and leaves no gaps. Owner's choice.                                |
 | Experience as a vertical timeline, education as cards  | Jobs are a sequence, with one current; degrees are two self-contained items. The home page timeline (step 5) reuses `Timeline`.                                                      |
 | Photo beside the name, no placeholder                  | The name is the anchor; an empty placeholder would look like a missing image                                                                                                         |
-| Short availability label in the facts strip            | The CMS note is a sentence; as a bordered pill inside the strip it was too big. The home hero keeps the full note.                                                                   |
+| Availability as a short status everywhere              | The CMS note is a sentence; as a bordered pill it was too big. It now sits under the status in the About facts strip.                                                                |
+| One page anatomy for every page                        | Owner wanted home, about and projects to feel like one site; they had drifted apart (four header patterns, three section-title styles, different spacing)                            |
+| Section numbers from a CSS counter                     | Keeps numbers in order across `PageSection`s and CMS Markdown headings without counting in code; `content: … / ""` hides them from screen readers                                    |
+| One title size, home included                          | Consistency over a bigger hero                                                                                                                                                       |
+| Project metrics titled "Key numbers"                   | Case studies have their own "Results" heading; two sections with the same name read as a mistake                                                                                     |
 | Long unit names in durations                           | Intl's short forms are unclear in French ("5 m.")                                                                                                                                    |

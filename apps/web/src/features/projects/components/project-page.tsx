@@ -3,23 +3,22 @@ import { getRouteApi, Link } from '@tanstack/react-router'
 import { ArrowLeftIcon, ArrowUpRightIcon, CodeIcon } from 'lucide-react'
 
 import { ContentBlocks } from '@/components/content/content-blocks'
+import { FactsStrip } from '@/components/content/facts-strip'
 import { MetricGrid } from '@/components/content/metric-grid'
 import { ResponsiveImage } from '@/components/content/responsive-image'
 import { TechList } from '@/components/content/tech-list'
-import { Container } from '@/components/layout/container'
+import { Page } from '@/components/layout/page'
+import { PageHeader } from '@/components/layout/page-header'
+import { PageSection } from '@/components/layout/page-section'
 import { Button } from '@/components/ui/button'
+import { formatDateRange } from '@/lib/i18n/format'
 import { useTranslation } from '@/lib/i18n/use-translation'
 import { cn } from '@/lib/utils'
 
 import { projectQuery, projectsQuery } from '../projects.queries'
-import { ProjectMeta } from './project-meta'
 import { ProjectNav } from './project-nav'
 
 const routeApi = getRouteApi('/$lang/projects/$slug')
-
-// Small uppercase label above a section, matching the site's mono details.
-const SECTION_LABEL =
-  'mb-4 font-mono text-xs tracking-wider text-muted-foreground uppercase'
 
 export function ProjectPage() {
   const t = useTranslation()
@@ -34,44 +33,44 @@ export function ProjectPage() {
       ? projects[index + 1]
       : undefined
 
+  const dates = formatDateRange(
+    project.startDate,
+    project.endDate,
+    lang,
+    t.dates.present,
+  )
   const facts = [
-    { label: t.projects.role, value: project.role },
-    { label: t.projects.client, value: project.client?.name },
-    { label: t.projects.builtAt, value: project.organization?.name },
-  ].filter((fact) => fact.value != null)
+    { label: t.projects.type, value: t.projects.types[project.projectType] },
+    project.client
+      ? { label: t.projects.client, value: project.client.name }
+      : null,
+    project.organization
+      ? { label: t.projects.builtAt, value: project.organization.name }
+      : null,
+    project.role ? { label: t.projects.role, value: project.role } : null,
+    dates ? { label: t.projects.dates, value: dates } : null,
+  ].filter((fact) => fact != null)
 
   return (
     <article>
-      <Container className="flex flex-col gap-10 py-12 md:py-16">
-        <Link
-          to="/$lang/projects"
-          params={{ lang }}
-          className="inline-flex items-center gap-1.5 self-start font-mono text-xs text-muted-foreground hover:text-foreground"
+      <Page>
+        <PageHeader
+          eyebrow={
+            <Link
+              to="/$lang/projects"
+              params={{ lang }}
+              className="inline-flex items-center gap-1.5 hover:text-foreground"
+            >
+              <ArrowLeftIcon aria-hidden className="size-4 rtl:rotate-180" />
+              {t.projects.backToAll}
+            </Link>
+          }
+          title={project.title}
+          lead={project.summary}
         >
-          <ArrowLeftIcon aria-hidden className="size-4 rtl:rotate-180" />
-          {t.projects.backToAll}
-        </Link>
-
-        <header className="flex max-w-3xl flex-col gap-4">
-          <ProjectMeta project={project} />
-          <h1 className="text-3xl font-semibold tracking-tight md:text-5xl">
-            {project.title}
-          </h1>
-          <p className="text-lg text-muted-foreground">{project.summary}</p>
-          {facts.length > 0 && (
-            <dl className="mt-2 grid gap-x-10 gap-y-4 sm:grid-cols-[repeat(auto-fit,minmax(10rem,1fr))]">
-              {facts.map((fact) => (
-                <div key={fact.label}>
-                  <dt className="font-mono text-xs text-muted-foreground">
-                    {fact.label}
-                  </dt>
-                  <dd className="mt-1 text-sm">{fact.value}</dd>
-                </div>
-              ))}
-            </dl>
-          )}
+          <FactsStrip facts={facts} />
           {(project.liveUrl ?? project.repoUrl) && (
-            <div className="mt-2 flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-3">
               {project.liveUrl && (
                 <Button asChild>
                   <a href={project.liveUrl}>
@@ -93,7 +92,7 @@ export function ProjectPage() {
               )}
             </div>
           )}
-        </header>
+        </PageHeader>
 
         {/* No placeholder here: the title right above already says what the
             project is, so an empty cover would only push the story down. */}
@@ -107,16 +106,14 @@ export function ProjectPage() {
         )}
 
         {project.metrics.length > 0 && (
-          <section aria-labelledby="results-title">
-            <h2 id="results-title" className={SECTION_LABEL}>
-              {t.projects.results}
-            </h2>
+          <PageSection id="key-numbers" title={t.projects.keyNumbers}>
             <MetricGrid items={project.metrics} />
-          </section>
+          </PageSection>
         )}
 
-        {/* grid-cols-1 is minmax(0, 1fr): without it a long code line widens
-            the column past the screen instead of scrolling in its own box. */}
+        {/* The case study's own Markdown headings are numbered sections too
+            (app.css). grid-cols-1 is minmax(0, 1fr): without it a long code
+            line widens the column past the screen instead of scrolling. */}
         <div
           className={cn(
             'grid grid-cols-1 gap-12',
@@ -128,7 +125,8 @@ export function ProjectPage() {
           <ContentBlocks blocks={project.content} className="max-w-3xl" />
           {project.technologies.length > 0 && (
             <aside aria-labelledby="tech-title">
-              <h2 id="tech-title" className={SECTION_LABEL}>
+              {/* A side panel's label, not a numbered page section. */}
+              <h2 id="tech-title" className="mb-4 mono-label">
                 {t.projects.techStack}
               </h2>
               <TechList technologies={project.technologies} />
@@ -137,10 +135,7 @@ export function ProjectPage() {
         </div>
 
         {project.gallery.length > 0 && (
-          <section aria-labelledby="gallery-title">
-            <h2 id="gallery-title" className={SECTION_LABEL}>
-              {t.projects.gallery}
-            </h2>
+          <PageSection id="gallery" title={t.projects.gallery}>
             <ul className="grid gap-4 sm:grid-cols-2">
               {project.gallery.map((image) => (
                 <li key={image.url}>
@@ -152,11 +147,11 @@ export function ProjectPage() {
                 </li>
               ))}
             </ul>
-          </section>
+          </PageSection>
         )}
 
         <ProjectNav previous={previous} next={next} />
-      </Container>
+      </Page>
     </article>
   )
 }

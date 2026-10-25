@@ -39,7 +39,7 @@ function FilterGroup({
 }) {
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <p id={id} className="w-28 shrink-0 text-sm text-muted-foreground">
+      <p id={id} className="w-28 shrink-0 mono-label">
         {label}
       </p>
       <ul aria-labelledby={id} className="flex flex-wrap gap-2">

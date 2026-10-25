@@ -1,5 +1,6 @@
 import { useSuspenseQuery } from '@tanstack/react-query'
 
+import { Page } from '@/components/layout/page'
 import { profileQuery } from '@/features/profile/profile.queries'
 import { useLanguage } from '@/lib/i18n/use-language'
 
@@ -11,9 +12,9 @@ export function HomePage() {
   const { data: profile } = useSuspenseQuery(profileQuery(lang))
 
   return (
-    <>
+    <Page>
       <Hero profile={profile} />
       <Highlights items={profile.highlights} />
-    </>
+    </Page>
   )
 }

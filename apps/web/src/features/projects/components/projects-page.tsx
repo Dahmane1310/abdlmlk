@@ -1,7 +1,8 @@
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { getRouteApi, Link } from '@tanstack/react-router'
 
-import { Container } from '@/components/layout/container'
+import { Page } from '@/components/layout/page'
+import { PageHeader } from '@/components/layout/page-header'
 import { useLanguage } from '@/lib/i18n/use-language'
 import { useTranslation } from '@/lib/i18n/use-translation'
 
@@ -25,17 +26,14 @@ export function ProjectsPage() {
   )
 
   return (
-    <Container className="flex flex-col gap-10 py-16 md:py-20">
-      <header className="flex flex-col gap-3">
-        <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
-          {t.projects.title}
-        </h1>
-        <p className="max-w-2xl text-lg text-muted-foreground">
-          {t.projects.description}
-        </p>
-      </header>
-
-      <ProjectFilters projects={projects} />
+    <Page>
+      <PageHeader
+        eyebrow={t.projects.eyebrow}
+        title={t.projects.title}
+        lead={t.projects.description}
+      >
+        <ProjectFilters projects={projects} />
+      </PageHeader>
 
       {visible.length > 0 ? (
         <ul className="grid gap-6 sm:grid-cols-2">
@@ -58,6 +56,6 @@ export function ProjectsPage() {
           </Link>
         </div>
       )}
-    </Container>
+    </Page>
   )
 }

@@ -1,5 +1,6 @@
+import { FactsStrip } from '@/components/content/facts-strip'
 import type { Career } from '@/features/career/career.functions'
-import { AvailabilityBadge } from '@/features/profile/components/availability-badge'
+import { AvailabilityStatus } from '@/features/profile/components/availability-status'
 import type { Profile } from '@/features/profile/profile.schema'
 import { useTranslation } from '@/lib/i18n/use-translation'
 
@@ -8,11 +9,7 @@ interface ProfileFactsProps {
   experience: Career['experience']
 }
 
-/**
- * Key facts in one bordered strip under the name: current job, location,
- * start year and availability. Cells grow to fill each row, so a missing fact
- * never leaves an empty cell; on phones they wrap two per row.
- */
+/** The About page's facts: current job, location, start year and availability. */
 export function ProfileFacts({ profile, experience }: ProfileFactsProps) {
   const t = useTranslation()
 
@@ -47,24 +44,19 @@ export function ProfileFacts({ profile, experience }: ProfileFactsProps) {
       : null,
     {
       label: t.about.status,
-      value: <AvailabilityBadge availability={profile.availability} compact />,
+      value: (
+        <>
+          <AvailabilityStatus availability={profile.availability} />
+          {/* The CMS note says for what: "Remote roles and freelance projects." */}
+          {profile.availabilityNote && (
+            <span className="block text-muted-foreground">
+              {profile.availabilityNote}
+            </span>
+          )}
+        </>
+      ),
     },
   ].filter((fact) => fact != null)
 
-  return (
-    // The 1px gaps over a border-coloured background draw the lines, like MetricGrid.
-    <dl className="flex flex-wrap gap-px overflow-hidden rounded-xl border bg-border">
-      {facts.map((fact) => (
-        <div
-          key={fact.label}
-          className="flex flex-1 basis-40 flex-col gap-1.5 bg-background p-5"
-        >
-          <dt className="font-mono text-xs tracking-wider text-muted-foreground uppercase">
-            {fact.label}
-          </dt>
-          <dd className="text-sm">{fact.value}</dd>
-        </div>
-      ))}
-    </dl>
-  )
+  return <FactsStrip facts={facts} />
 }

@@ -158,6 +158,45 @@
  * it follows light and dark mode by itself. Unlayered, so it wins over the
  * plugin's defaults regardless of order.
  */
+/*
+ * Small labels: above page titles, on facts, filters and side panels.
+ * Arabic has no capitals, and in Plex Mono the space between Arabic words is
+ * far too wide, so Arabic labels use the sans font with normal spacing.
+ */
+@utility mono-label {
+  @apply font-mono text-xs tracking-wider text-muted-foreground uppercase;
+
+  &:lang(ar) {
+    @apply font-sans tracking-normal;
+  }
+}
+
+/*
+ * Section titles, numbered in page order: "01 Experience ───────". The same
+ * look for <PageSection> titles and for h2s in CMS Markdown, so a case study's
+ * own sections count along with the page's. "/ ''" hides the number from
+ * screen readers, which read the title only.
+ */
+main {
+  counter-reset: section;
+}
+.section-title,
+.prose h2 {
+  counter-increment: section;
+  @apply mb-8 flex items-center gap-4 text-2xl font-semibold tracking-tight text-foreground;
+}
+.section-title::before,
+.prose h2::before {
+  content: counter(section, decimal-leading-zero);
+  content: counter(section, decimal-leading-zero) / '';
+  @apply font-mono text-sm font-normal tracking-normal text-primary;
+}
+.section-title::after,
+.prose h2::after {
+  content: '';
+  @apply h-px min-w-8 flex-1 bg-border;
+}
+
 .prose {
   --tw-prose-body: var(--muted-foreground);
   --tw-prose-headings: var(--foreground);
