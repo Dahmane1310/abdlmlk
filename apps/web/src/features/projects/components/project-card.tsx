@@ -1,44 +1,38 @@
+import { Link } from '@tanstack/react-router'
 import { ArrowUpRightIcon, CodeIcon } from 'lucide-react'
 
-import { formatDateRange } from '@/lib/i18n/format'
 import { useLanguage } from '@/lib/i18n/use-language'
 import { useTranslation } from '@/lib/i18n/use-translation'
 
 import type { ProjectSummary } from '../projects.schema'
 import { ProjectCover } from './project-cover'
+import { ProjectMeta } from './project-meta'
 
 export function ProjectCard({ project }: { project: ProjectSummary }) {
   const t = useTranslation()
   const lang = useLanguage()
 
-  const meta = [
-    t.projects.types[project.projectType],
-    project.client?.name ?? project.organization?.name,
-    formatDateRange(
-      project.startDate,
-      project.endDate,
-      lang,
-      t.projects.present,
-    ),
-  ].filter((item) => item != null)
-
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-xl border bg-card text-card-foreground">
-      <ProjectCover title={project.title} cover={project.cover} />
+    // The title link stretches over the whole card (after:absolute), so the
+    // card is clickable with one accessible link; other links sit above it.
+    <article className="relative flex h-full flex-col overflow-hidden rounded-xl border bg-card text-card-foreground transition-colors hover:border-input has-[a:focus-visible]:ring-[3px] has-[a:focus-visible]:ring-ring/50">
+      <ProjectCover
+        title={project.title}
+        cover={project.cover}
+        sizes="(min-width: 1024px) 496px, (min-width: 640px) 50vw, 100vw"
+        className="border-b"
+      />
 
       <div className="flex flex-1 flex-col gap-3 p-5">
-        {/* Separate items, so mixed Arabic and Latin text never reorders across
-            them. Each separator trails its item, so a wrapped line never starts with one. */}
-        <p className="flex flex-wrap gap-x-2 gap-y-1 font-mono text-xs text-muted-foreground">
-          {meta.map((item, index) => (
-            <span key={item} className="flex gap-x-2">
-              {item}
-              {index < meta.length - 1 && <span aria-hidden>·</span>}
-            </span>
-          ))}
-        </p>
+        <ProjectMeta project={project} />
         <h2 className="text-lg font-semibold tracking-tight">
-          {project.title}
+          <Link
+            to="/$lang/projects/$slug"
+            params={{ lang, slug: project.slug }}
+            className="outline-none after:absolute after:inset-0"
+          >
+            {project.title}
+          </Link>
         </h2>
         <p className="text-sm text-muted-foreground">{project.summary}</p>
 
@@ -56,7 +50,7 @@ export function ProjectCard({ project }: { project: ProjectSummary }) {
             </ul>
           )}
           {(project.liveUrl ?? project.repoUrl) && (
-            <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium">
+            <div className="relative z-10 flex flex-wrap gap-x-5 gap-y-2 self-start text-sm font-medium">
               {project.liveUrl && (
                 <a
                   href={project.liveUrl}

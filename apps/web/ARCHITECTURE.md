@@ -17,7 +17,7 @@ A portfolio and personal blog in English, Arabic and French. Content comes from 
 | Styling                              | Tailwind CSS v4                                                 |
 | Icons                                | Lucide (interface), Simple Icons (technology logos)             |
 | Fonts                                | IBM Plex Sans, IBM Plex Sans Arabic, IBM Plex Mono, self-hosted |
-| Markdown and code                    | Rendered to HTML on the server, code highlighted with Shiki     |
+| Markdown and code                    | Rendered to HTML on the server (unified), highlighted by Shiki  |
 
 ## Folder structure
 
@@ -52,14 +52,18 @@ src/
                                mobile-menu, nav-items (the one list of nav links), language-switcher,
                                language-link, theme-toggle, container (page width), not-found-page,
                                error-page (CMS unreachable; dictionaries only, no CMS data)
-    content/                   shared content display: rendered markdown, content blocks, responsive image
+    content/                   shared content display: content-blocks (CMS blocks), metric-grid (figures with
+                               labels), responsive-image
 
   lib/
     strapi/
       client.server.ts         Strapi SDK client (server only), built per request from the environment
       public-api.ts            browser calls to Strapi's public form endpoints (forms step)
-      schemas.ts               shared Zod schemas: media (absolute URL), SEO, the { data } wrapper
-      media.ts                 absolute URLs for uploads (srcset comes with the first images)
+      schemas.ts               shared Zod schemas: media (absolute URL + srcset), SEO, the { data } wrapper
+      media.ts                 absolute URLs for uploads
+    content/
+      blocks.schema.ts         Zod schema for the CMS content blocks (a dynamic zone) + the query to populate them
+      blocks.server.ts         blocks → render-ready data: Markdown and code turned into HTML, empty blocks dropped
     i18n/
       config.ts                supported languages, default, text direction, language cookie
       negotiate.ts             picks a language from the browser's Accept-Language header
@@ -69,7 +73,7 @@ src/
       dictionaries/            en.ts (reference shape), ar.ts, fr.ts
       format.ts                dates via Intl: month + year, date ranges ("Apr 2023 — Present")
     markdown/
-      render.server.ts         markdown → HTML + table of contents, code highlighting
+      render.server.ts         Markdown → safe HTML, code highlighted (table of contents comes with the blog)
     theme/
       config.ts                themes (light, dark, system), default, cookie
       theme.ts                 read the cookie (server and browser), save a choice
@@ -113,10 +117,30 @@ component ──► useSuspenseQuery(projectQuery(lang, slug))   reads the cache
 - **Queries are keyed by language,** so switching language never shows content from the wrong language.
 - **Layout data loads in the root route's `beforeLoad`.** The header, footer and `<head>` need the site settings and profile on every page, including root-level 404s that never reach `$lang`. `beforeLoad` gets the URL, so it loads them for the language in the path. Page data belongs in each page's own loader.
 - **If the CMS is unreachable,** the root `errorComponent` shows a translated error page (status 500) with a "Try again" button that re-runs the loaders. It only uses the dictionaries, since CMS data is exactly what's missing. Error details show in development only.
-- **Missing content** (an unknown slug) throws `notFound()`, which renders the 404 page.
+- **Missing content** (an unknown slug) makes the server function throw `notFound()`, which renders the 404 page.
 - **404s always show the site layout,** with a real 404 status:
   - An unknown page under a valid language (`/en/nope`) is caught by the `$lang` route, inside its layout.
   - An unknown language (`/de`) fails inside `$lang` itself, so its layout never renders. That `notFound()` targets the root route (`routeId: rootRouteId`), whose 404 wraps the page in the layout.
+  - Missing content (`/en/projects/nope`) is thrown from a page's loader. It's caught by the nearest route with a `notFoundComponent`, which renders **in place of that route's component**. So every route whose loader can throw it sets `notFoundComponent: NotFoundPage` itself; left to `$lang`, the 404 would replace the whole layout.
+
+## Rich content (Markdown and blocks)
+
+Projects and blog posts are built from **content blocks** in the CMS (a Strapi dynamic zone): Markdown text, quotes, images, galleries, code and callouts.
+
+```
+Strapi blocks ──► blocks.schema.ts (Zod) ──► blocks.server.ts ──► <ContentBlocks>
+                  one schema per block type   Markdown and code       one switch over the
+                                              → HTML, on the server   block types
+```
+
+- **Everything is rendered on the server.** Components receive finished HTML, so the browser never downloads a Markdown parser or a highlighter. Server functions return blocks as a typed union (`type: 'rich-text' | 'quote' | …`), and `ContentBlocks` handles each type; TypeScript fails the build if a type is missing.
+- **The Markdown pipeline** (`lib/markdown/render.server.ts`): remark-parse → remark-gfm (tables, task lists) → remark-rehype → rehype-sanitize → Shiki → HTML.
+  - **Raw HTML in the Markdown is dropped,** and rehype-sanitize removes unsafe URLs (`javascript:`) and attributes. The CMS is ours, but a stolen editor account shouldn't be able to put scripts on the site.
+  - **Shiki runs after sanitizing,** because sanitizing would strip its colours. Everything Shiki adds is generated by us, not taken from the content.
+  - **`dangerouslySetInnerHTML` is used only for HTML from this pipeline.**
+- **Code highlighting:** one Shiki highlighter per server, created on first use, with a fixed list of languages; an unknown language shows as plain text instead of failing. Light and dark colours are both written into the HTML as CSS variables, and `app.css` picks one from the `.dark` class, so code switches theme instantly with the rest of the page. Code blocks are always `dir="ltr"`, also on Arabic pages.
+- **Populating blocks:** Strapi only returns a block's images when asked. `CONTENT_BLOCKS_POPULATE` asks per block type (`on` fragments), so each type fetches only its own media.
+- **Text styling:** Markdown output uses Tailwind Typography (`prose`), with its colours mapped to the design tokens in `app.css`.
 
 ## Writing data (forms)
 
@@ -160,6 +184,7 @@ There is no global store. Adding one needs a real cross-page state that none of 
   - `primary` is the brand colour (electric blue): links, main buttons, focus ring.
   - `accent` is shadcn's subtle **hover background**, not the brand colour.
   - `border` is for decorative lines (cards, dividers); `input` is the stronger border for form controls.
+  - `warning` (amber) tints warning callouts, so they read apart from `destructive` red. It's only used for borders and backgrounds, never for text.
 - **Contrast** meets WCAG AA in both themes: text 4.5:1 or more, input borders and focus ring 3:1 or more. Check new colours before adding them.
 - **Light and dark** themes come from a `.dark` class on `<html>`. In dark mode the blue is brighter and buttons use dark text on it, to keep contrast.
   - An inline script in `<head>` sets the class from the theme cookie before the first paint, so the page never flashes the wrong theme. In system mode it follows the operating system live.
@@ -172,7 +197,11 @@ There is no global store. Adding one needs a real cross-page state that none of 
   - **Language:** replace hardcoded English text (e.g. screen-reader labels) with props filled from the dictionaries, as `SheetContent`'s required `closeLabel` does.
   - **Next.js leftovers:** remove `"use client"`; it means nothing here and adds build warnings.
 - **Images:** `ResponsiveImage` (`components/content/`) renders CMS images with a `srcset` built from Strapi's generated sizes (thumbnail, small, medium, large and the original), a `sizes` hint from the caller, explicit width and height to prevent layout shift, and lazy loading unless `priority`. Without alt text an image is decorative (`alt=""`).
-- **Missing images get a designed placeholder,** never a broken image: e.g. project covers show the project's initials until a cover is uploaded. Arabic initials are joined with a zero-width non-joiner, so they stay separate letters instead of joining into a word.
+  - **`sizes` must match the real layout width,** or the browser downloads a bigger file than it shows. Page content is at most `61rem` wide (the `64rem` container minus its padding) and the reading column `48rem`.
+- **Missing images never show as broken.** Project cards show the project's initials until a cover is uploaded; Arabic initials are joined with a zero-width non-joiner, so they stay separate letters instead of joining into a word. The project page shows its cover only when there is one: the title right above already says what the project is.
+- **Reading width:** long-form content (Markdown, blocks) is capped at `max-w-3xl` (48rem) for a comfortable line length.
+- **Grids with content use `grid-cols-1`** (`minmax(0, 1fr)`) rather than an implicit column. A grid column otherwise grows to fit its widest content, and one long code line would make the page wider than a phone screen instead of scrolling inside its code block.
+- **Whole-card links:** a project card is clickable everywhere through its title link, whose `::after` covers the card (a "stretched link"). Screen readers hear one link per card, not a link wrapping the whole card's text. Other links inside the card (Visit site) sit above it with `relative z-10`, and the card shows the focus ring when its title link has keyboard focus (`has-[a:focus-visible]`).
 - **Technology logos:** looked up from Simple Icons on the server and sent as SVG path data, so the browser never downloads the icon library.
 - **Accessibility:** semantic HTML, every control reachable by keyboard, visible focus, labelled inputs, sufficient contrast, motion reduced when the visitor asks for it.
 
@@ -233,3 +262,9 @@ There is no global store. Adding one needs a real cross-page state that none of 
 | Default favicon in `public/favicon.svg`                | Used until one is uploaded in the CMS site settings                                                                                                                                  |
 | Project filters run in the browser                     | A handful of projects: one request loads them all, and filtering needs no round trip. Revisit if the list grows past what one page should load.                                      |
 | Filters in the URL, ignored when invalid               | Shareable, back-button friendly; a typo in a link never breaks the page                                                                                                              |
+| Content blocks rendered to HTML on the server          | The browser gets finished HTML: no parser or highlighter download, and one place to sanitize                                                                                         |
+| `@shikijs/rehype` for code in Markdown                 | Shiki's official plugin; replaced a hand-written one that needed type casts. Reuses the same highlighter as code blocks.                                                             |
+| Sanitize, then highlight                               | Sanitizing removes unsafe content; running it after Shiki would also strip the colours                                                                                               |
+| `notFoundComponent` on routes whose loader can 404     | A loader's `notFound()` replaces the component of the route that catches it; caught by `$lang`, it would drop the header and footer                                                  |
+| Stretched-link project cards                           | The whole card is clickable, while screen readers get one short link instead of the whole card read as a link                                                                        |
+| Amber `warning` token                                  | Warning and danger callouts looked the same in red                                                                                                                                   |

@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
-import { mediaSchema } from '@/lib/strapi/schemas'
+import { contentBlockSchema } from '@/lib/content/blocks.schema'
+import { mediaSchema, seoSchema } from '@/lib/strapi/schemas'
 
 export const projectTypeSchema = z.enum([
   'client',
@@ -38,6 +39,18 @@ export const projectListSchema = z.object({
 
 export type ProjectSummary = z.output<typeof projectSummarySchema>
 export type ProjectType = z.output<typeof projectTypeSchema>
+
+/** A project's own page: the card fields plus the case study. */
+export const projectDetailSchema = projectSummarySchema.extend({
+  gallery: z.array(mediaSchema).nullable(),
+  metrics: z.array(z.object({ value: z.string(), label: z.string() })),
+  content: z.array(contentBlockSchema).nullable(),
+  seo: seoSchema.nullable(),
+})
+
+export const projectDetailListSchema = z.object({
+  data: z.array(projectDetailSchema),
+})
 
 /** Filters in the URL (?type=client&tech=laravel). Invalid values are ignored, not errors. */
 export const projectsSearchSchema = z.object({

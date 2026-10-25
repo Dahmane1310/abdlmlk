@@ -44,6 +44,8 @@
   --accent-foreground: oklch(0.17 0.015 264);
 
   --destructive: oklch(0.55 0.21 27);
+  /* Amber for warnings (callouts), so they read apart from destructive red. */
+  --warning: oklch(0.77 0.16 70);
 
   /* Decorative lines: cards, dividers. */
   --border: oklch(0.91 0.005 264);
@@ -75,6 +77,7 @@
   --accent-foreground: oklch(0.97 0.003 264);
 
   --destructive: oklch(0.66 0.2 25);
+  --warning: oklch(0.8 0.15 75);
 
   --border: oklch(0.27 0.01 264);
   --input: oklch(0.5 0.012 264);
@@ -109,6 +112,7 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
+  --color-warning: var(--warning);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -147,4 +151,62 @@
       scroll-behavior: auto !important;
     }
   }
+}
+
+/*
+ * Long-form CMS text (Tailwind Typography), coloured from the design tokens so
+ * it follows light and dark mode by itself. Unlayered, so it wins over the
+ * plugin's defaults regardless of order.
+ */
+.prose {
+  --tw-prose-body: var(--muted-foreground);
+  --tw-prose-headings: var(--foreground);
+  --tw-prose-lead: var(--muted-foreground);
+  --tw-prose-links: var(--primary);
+  --tw-prose-bold: var(--foreground);
+  --tw-prose-counters: var(--muted-foreground);
+  --tw-prose-bullets: var(--muted-foreground);
+  --tw-prose-hr: var(--border);
+  --tw-prose-quotes: var(--foreground);
+  --tw-prose-quote-borders: var(--primary);
+  --tw-prose-captions: var(--muted-foreground);
+  --tw-prose-code: var(--foreground);
+  --tw-prose-pre-code: var(--foreground);
+  --tw-prose-pre-bg: var(--muted);
+  --tw-prose-th-borders: var(--border);
+  --tw-prose-td-borders: var(--border);
+}
+
+/* Inline code: a quiet chip instead of the plugin's backticks. */
+.prose :where(code):not(:where(pre *)) {
+  border-radius: var(--radius-sm);
+  background-color: var(--muted);
+  padding: 0.125em 0.375em;
+  font-weight: 500;
+}
+.prose :where(code):not(:where(pre *))::before,
+.prose :where(code):not(:where(pre *))::after {
+  content: none;
+}
+
+/*
+ * Highlighted code (Shiki). Both themes' colours are in the HTML as CSS
+ * variables; the site theme picks one. Code always reads left to right.
+ */
+.shiki,
+.shiki span {
+  color: var(--shiki-light);
+}
+.dark .shiki,
+.dark .shiki span {
+  color: var(--shiki-dark);
+}
+pre.shiki {
+  overflow-x: auto;
+  background-color: var(--muted);
+  padding: 1rem 1.25rem;
+  font-family: var(--font-mono);
+  line-height: 1.7;
+  direction: ltr;
+  text-align: left;
 }

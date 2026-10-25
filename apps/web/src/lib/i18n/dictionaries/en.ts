@@ -45,6 +45,25 @@ export const en = {
       personal: 'Personal project',
       academic: 'Academic project',
     },
+    backToAll: 'All projects',
+    role: 'Role',
+    client: 'Client',
+    builtAt: 'Built at',
+    results: 'Results',
+    techStack: 'Tech stack',
+    gallery: 'Gallery',
+    moreProjects: 'More projects',
+    previous: 'Previous project',
+    next: 'Next project',
+  },
+  content: {
+    // Callout titles when the CMS block has none.
+    callout: {
+      note: 'Note',
+      tip: 'Tip',
+      warning: 'Warning',
+      danger: 'Important',
+    },
   },
   notFound: {
     title: 'Page not found',
