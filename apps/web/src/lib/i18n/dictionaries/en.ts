@@ -12,6 +12,7 @@ export const en = {
   },
   nav: {
     home: 'Home',
+    projects: 'Projects',
   },
   home: {
     emailMe: 'Email me',
@@ -24,6 +25,26 @@ export const en = {
     open_to_work: 'Open to new roles',
     open_to_freelance: 'Available for freelance projects',
     not_available: 'Not available right now',
+  },
+  projects: {
+    title: 'Projects',
+    description:
+      "Products and client work I've built, from planning to production.",
+    filters: 'Filter projects',
+    type: 'Type',
+    technology: 'Technology',
+    all: 'All',
+    empty: 'No projects match these filters.',
+    showAll: 'Show all projects',
+    visitSite: 'Visit site',
+    sourceCode: 'Source code',
+    present: 'Present',
+    types: {
+      client: 'Client project',
+      product: 'Product',
+      personal: 'Personal project',
+      academic: 'Academic project',
+    },
   },
   notFound: {
     title: 'Page not found',

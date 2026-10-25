@@ -13,6 +13,7 @@ export const ar = {
   },
   nav: {
     home: 'الرئيسية',
+    projects: 'المشاريع',
   },
   home: {
     emailMe: 'راسلني',
@@ -24,6 +25,25 @@ export const ar = {
     open_to_work: 'متاح لفرص عمل جديدة',
     open_to_freelance: 'متاح لمشاريع العمل الحر',
     not_available: 'غير متاح حاليًا',
+  },
+  projects: {
+    title: 'المشاريع',
+    description: 'منتجات ومشاريع لعملاء بنيتها من التخطيط حتى الإطلاق.',
+    filters: 'تصفية المشاريع',
+    type: 'النوع',
+    technology: 'التقنية',
+    all: 'الكل',
+    empty: 'لا توجد مشاريع تطابق هذه التصفية.',
+    showAll: 'عرض كل المشاريع',
+    visitSite: 'زيارة الموقع',
+    sourceCode: 'الشيفرة المصدرية',
+    present: 'الآن',
+    types: {
+      client: 'مشروع عميل',
+      product: 'منتج',
+      personal: 'مشروع شخصي',
+      academic: 'مشروع أكاديمي',
+    },
   },
   notFound: {
     title: 'الصفحة غير موجودة',

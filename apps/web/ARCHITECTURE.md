@@ -67,7 +67,7 @@ src/
       use-language.ts          hook: current page's language, for components outside /$lang route files
       use-translation.ts       hook: the current language's dictionary
       dictionaries/            en.ts (reference shape), ar.ts, fr.ts
-      format.ts                dates and numbers via Intl
+      format.ts                dates via Intl: month + year, date ranges ("Apr 2023 — Present")
     markdown/
       render.server.ts         markdown → HTML + table of contents, code highlighting
     theme/
@@ -171,7 +171,8 @@ There is no global store. Adding one needs a real cross-page state that none of 
   - **Flat design:** remove decorative shadows (`shadow-*`) and raw colours (`bg-black/50` and similar) in favour of tokens.
   - **Language:** replace hardcoded English text (e.g. screen-reader labels) with props filled from the dictionaries, as `SheetContent`'s required `closeLabel` does.
   - **Next.js leftovers:** remove `"use client"`; it means nothing here and adds build warnings.
-- **Images:** `srcset` from Strapi's generated sizes, explicit width and height to prevent layout shift, lazy loading below the fold.
+- **Images:** `ResponsiveImage` (`components/content/`) renders CMS images with a `srcset` built from Strapi's generated sizes (thumbnail, small, medium, large and the original), a `sizes` hint from the caller, explicit width and height to prevent layout shift, and lazy loading unless `priority`. Without alt text an image is decorative (`alt=""`).
+- **Missing images get a designed placeholder,** never a broken image: e.g. project covers show the project's initials until a cover is uploaded. Arabic initials are joined with a zero-width non-joiner, so they stay separate letters instead of joining into a word.
 - **Technology logos:** looked up from Simple Icons on the server and sent as SVG path data, so the browser never downloads the icon library.
 - **Accessibility:** semantic HTML, every control reachable by keyboard, visible focus, labelled inputs, sufficient contrast, motion reduced when the visitor asks for it.
 
@@ -191,6 +192,9 @@ There is no global store. Adding one needs a real cross-page state that none of 
 - **File names** are kebab-case: `project-card.tsx`, `use-translation.ts`. One component per file, named exports. Route files export `Route`, as TanStack Router requires.
 - **Types come from Zod** (`z.infer`), never hand-written copies of the same shape.
 - **Route files stay thin.** Params, loader, `head` (SEO) and one feature component. Logic and markup live in `features/`.
+- **Page titles** are set in the route's `head`: "Page — Site name", with the page name from `dictionaries[params.lang]` and the site name from the root's context. They replace the root's default title and description.
+- **URL filters** use a Zod `validateSearch` schema with `.catch(undefined)` on each field, so a bad value (`?type=bogus`) is ignored instead of crashing the page. Filter links use `activeOptions={{ exact: true }}` (so "All" is only active when nothing is set) and `resetScroll={false}` (the page doesn't jump to the top).
+- **CMS dates** are plain days ("2023-04-01"). Format them with `lib/i18n/format.ts`, which formats in UTC; local-time formatting shows the previous month in time zones behind UTC.
 - **Comments explain why, not what.** No dead or commented-out code.
 - **Every step passes** `pnpm lint`, `pnpm typecheck`, `pnpm format:check` and `pnpm build` before it's reviewed, and is checked in the running app when it changes behaviour. **Check in a real browser, not only the server HTML:** errors that happen after hydration (in the browser) don't show up in the HTML the server sends.
 
@@ -227,3 +231,5 @@ There is no global store. Adding one needs a real cross-page state that none of 
 | Explicit Zod env modules instead of `@t3-oss/env-core` | The template's setup read server variables from `import.meta.env`, where they don't exist, and evaluated at module level                                                             |
 | Social links open in the same tab, with `rel="me"`     | New tabs without warning hurt accessibility (WCAG G201); `rel="me"` marks the profiles as the owner's                                                                                |
 | Default favicon in `public/favicon.svg`                | Used until one is uploaded in the CMS site settings                                                                                                                                  |
+| Project filters run in the browser                     | A handful of projects: one request loads them all, and filtering needs no round trip. Revisit if the list grows past what one page should load.                                      |
+| Filters in the URL, ignored when invalid               | Shareable, back-button friendly; a typo in a link never breaks the page                                                                                                              |

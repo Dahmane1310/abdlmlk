@@ -13,6 +13,7 @@ export const fr = {
   },
   nav: {
     home: 'Accueil',
+    projects: 'Projets',
   },
   home: {
     emailMe: "M'écrire",
@@ -24,6 +25,26 @@ export const fr = {
     open_to_work: 'Ouvert à de nouvelles opportunités',
     open_to_freelance: 'Disponible pour des missions freelance',
     not_available: 'Indisponible pour le moment',
+  },
+  projects: {
+    title: 'Projets',
+    description:
+      "Des produits et des projets clients que j'ai réalisés, de la conception à la mise en production.",
+    filters: 'Filtrer les projets',
+    type: 'Type',
+    technology: 'Technologie',
+    all: 'Tous',
+    empty: 'Aucun projet ne correspond à ces filtres.',
+    showAll: 'Voir tous les projets',
+    visitSite: 'Voir le site',
+    sourceCode: 'Code source',
+    present: "Aujourd'hui",
+    types: {
+      client: 'Projet client',
+      product: 'Produit',
+      personal: 'Projet personnel',
+      academic: 'Projet académique',
+    },
   },
   notFound: {
     title: 'Page introuvable',

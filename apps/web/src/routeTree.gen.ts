@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LangRouteRouteImport } from './routes/$lang/route'
 import { Route as LangIndexRouteImport } from './routes/$lang/index'
+import { Route as LangProjectsIndexRouteImport } from './routes/$lang/projects/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,28 +29,36 @@ const LangIndexRoute = LangIndexRouteImport.update({
   path: '/',
   getParentRoute: () => LangRouteRoute,
 } as any)
+const LangProjectsIndexRoute = LangProjectsIndexRouteImport.update({
+  id: '/projects/',
+  path: '/projects/',
+  getParentRoute: () => LangRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$lang': typeof LangRouteRouteWithChildren
   '/$lang/': typeof LangIndexRoute
+  '/$lang/projects/': typeof LangProjectsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$lang': typeof LangIndexRoute
+  '/$lang/projects': typeof LangProjectsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$lang': typeof LangRouteRouteWithChildren
   '/$lang/': typeof LangIndexRoute
+  '/$lang/projects/': typeof LangProjectsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/$lang' | '/$lang/'
+  fullPaths: '/' | '/$lang' | '/$lang/' | '/$lang/projects/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/$lang'
-  id: '__root__' | '/' | '/$lang' | '/$lang/'
+  to: '/' | '/$lang' | '/$lang/projects'
+  id: '__root__' | '/' | '/$lang' | '/$lang/' | '/$lang/projects/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -80,15 +89,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangIndexRouteImport
       parentRoute: typeof LangRouteRoute
     }
+    '/$lang/projects/': {
+      id: '/$lang/projects/'
+      path: '/projects'
+      fullPath: '/$lang/projects/'
+      preLoaderRoute: typeof LangProjectsIndexRouteImport
+      parentRoute: typeof LangRouteRoute
+    }
   }
 }
 
 interface LangRouteRouteChildren {
   LangIndexRoute: typeof LangIndexRoute
+  LangProjectsIndexRoute: typeof LangProjectsIndexRoute
 }
 
 const LangRouteRouteChildren: LangRouteRouteChildren = {
   LangIndexRoute: LangIndexRoute,
+  LangProjectsIndexRoute: LangProjectsIndexRoute,
 }
 
 const LangRouteRouteWithChildren = LangRouteRoute._addFileChildren(
