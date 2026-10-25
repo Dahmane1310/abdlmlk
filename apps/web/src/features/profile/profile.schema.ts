@@ -82,3 +82,28 @@ export const profileSchema = z.object({
 
 export type Profile = z.output<typeof profileSchema>
 export type Availability = z.output<typeof availabilitySchema>
+
+const spokenLanguageSchema = z.object({
+  name: z.string(),
+  level: z.enum([
+    'native',
+    'fluent',
+    'professional',
+    'intermediate',
+    'beginner',
+  ]),
+  /** CEFR level, e.g. "B2". */
+  cefr: z.string().nullable(),
+})
+
+/**
+ * Profile fields only the About page shows. Kept out of profileSchema, which
+ * every page loads for the layout, so the bio isn't sent with every page.
+ */
+export const profileDetailsSchema = z.object({
+  bio: z.string().nullable(),
+  avatar: mediaSchema.nullable(),
+  spokenLanguages: z.array(spokenLanguageSchema),
+})
+
+export type SpokenLanguage = z.output<typeof spokenLanguageSchema>

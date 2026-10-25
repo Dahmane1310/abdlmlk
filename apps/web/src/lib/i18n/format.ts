@@ -21,6 +21,31 @@ export function formatMonthYear(isoDate: string, language: Language) {
 }
 
 /**
+ * A length of time in months, in words: "2 years 5 months", "سنتان و5 أشهر",
+ * "8 mois". Long unit names: the short ones are unclear in French ("5 m.").
+ */
+export function formatDuration(totalMonths: number, language: Language) {
+  const locale = INTL_LOCALES[language]
+  const unit = (value: number, name: 'year' | 'month') =>
+    new Intl.NumberFormat(locale, {
+      style: 'unit',
+      unit: name,
+      unitDisplay: 'long',
+    }).format(value)
+
+  const years = Math.floor(totalMonths / 12)
+  const months = totalMonths % 12
+  const parts = [
+    years > 0 ? unit(years, 'year') : null,
+    months > 0 ? unit(months, 'month') : null,
+  ].filter((part) => part != null)
+
+  return new Intl.ListFormat(locale, { style: 'narrow', type: 'unit' }).format(
+    parts,
+  )
+}
+
+/**
  * "Apr 2023 — Aug 2024", "Jun 2024 — Present" (no end) or "Jun 2024" (end only).
  * Null when neither date is set.
  */

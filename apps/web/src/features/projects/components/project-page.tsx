@@ -5,6 +5,7 @@ import { ArrowLeftIcon, ArrowUpRightIcon, CodeIcon } from 'lucide-react'
 import { ContentBlocks } from '@/components/content/content-blocks'
 import { MetricGrid } from '@/components/content/metric-grid'
 import { ResponsiveImage } from '@/components/content/responsive-image'
+import { TechList } from '@/components/content/tech-list'
 import { Container } from '@/components/layout/container'
 import { Button } from '@/components/ui/button'
 import { useTranslation } from '@/lib/i18n/use-translation'
@@ -130,16 +131,7 @@ export function ProjectPage() {
               <h2 id="tech-title" className={SECTION_LABEL}>
                 {t.projects.techStack}
               </h2>
-              <ul className="flex flex-wrap gap-1.5">
-                {project.technologies.map((technology) => (
-                  <li
-                    key={technology.slug}
-                    className="rounded-sm border px-2 py-0.5 font-mono text-xs text-muted-foreground"
-                  >
-                    {technology.name}
-                  </li>
-                ))}
-              </ul>
+              <TechList technologies={project.technologies} />
             </aside>
           )}
         </div>

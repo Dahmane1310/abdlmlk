@@ -13,18 +13,64 @@ export const ar = {
   },
   nav: {
     home: 'الرئيسية',
+    about: 'نبذة عني',
     projects: 'المشاريع',
   },
+  dates: {
+    present: 'الآن',
+  },
   home: {
+    highlights: 'أبرز الأرقام',
+  },
+  profile: {
     emailMe: 'راسلني',
     downloadCv: 'تحميل السيرة الذاتية',
-    highlights: 'أبرز الأرقام',
+    languageLevels: {
+      native: 'اللغة الأم',
+      fluent: 'بطلاقة',
+      professional: 'مستوى مهني',
+      intermediate: 'مستوى متوسط',
+      beginner: 'مستوى مبتدئ',
+    },
+  },
+  about: {
+    title: 'نبذة عني',
+    description: 'من أنا، وأين عملت، وماذا درست، واللغات التي أتحدثها.',
+    experience: 'الخبرة المهنية',
+    education: 'التعليم',
+    spokenLanguages: 'اللغات',
+    status: 'الحالة',
+    currently: 'حاليًا',
+    basedIn: 'مقيم في',
+    workingSince: 'أعمل منذ',
+  },
+  career: {
+    current: 'الحالي',
+    employmentTypes: {
+      full_time: 'دوام كامل',
+      part_time: 'دوام جزئي',
+      freelance: 'عمل حر',
+      contract: 'عقد',
+      internship: 'تدريب',
+      co_founder: 'شريك مؤسس',
+    },
+    workModes: {
+      remote: 'عن بُعد',
+      onsite: 'حضوري',
+      hybrid: 'هجين',
+    },
   },
   availability: {
     open_to_both: 'متاح لوظائف عن بُعد ولمشاريع العمل الحر',
     open_to_work: 'متاح لفرص عمل جديدة',
     open_to_freelance: 'متاح لمشاريع العمل الحر',
     not_available: 'غير متاح حاليًا',
+  },
+  availabilityShort: {
+    open_to_both: 'متاح للعمل',
+    open_to_work: 'متاح للعمل',
+    open_to_freelance: 'متاح للعمل الحر',
+    not_available: 'غير متاح',
   },
   projects: {
     title: 'المشاريع',
@@ -37,7 +83,6 @@ export const ar = {
     showAll: 'عرض كل المشاريع',
     visitSite: 'زيارة الموقع',
     sourceCode: 'الشيفرة المصدرية',
-    present: 'الآن',
     types: {
       client: 'مشروع عميل',
       product: 'منتج',

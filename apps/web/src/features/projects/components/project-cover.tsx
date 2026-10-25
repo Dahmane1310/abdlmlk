@@ -1,20 +1,7 @@
 import { ResponsiveImage } from '@/components/content/responsive-image'
+import { initials } from '@/lib/initials'
 import type { Media } from '@/lib/strapi/schemas'
 import { cn } from '@/lib/utils'
-
-// Zero-width non-joiner: keeps Arabic initials as separate letters instead of
-// joining them into what reads like a word. Invisible, no effect on Latin text.
-const NON_JOINER = '\u200C'
-
-/** First letters of the first two words: "Pharmacy Management System" gives "PM". */
-function initials(title: string) {
-  return title
-    .split(/\s+/)
-    .filter((word) => /^\p{L}/u.test(word))
-    .slice(0, 2)
-    .map((word) => word.charAt(0).toUpperCase())
-    .join(NON_JOINER)
-}
 
 interface ProjectCoverProps {
   title: string

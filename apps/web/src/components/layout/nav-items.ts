@@ -12,6 +12,7 @@ interface NavItem {
  */
 export const NAV_ITEMS = [
   { to: '/$lang', label: 'home', exact: true },
+  { to: '/$lang/about', label: 'about', exact: true },
   // Not exact: stays active on project pages under /projects.
   { to: '/$lang/projects', label: 'projects', exact: false },
 ] as const satisfies readonly NavItem[]

@@ -1,14 +1,11 @@
-import { DownloadIcon, MailIcon, MapPinIcon } from 'lucide-react'
+import { MapPinIcon } from 'lucide-react'
 
 import { Container } from '@/components/layout/container'
-import { Button } from '@/components/ui/button'
 import { AvailabilityBadge } from '@/features/profile/components/availability-badge'
+import { ProfileActions } from '@/features/profile/components/profile-actions'
 import type { Profile } from '@/features/profile/profile.schema'
-import { useTranslation } from '@/lib/i18n/use-translation'
 
 export function Hero({ profile }: { profile: Profile }) {
-  const t = useTranslation()
-
   return (
     <Container className="py-20 md:py-28">
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
@@ -34,24 +31,7 @@ export function Hero({ profile }: { profile: Profile }) {
         {profile.intro}
       </p>
 
-      <div className="mt-10 flex flex-wrap gap-3">
-        {profile.email && (
-          <Button asChild size="lg">
-            <a href={`mailto:${profile.email}`}>
-              <MailIcon aria-hidden />
-              {t.home.emailMe}
-            </a>
-          </Button>
-        )}
-        {profile.resume && (
-          <Button asChild size="lg" variant="outline">
-            <a href={profile.resume.url} download>
-              <DownloadIcon aria-hidden />
-              {t.home.downloadCv}
-            </a>
-          </Button>
-        )}
-      </div>
+      <ProfileActions profile={profile} className="mt-10" />
     </Container>
   )
 }

@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router'
 import { ArrowUpRightIcon, CodeIcon } from 'lucide-react'
 
+import { TechList } from '@/components/content/tech-list'
 import { useLanguage } from '@/lib/i18n/use-language'
 import { useTranslation } from '@/lib/i18n/use-translation'
 
@@ -37,18 +38,7 @@ export function ProjectCard({ project }: { project: ProjectSummary }) {
         <p className="text-sm text-muted-foreground">{project.summary}</p>
 
         <div className="mt-auto flex flex-col gap-4 pt-2">
-          {project.technologies.length > 0 && (
-            <ul className="flex flex-wrap gap-1.5">
-              {project.technologies.map((technology) => (
-                <li
-                  key={technology.slug}
-                  className="rounded-sm border px-2 py-0.5 font-mono text-xs text-muted-foreground"
-                >
-                  {technology.name}
-                </li>
-              ))}
-            </ul>
-          )}
+          <TechList technologies={project.technologies} />
           {(project.liveUrl ?? project.repoUrl) && (
             <div className="relative z-10 flex flex-wrap gap-x-5 gap-y-2 self-start text-sm font-medium">
               {project.liveUrl && (

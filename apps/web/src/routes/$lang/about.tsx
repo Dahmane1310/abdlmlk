@@ -1,0 +1,34 @@
+import { createFileRoute } from '@tanstack/react-router'
+
+import { AboutPage } from '@/features/about/components/about-page'
+import { careerQuery } from '@/features/career/career.queries'
+import { profileDetailsQuery } from '@/features/profile/profile.queries'
+import { dictionaries } from '@/lib/i18n/dictionaries'
+
+export const Route = createFileRoute('/$lang/about')({
+  // The base profile is already loaded for the layout by the root route.
+  loader: async ({ context, params }) => {
+    await Promise.all([
+      context.queryClient.query({
+        ...profileDetailsQuery(params.lang),
+        staleTime: 'static',
+      }),
+      context.queryClient.query({
+        ...careerQuery(params.lang),
+        staleTime: 'static',
+      }),
+    ])
+  },
+  head: ({ match, params }) => {
+    const t = dictionaries[params.lang]
+    return {
+      meta: [
+        {
+          title: `${t.about.title} — ${match.context.siteSettings.siteName}`,
+        },
+        { name: 'description', content: t.about.description },
+      ],
+    }
+  },
+  component: AboutPage,
+})

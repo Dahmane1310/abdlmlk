@@ -13,18 +13,65 @@ export const fr = {
   },
   nav: {
     home: 'Accueil',
+    about: 'À propos',
     projects: 'Projets',
   },
+  dates: {
+    present: "Aujourd'hui",
+  },
   home: {
+    highlights: 'Chiffres clés',
+  },
+  profile: {
     emailMe: "M'écrire",
     downloadCv: 'Télécharger le CV',
-    highlights: 'Chiffres clés',
+    languageLevels: {
+      native: 'Langue maternelle',
+      fluent: 'Courant',
+      professional: 'Professionnel',
+      intermediate: 'Intermédiaire',
+      beginner: 'Débutant',
+    },
+  },
+  about: {
+    title: 'À propos',
+    description:
+      "Qui je suis, où j'ai travaillé, ce que j'ai étudié et les langues que je parle.",
+    experience: 'Expérience',
+    education: 'Formation',
+    spokenLanguages: 'Langues parlées',
+    status: 'Statut',
+    currently: 'Actuellement',
+    basedIn: 'Basé à',
+    workingSince: 'Actif depuis',
+  },
+  career: {
+    current: 'Actuel',
+    employmentTypes: {
+      full_time: 'Temps plein',
+      part_time: 'Temps partiel',
+      freelance: 'Freelance',
+      contract: 'Contrat',
+      internship: 'Stage',
+      co_founder: 'Cofondateur',
+    },
+    workModes: {
+      remote: 'Télétravail',
+      onsite: 'Sur site',
+      hybrid: 'Hybride',
+    },
   },
   availability: {
     open_to_both: 'Ouvert aux postes en télétravail et aux missions freelance',
     open_to_work: 'Ouvert à de nouvelles opportunités',
     open_to_freelance: 'Disponible pour des missions freelance',
     not_available: 'Indisponible pour le moment',
+  },
+  availabilityShort: {
+    open_to_both: 'Disponible',
+    open_to_work: 'Disponible',
+    open_to_freelance: 'Disponible en freelance',
+    not_available: 'Indisponible',
   },
   projects: {
     title: 'Projets',
@@ -38,7 +85,6 @@ export const fr = {
     showAll: 'Voir tous les projets',
     visitSite: 'Voir le site',
     sourceCode: 'Code source',
-    present: "Aujourd'hui",
     types: {
       client: 'Projet client',
       product: 'Produit',

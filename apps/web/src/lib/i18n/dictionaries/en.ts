@@ -12,12 +12,54 @@ export const en = {
   },
   nav: {
     home: 'Home',
+    about: 'About',
     projects: 'Projects',
   },
+  dates: {
+    // End of a date range that hasn't ended: "Jun 2024 — Present".
+    present: 'Present',
+  },
   home: {
+    highlights: 'Highlights',
+  },
+  profile: {
     emailMe: 'Email me',
     downloadCv: 'Download CV',
-    highlights: 'Highlights',
+    languageLevels: {
+      native: 'Native',
+      fluent: 'Fluent',
+      professional: 'Professional',
+      intermediate: 'Intermediate',
+      beginner: 'Beginner',
+    },
+  },
+  about: {
+    title: 'About',
+    description:
+      "Who I am, where I've worked, what I studied and the languages I speak.",
+    experience: 'Experience',
+    education: 'Education',
+    spokenLanguages: 'Spoken languages',
+    status: 'Status',
+    currently: 'Currently',
+    basedIn: 'Based in',
+    workingSince: 'Working since',
+  },
+  career: {
+    current: 'Current',
+    employmentTypes: {
+      full_time: 'Full-time',
+      part_time: 'Part-time',
+      freelance: 'Freelance',
+      contract: 'Contract',
+      internship: 'Internship',
+      co_founder: 'Co-founder',
+    },
+    workModes: {
+      remote: 'Remote',
+      onsite: 'On-site',
+      hybrid: 'Hybrid',
+    },
   },
   // Shown when the CMS has no availability note.
   availability: {
@@ -25,6 +67,13 @@ export const en = {
     open_to_work: 'Open to new roles',
     open_to_freelance: 'Available for freelance projects',
     not_available: 'Not available right now',
+  },
+  // The same, in a few words, for small badges.
+  availabilityShort: {
+    open_to_both: 'Open to work',
+    open_to_work: 'Open to work',
+    open_to_freelance: 'Open to freelance',
+    not_available: 'Not available',
   },
   projects: {
     title: 'Projects',
@@ -38,7 +87,6 @@ export const en = {
     showAll: 'Show all projects',
     visitSite: 'Visit site',
     sourceCode: 'Source code',
-    present: 'Present',
     types: {
       client: 'Client project',
       product: 'Product',

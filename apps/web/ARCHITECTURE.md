@@ -42,8 +42,11 @@ src/
       projects.functions.ts    server functions that read from Strapi
       projects.queries.ts      TanStack Query options (keys + fetchers)
       components/              UI used only by this feature
-    home/  profile/  career/  services/  testimonials/  technologies/
+    home/  about/  profile/  career/  services/  testimonials/  technologies/
     blog/  comments/  newsletter/  contact/
+                               A page feature (home/, about/) composes other features' components;
+                               career/ owns the experience timeline and education cards that the About page
+                               (and later the home page) shows.
 
   components/
     ui/                        shadcn components, generated then adapted to our design
@@ -53,7 +56,8 @@ src/
                                language-link, theme-toggle, container (page width), not-found-page,
                                error-page (CMS unreachable; dictionaries only, no CMS data)
     content/                   shared content display: content-blocks (CMS blocks), metric-grid (figures with
-                               labels), responsive-image
+                               labels), meta-line ("A · B · C" facts), tech-list (technology chips),
+                               responsive-image
 
   lib/
     strapi/
@@ -71,7 +75,8 @@ src/
       use-language.ts          hook: current page's language, for components outside /$lang route files
       use-translation.ts       hook: the current language's dictionary
       dictionaries/            en.ts (reference shape), ar.ts, fr.ts
-      format.ts                dates via Intl: month + year, date ranges ("Apr 2023 — Present")
+      format.ts                dates via Intl: month + year, date ranges ("Apr 2023 — Present"),
+                               durations ("2 years 5 months")
     markdown/
       render.server.ts         Markdown → safe HTML, code highlighted (table of contents comes with the blog)
     theme/
@@ -79,6 +84,7 @@ src/
       theme.ts                 read the cookie (server and browser), save a choice
       theme-script.ts          inline <head> script: applies the theme before first paint
     cookies.ts                 read and write preference cookies in the browser (theme, language)
+    initials.ts                "PM" from "Pharmacy Management System", for placeholders and logo tiles
     utils.ts                   cn() class helper
 
   styles/
@@ -116,6 +122,7 @@ component ──► useSuspenseQuery(projectQuery(lang, slug))   reads the cache
 - **Cached for 5 minutes by default** (`staleTime` in the Query client). CMS content changes rarely; without it, every query would refetch right after hydration.
 - **Queries are keyed by language,** so switching language never shows content from the wrong language.
 - **Layout data loads in the root route's `beforeLoad`.** The header, footer and `<head>` need the site settings and profile on every page, including root-level 404s that never reach `$lang`. `beforeLoad` gets the URL, so it loads them for the language in the path. Page data belongs in each page's own loader.
+  - **Keep layout data small:** it's sent with every page. The profile is split in two: `profileQuery` (name, headline, socials… for the layout and home) and `profileDetailsQuery` (bio, photo, spoken languages), which only the About page loads.
 - **If the CMS is unreachable,** the root `errorComponent` shows a translated error page (status 500) with a "Try again" button that re-runs the loaders. It only uses the dictionaries, since CMS data is exactly what's missing. Error details show in development only.
 - **Missing content** (an unknown slug) makes the server function throw `notFound()`, which renders the 404 page.
 - **404s always show the site layout,** with a real 404 status:
@@ -141,6 +148,7 @@ Strapi blocks ──► blocks.schema.ts (Zod) ──► blocks.server.ts ──
 - **Code highlighting:** one Shiki highlighter per server, created on first use, with a fixed list of languages; an unknown language shows as plain text instead of failing. Light and dark colours are both written into the HTML as CSS variables, and `app.css` picks one from the `.dark` class, so code switches theme instantly with the rest of the page. Code blocks are always `dir="ltr"`, also on Arabic pages.
 - **Populating blocks:** Strapi only returns a block's images when asked. `CONTENT_BLOCKS_POPULATE` asks per block type (`on` fragments), so each type fetches only its own media.
 - **Text styling:** Markdown output uses Tailwind Typography (`prose`), with its colours mapped to the design tokens in `app.css`.
+- **Single Markdown fields** (the bio, a job's achievements, a degree's description) go through the same pipeline in their server function and come back as a `…Html` field (`bioHtml`), so the name says it's ready to render. Empty fields come back as `null`.
 
 ## Writing data (forms)
 
@@ -202,6 +210,10 @@ There is no global store. Adding one needs a real cross-page state that none of 
 - **Reading width:** long-form content (Markdown, blocks) is capped at `max-w-3xl` (48rem) for a comfortable line length.
 - **Grids with content use `grid-cols-1`** (`minmax(0, 1fr)`) rather than an implicit column. A grid column otherwise grows to fit its widest content, and one long code line would make the page wider than a phone screen instead of scrolling inside its code block.
 - **Whole-card links:** a project card is clickable everywhere through its title link, whose `::after` covers the card (a "stretched link"). Screen readers hear one link per card, not a link wrapping the whole card's text. Other links inside the card (Visit site) sit above it with `relative z-10`, and the card shows the focus ring when its title link has keyboard focus (`has-[a:focus-visible]`).
+- **Long pages get numbered section titles** ("01 Experience", with a rule running to the end of the line). The numbers are decoration (`aria-hidden`), so screen readers hear only the title, and they're counted from the sections actually shown.
+- **The accent colour marks what's current or measured,** never decoration: the current job's timeline marker and badge, filled steps of a language meter, achievement bullets.
+- **Visual-only indicators are hidden from screen readers** when the same information is written out next to them: language meters (the level is written below), organization initials tiles (the name is next to them).
+- **Durations that depend on today** (how long a job has lasted) are computed in the server function, not in the component. The server render and the browser then agree, so the page can't flip between two values on hydration.
 - **Technology logos:** looked up from Simple Icons on the server and sent as SVG path data, so the browser never downloads the icon library.
 - **Accessibility:** semantic HTML, every control reachable by keyboard, visible focus, labelled inputs, sufficient contrast, motion reduced when the visitor asks for it.
 
@@ -268,3 +280,10 @@ There is no global store. Adding one needs a real cross-page state that none of 
 | `notFoundComponent` on routes whose loader can 404     | A loader's `notFound()` replaces the component of the route that catches it; caught by `$lang`, it would drop the header and footer                                                  |
 | Stretched-link project cards                           | The whole card is clickable, while screen readers get one short link instead of the whole card read as a link                                                                        |
 | Amber `warning` token                                  | Warning and danger callouts looked the same in red                                                                                                                                   |
+| Profile split into layout and About queries            | The bio and spoken languages would otherwise be sent with every page                                                                                                                 |
+| About page: facts strip + timeline                     | Owner found the first version too plain and chose this direction (over a bento grid and an editorial layout): structure and accent colour without gradients or glows                 |
+| Facts strip under the name, not a side card            | A short side card next to a long bio left a large empty gap and repeated the bio; a full-width strip is scannable and leaves no gaps. Owner's choice.                                |
+| Experience as a vertical timeline, education as cards  | Jobs are a sequence, with one current; degrees are two self-contained items. The home page timeline (step 5) reuses `Timeline`.                                                      |
+| Photo beside the name, no placeholder                  | The name is the anchor; an empty placeholder would look like a missing image                                                                                                         |
+| Short availability label in the facts strip            | The CMS note is a sentence; as a bordered pill inside the strip it was too big. The home hero keeps the full note.                                                                   |
+| Long unit names in durations                           | Intl's short forms are unclear in French ("5 m.")                                                                                                                                    |
