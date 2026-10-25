@@ -1,0 +1,3 @@
+# Keep LF line endings in every checkout, whatever the OS or git settings,
+# so files match Prettier's formatting on Windows, macOS and Linux (Docker) alike.
+* text=auto eol=lf
