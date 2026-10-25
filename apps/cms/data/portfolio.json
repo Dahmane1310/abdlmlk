@@ -1,0 +1,426 @@
+{
+  "organizations": [
+    { "key": "five-angles", "name": "Five Angles", "type": "company" },
+    { "key": "stackintech", "name": "StackInTech", "type": "company" },
+    { "key": "univ-tlemcen", "name": "Abou Bekr Belkaid University", "type": "university", "website": "https://www.univ-tlemcen.dz" },
+    { "key": "ayama", "name": "Ayama", "type": "client", "website": "https://ayama-store.org" },
+    { "key": "almoharib", "name": "Almoharib Pharmacy", "type": "client" },
+    { "key": "propath", "name": "ProPath", "type": "client", "website": "https://productivity-pathways.com" },
+    { "key": "nasser", "name": "Nasser bin Qazea", "type": "client", "website": "https://nasser.five-angles.com" }
+  ],
+
+  "technologies": [
+    { "name": "JavaScript", "category": "language", "icon": "javascript", "featured": true, "order": 1 },
+    { "name": "TypeScript", "category": "language", "icon": "typescript", "featured": true, "order": 2 },
+    { "name": "PHP", "category": "language", "icon": "php", "featured": true, "order": 3 },
+    { "name": "Python", "category": "language", "icon": "python", "featured": true, "order": 4 },
+    { "name": "Java", "category": "language", "icon": "openjdk", "order": 5 },
+    { "name": "Laravel", "category": "backend", "icon": "laravel", "featured": true, "order": 10 },
+    { "name": "Node.js", "category": "backend", "icon": "nodedotjs", "featured": true, "order": 11 },
+    { "name": "Django", "category": "backend", "icon": "django", "featured": true, "order": 12 },
+    { "name": "Spring Boot", "category": "backend", "icon": "springboot", "order": 13 },
+    { "name": "Odoo", "category": "backend", "icon": "odoo", "order": 14 },
+    { "name": "Convex", "category": "backend", "order": 15 },
+    { "name": "REST APIs", "category": "backend", "icon": "openapiinitiative", "order": 16 },
+    { "name": "React", "category": "frontend", "icon": "react", "featured": true, "order": 20 },
+    { "name": "Next.js", "category": "frontend", "icon": "nextdotjs", "featured": true, "order": 21 },
+    { "name": "Astro", "category": "frontend", "icon": "astro", "order": 22 },
+    { "name": "Inertia.js", "category": "frontend", "icon": "inertia", "order": 23 },
+    { "name": "Tailwind CSS", "category": "frontend", "icon": "tailwindcss", "featured": true, "order": 24 },
+    { "name": "MySQL", "category": "database", "icon": "mysql", "featured": true, "order": 30 },
+    { "name": "PostgreSQL", "category": "database", "icon": "postgresql", "featured": true, "order": 31 },
+    { "name": "Docker", "category": "devops", "icon": "docker", "featured": true, "order": 40 },
+    { "name": "Linux", "category": "devops", "icon": "linux", "featured": true, "order": 41 },
+    { "name": "Git", "category": "tool", "icon": "git", "featured": true, "order": 50 },
+    { "name": "Jira", "category": "tool", "icon": "jira", "order": 51 }
+  ],
+
+  "siteSetting": {
+    "en": {
+      "siteName": "Dahmane Abdelmalek",
+      "tagline": "Full-stack engineer — portfolio & blog",
+      "defaultSeo": {
+        "metaTitle": "Dahmane Abdelmalek — Full-Stack Engineer",
+        "metaDescription": "Full-stack engineer building stable, well-architected web applications with Laravel, Node.js, Django, React and Next.js. Portfolio, case studies and blog."
+      }
+    },
+    "ar": {
+      "siteName": "دحمان عبد الملك",
+      "tagline": "مهندس Full-Stack — أعمالي ومدونتي",
+      "defaultSeo": {
+        "metaTitle": "دحمان عبد الملك — مهندس Full-Stack",
+        "metaDescription": "مهندس Full-Stack أبني تطبيقات ويب مستقرة ومُصمَّمة بعناية باستخدام Laravel وNode.js وDjango وReact وNext.js. أعمالي ودراسات الحالة والمدونة."
+      }
+    },
+    "fr": {
+      "siteName": "Dahmane Abdelmalek",
+      "tagline": "Ingénieur full-stack — portfolio & blog",
+      "defaultSeo": {
+        "metaTitle": "Dahmane Abdelmalek — Ingénieur Full-Stack",
+        "metaDescription": "Ingénieur full-stack qui conçoit des applications web stables et bien architecturées avec Laravel, Node.js, Django, React et Next.js. Portfolio, études de cas et blog."
+      }
+    }
+  },
+
+  "profile": {
+    "shared": {
+      "email": "abdelmalekdahmane0@gmail.com",
+      "availability": "open_to_both",
+      "socials": [
+        { "platform": "linkedin", "url": "https://www.linkedin.com/in/dahmane-abdelmalek/" },
+        { "platform": "github", "url": "https://github.com/Dahmane1310" }
+      ]
+    },
+    "en": {
+      "fullName": "Dahmane Abdelmalek",
+      "headline": "Full-Stack Engineer",
+      "intro": "I'm a full-stack developer who builds stable, well-architected applications. I work independently across the stack, quickly grasp system design, and prioritize sustainable solutions that deliver business value.",
+      "bio": "I've been building production web applications since 2023: first as co-founder of StackInTech, a software development agency in Tlemcen, and today as a full-stack engineer at Five Angles, where I lead a team of 3–5 developers and have shipped four production-ready projects from planning to deployment.\n\nI enjoy owning a product end to end: understanding the problem, designing the architecture, building the backend and the frontend, and deploying it. Along the way I've learned that the best code is the code that stays easy to change, so I invest in code reviews, clear structure and sensible defaults.\n\nI hold a Master's degree in Software Engineering from Abou Bekr Belkaid University in Tlemcen, where my graduation project, QuickCap, an AI-powered captioning app, earned a 19/20.",
+      "location": "Tlemcen, Algeria",
+      "availabilityNote": "Open to remote roles and freelance projects.",
+      "highlights": [
+        { "value": "6+", "label": "production-ready projects delivered" },
+        { "value": "15–25%", "label": "revenue growth on shipped products" },
+        { "value": "30%", "label": "fewer bugs and less maintenance" },
+        { "value": "100%", "label": "on-time delivery at StackInTech" }
+      ],
+      "spokenLanguages": [
+        { "name": "Arabic", "level": "native" },
+        { "name": "English", "level": "professional", "cefr": "B2" },
+        { "name": "French", "level": "beginner", "cefr": "A1" }
+      ]
+    },
+    "ar": {
+      "fullName": "دحمان عبد الملك",
+      "headline": "مهندس Full-Stack",
+      "intro": "أنا مطوّر Full-Stack أبني تطبيقات مستقرة ومُصمَّمة بعناية. أعمل باستقلالية على جميع طبقات المشروع، وأستوعب تصميم الأنظمة بسرعة، وأُعطي الأولوية للحلول المستدامة التي تحقق قيمة فعلية للأعمال.",
+      "bio": "أبني تطبيقات ويب جاهزة للإنتاج منذ عام 2023: بدايةً كشريك مؤسس في StackInTech، وهي وكالة لتطوير البرمجيات في تلمسان، واليوم كمهندس Full-Stack في Five Angles، حيث أقود فريقًا من 3 إلى 5 مطوّرين، وسلّمت أربعة مشاريع جاهزة للإنتاج من التخطيط حتى النشر.\n\nأستمتع بتولّي المنتج من البداية إلى النهاية: فهم المشكلة، وتصميم البنية، وبناء الواجهة الخلفية والأمامية، ثم نشره. وتعلّمت أن أفضل كود هو الذي يبقى سهل التعديل، لذلك أستثمر في مراجعة الكود والبنية الواضحة.\n\nحاصل على شهادة الماستر في هندسة البرمجيات من جامعة أبو بكر بلقايد بتلمسان، حيث نال مشروع تخرّجي QuickCap، وهو تطبيق لتوليد الترجمات بالذكاء الاصطناعي، علامة 19/20.",
+      "location": "تلمسان، الجزائر",
+      "availabilityNote": "متاح لوظائف عن بُعد ولمشاريع العمل الحر.",
+      "highlights": [
+        { "value": "6+", "label": "مشاريع جاهزة للإنتاج" },
+        { "value": "15–25%", "label": "نمو في الإيرادات للمنتجات المُسلَّمة" },
+        { "value": "30%", "label": "أخطاء وتكاليف صيانة أقل" },
+        { "value": "100%", "label": "تسليم في الموعد في StackInTech" }
+      ],
+      "spokenLanguages": [
+        { "name": "العربية", "level": "native" },
+        { "name": "الإنجليزية", "level": "professional", "cefr": "B2" },
+        { "name": "الفرنسية", "level": "beginner", "cefr": "A1" }
+      ]
+    },
+    "fr": {
+      "fullName": "Dahmane Abdelmalek",
+      "headline": "Ingénieur Full-Stack",
+      "intro": "Je suis développeur full-stack et je conçois des applications stables et bien architecturées. Je travaille en autonomie sur toute la stack, je comprends rapidement la conception des systèmes et je privilégie des solutions durables qui apportent une réelle valeur métier.",
+      "bio": "Je développe des applications web en production depuis 2023 : d'abord comme cofondateur de StackInTech, une agence de développement logiciel à Tlemcen, puis aujourd'hui comme ingénieur full-stack chez Five Angles, où j'encadre une équipe de 3 à 5 développeurs et où j'ai livré quatre projets en production, de la conception au déploiement.\n\nJ'aime prendre en charge un produit de bout en bout : comprendre le besoin, concevoir l'architecture, développer le backend et le frontend, puis le déployer. J'ai appris que le meilleur code est celui qui reste facile à faire évoluer ; c'est pourquoi j'investis dans les revues de code et une structure claire.\n\nJe suis titulaire d'un master en génie logiciel de l'Université Abou Bekr Belkaïd de Tlemcen, où mon projet de fin d'études, QuickCap, une application de sous-titrage par IA, a obtenu 19/20.",
+      "location": "Tlemcen, Algérie",
+      "availabilityNote": "Ouvert aux postes en télétravail et aux missions freelance.",
+      "highlights": [
+        { "value": "6+", "label": "projets livrés en production" },
+        { "value": "15–25 %", "label": "de hausse du chiffre d'affaires sur les produits livrés" },
+        { "value": "30 %", "label": "de bugs et de maintenance en moins" },
+        { "value": "100 %", "label": "de livraisons dans les délais chez StackInTech" }
+      ],
+      "spokenLanguages": [
+        { "name": "Arabe", "level": "native" },
+        { "name": "Anglais", "level": "professional", "cefr": "B2" },
+        { "name": "Français", "level": "beginner", "cefr": "A1" }
+      ]
+    }
+  },
+
+  "experiences": [
+    {
+      "shared": { "organization": "five-angles", "workMode": "remote", "startDate": "2024-06-01", "order": 1 },
+      "en": {
+        "role": "Full-Stack Engineer",
+        "summary": "Full-stack engineer on a remote team, taking client products from planning to production.",
+        "achievements": "- Delivered **4 full production-ready projects** from planning to deployment\n- Led a **3–5 person development team** to ship features on time and at quality\n- Improved delivery efficiency, helping increase revenue by **15–25%** across shipped products\n- Reduced bugs and maintenance overhead by **30%** through code reviews and best practices"
+      },
+      "ar": {
+        "role": "مهندس Full-Stack",
+        "summary": "مهندس Full-Stack ضمن فريق يعمل عن بُعد، أتولّى منتجات العملاء من التخطيط حتى الإطلاق.",
+        "achievements": "- سلّمت **4 مشاريع متكاملة جاهزة للإنتاج** من التخطيط حتى النشر\n- قدت **فريق تطوير من 3 إلى 5 أشخاص** لتسليم الميزات في وقتها وبجودة عالية\n- حسّنت كفاءة التسليم، ما ساهم في **زيادة الإيرادات بنسبة 15–25%** للمنتجات المُسلَّمة\n- خفّضت الأخطاء وتكاليف الصيانة بنسبة **30%** من خلال مراجعة الكود وأفضل الممارسات"
+      },
+      "fr": {
+        "role": "Ingénieur Full-Stack",
+        "summary": "Ingénieur full-stack au sein d'une équipe en télétravail, je mène les produits clients de la conception à la mise en production.",
+        "achievements": "- Livré **4 projets complets en production**, de la conception au déploiement\n- Encadré une **équipe de 3 à 5 développeurs** pour livrer les fonctionnalités dans les délais et avec qualité\n- Amélioré l'efficacité des livraisons, contribuant à une **hausse du chiffre d'affaires de 15 à 25 %** sur les produits livrés\n- Réduit les bugs et la charge de maintenance de **30 %** grâce aux revues de code et aux bonnes pratiques"
+      }
+    },
+    {
+      "shared": { "organization": "stackintech", "employmentType": "co_founder", "startDate": "2023-04-01", "endDate": "2023-11-30", "order": 2 },
+      "en": {
+        "role": "Co-founder & Full-Stack Engineer",
+        "location": "Tlemcen, Algeria",
+        "summary": "Co-founded a software development agency, working as its full-stack developer and DevOps engineer.",
+        "achievements": "- Co-founded **StackInTech**, a software development agency\n- Delivered **2+ production-ready products** as a full-stack developer and DevOps engineer\n- Improved delivery speed and helped boost revenue by **15–25%**\n- Achieved **100% on-time delivery** across all projects"
+      },
+      "ar": {
+        "role": "شريك مؤسس ومهندس Full-Stack",
+        "location": "تلمسان، الجزائر",
+        "summary": "شاركت في تأسيس وكالة لتطوير البرمجيات، وعملت فيها كمطوّر Full-Stack ومهندس DevOps.",
+        "achievements": "- شاركت في تأسيس **StackInTech**، وكالة لتطوير البرمجيات\n- سلّمت **أكثر من منتجَين جاهزَين للإنتاج** كمطوّر Full-Stack ومهندس DevOps\n- حسّنت سرعة التسليم وساهمت في **رفع الإيرادات بنسبة 15–25%**\n- حقّقت **تسليمًا في الموعد بنسبة 100%** في جميع المشاريع"
+      },
+      "fr": {
+        "role": "Cofondateur & ingénieur Full-Stack",
+        "location": "Tlemcen, Algérie",
+        "summary": "Cofondateur d'une agence de développement logiciel, où j'étais développeur full-stack et ingénieur DevOps.",
+        "achievements": "- Cofondé **StackInTech**, une agence de développement logiciel\n- Livré **plus de 2 produits en production** en tant que développeur full-stack et ingénieur DevOps\n- Accéléré les livraisons et contribué à une **hausse du chiffre d'affaires de 15 à 25 %**\n- Atteint **100 % de livraisons dans les délais** sur tous les projets"
+      }
+    }
+  ],
+
+  "educations": [
+    {
+      "shared": { "organization": "univ-tlemcen", "startDate": "2022-09-01", "endDate": "2024-06-30", "order": 1 },
+      "en": {
+        "degree": "Master's degree",
+        "field": "Software Engineering",
+        "location": "Tlemcen, Algeria",
+        "description": "Graduation project: **QuickCap**, a full-stack web application that uses AI to automatically generate and manage video captions and subtitles. The project was fully deployed, earned a **19/20** grade, and was recognized as an innovative project for its originality and impact."
+      },
+      "ar": {
+        "degree": "ماستر",
+        "field": "هندسة البرمجيات",
+        "location": "تلمسان، الجزائر",
+        "description": "مشروع التخرّج: **QuickCap**، تطبيق ويب متكامل يستخدم الذكاء الاصطناعي لتوليد ترجمات الفيديو وإدارتها تلقائيًا. نُشر المشروع بالكامل، ونال علامة **19/20**، وحظي بالتقدير كمشروع مبتكر لأصالته وأثره."
+      },
+      "fr": {
+        "degree": "Master",
+        "field": "Génie logiciel",
+        "location": "Tlemcen, Algérie",
+        "description": "Projet de fin d'études : **QuickCap**, une application web full-stack qui utilise l'IA pour générer et gérer automatiquement les sous-titres de vidéos. Le projet a été entièrement déployé, a obtenu la note de **19/20** et a été distingué comme projet innovant pour son originalité et son impact."
+      }
+    },
+    {
+      "shared": { "organization": "univ-tlemcen", "startDate": "2019-09-01", "endDate": "2022-06-30", "order": 2 },
+      "en": {
+        "degree": "Bachelor's degree",
+        "location": "Tlemcen, Algeria",
+        "description": "Built a fully functional **e-commerce web application** with product management, a checkout flow, authentication and an admin dashboard."
+      },
+      "ar": {
+        "degree": "ليسانس",
+        "location": "تلمسان، الجزائر",
+        "description": "بنيت **تطبيق تجارة إلكترونية** متكاملًا يشمل إدارة المنتجات، ومسار الدفع، والمصادقة، ولوحة تحكم إدارية."
+      },
+      "fr": {
+        "degree": "Licence",
+        "location": "Tlemcen, Algérie",
+        "description": "Développement d'une **application e-commerce** complète : gestion des produits, tunnel de commande, authentification et tableau de bord d'administration."
+      }
+    }
+  ],
+
+  "projects": [
+    {
+      "shared": { "slug": "subfast", "projectType": "product", "startDate": "2023-04-01", "endDate": "2024-08-31", "featured": true, "order": 1 },
+      "en": {
+        "title": "Subfast",
+        "role": "Full-stack developer: frontend, backend & AI integration",
+        "summary": "An AI-powered video captioning and editing platform. I built the frontend and the backend, and integrated the AI that generates subtitles and powers video editing.",
+        "content": "## The product\n\nSubfast is a platform that uses AI to caption and edit videos: it generates subtitles automatically and gives users tools to edit their videos.\n\n## My role\n\n- Built the **frontend**\n- Built the **backend**\n- Integrated **AI** for automated subtitles and video editing\n\nWorking on Subfast is what inspired my Master's graduation project, **QuickCap**."
+      },
+      "ar": {
+        "title": "Subfast",
+        "role": "مطوّر Full-Stack: الواجهة الأمامية والخلفية ودمج الذكاء الاصطناعي",
+        "summary": "منصة لترجمة الفيديوهات وتحريرها بالذكاء الاصطناعي. تولّيت الواجهة الأمامية والخلفية، ودمجت الذكاء الاصطناعي الذي يولّد الترجمات ويدعم تحرير الفيديو.",
+        "content": "## المنتج\n\nSubfast منصة تستخدم الذكاء الاصطناعي لإضافة الترجمات إلى الفيديوهات وتحريرها: تولّد الترجمات تلقائيًا وتوفّر أدوات لتحرير الفيديو.\n\n## دوري\n\n- بناء **الواجهة الأمامية**\n- بناء **الواجهة الخلفية**\n- دمج **الذكاء الاصطناعي** لتوليد الترجمات وتحرير الفيديو تلقائيًا\n\nالعمل على Subfast هو ما ألهمني فكرة مشروع تخرّجي في الماستر، **QuickCap**."
+      },
+      "fr": {
+        "title": "Subfast",
+        "role": "Développeur full-stack : frontend, backend et intégration de l'IA",
+        "summary": "Une plateforme de sous-titrage et de montage vidéo propulsée par l'IA. J'ai développé le frontend et le backend, et intégré l'IA qui génère les sous-titres et facilite le montage.",
+        "content": "## Le produit\n\nSubfast est une plateforme qui utilise l'IA pour sous-titrer et monter des vidéos : elle génère automatiquement les sous-titres et propose des outils de montage.\n\n## Mon rôle\n\n- Développement du **frontend**\n- Développement du **backend**\n- Intégration de **l'IA** pour le sous-titrage automatique et le montage vidéo\n\nC'est en travaillant sur Subfast que j'ai eu l'idée de mon projet de fin d'études de master, **QuickCap**."
+      }
+    },
+    {
+      "shared": { "slug": "quickcap", "projectType": "academic", "endDate": "2024-06-30", "organization": "univ-tlemcen", "featured": true, "order": 2 },
+      "en": {
+        "title": "QuickCap",
+        "role": "Full-stack developer (graduation project)",
+        "summary": "My Master's graduation project: a full-stack web app that uses AI to automatically generate and manage video captions and subtitles. Fully deployed, graded 19/20 and recognized as an innovative project.",
+        "metrics": [{ "value": "19/20", "label": "graduation project grade" }],
+        "content": "## Overview\n\nQuickCap is a full-stack web application that uses AI to automatically generate and manage captions and subtitles for videos. The idea grew out of my work on **Subfast**.\n\n## Results\n\n- Fully **deployed** to production\n- Graded **19/20**\n- Recognized as an **innovative project** for its originality and impact"
+      },
+      "ar": {
+        "title": "QuickCap",
+        "role": "مطوّر Full-Stack (مشروع تخرّج)",
+        "summary": "مشروع تخرّجي في الماستر: تطبيق ويب متكامل يستخدم الذكاء الاصطناعي لتوليد ترجمات الفيديو وإدارتها تلقائيًا. نُشر بالكامل، ونال علامة 19/20، وحظي بالتقدير كمشروع مبتكر.",
+        "metrics": [{ "value": "19/20", "label": "علامة مشروع التخرّج" }],
+        "content": "## نظرة عامة\n\nQuickCap تطبيق ويب متكامل يستخدم الذكاء الاصطناعي لتوليد ترجمات الفيديو وإدارتها تلقائيًا. وُلدت الفكرة من عملي على **Subfast**.\n\n## النتائج\n\n- **نُشر** بالكامل في بيئة الإنتاج\n- نال علامة **19/20**\n- حظي بالتقدير كـ**مشروع مبتكر** لأصالته وأثره"
+      },
+      "fr": {
+        "title": "QuickCap",
+        "role": "Développeur full-stack (projet de fin d'études)",
+        "summary": "Mon projet de fin d'études de master : une application web full-stack qui utilise l'IA pour générer et gérer automatiquement les sous-titres de vidéos. Entièrement déployée, notée 19/20 et distinguée comme projet innovant.",
+        "metrics": [{ "value": "19/20", "label": "note du projet de fin d'études" }],
+        "content": "## Présentation\n\nQuickCap est une application web full-stack qui utilise l'IA pour générer et gérer automatiquement les sous-titres de vidéos. L'idée est née de mon travail sur **Subfast**.\n\n## Résultats\n\n- Entièrement **déployée** en production\n- Notée **19/20**\n- Distinguée comme **projet innovant** pour son originalité et son impact"
+      }
+    },
+    {
+      "shared": {
+        "slug": "nasser-filmmaking-course",
+        "projectType": "client",
+        "organization": "five-angles",
+        "client": "nasser",
+        "liveUrl": "https://nasser.five-angles.com",
+        "technologies": ["next-js", "react", "convex"],
+        "featured": true,
+        "order": 3
+      },
+      "en": {
+        "title": "Nasser bin Qazea — Mobile Filmmaking Course",
+        "role": "Full-stack developer",
+        "summary": "A bilingual sales and learning platform for Nasser bin Qazea's mobile filmmaking course: Arabic-first (right-to-left) with English, course content, FAQ, instructor bio and a checkout with instant access.",
+        "content": "## The project\n\nA platform for **Nasser bin Qazea**'s online course on mobile filmmaking (*From an ordinary place, make an extraordinary shot*). Visitors discover the course, see sample shots and buy it with a one-time payment that unlocks instant access.\n\n## Highlights\n\n- **Arabic-first, right-to-left** design with an English version\n- Course page with lessons, FAQ and instructor bio\n- **Checkout** with instant access after payment\n- Cinematic design details, such as a recording timecode and 4K · 24 FPS labels\n\n**Stack:** Next.js, React and Convex."
+      },
+      "ar": {
+        "title": "ناصر بن قزيع — دورة صناعة الأفلام بالجوال",
+        "role": "مطوّر Full-Stack",
+        "summary": "منصة بيع وتعلّم ثنائية اللغة لدورة صناعة الأفلام بالجوال لناصر بن قزيع: بالعربية أولًا (من اليمين إلى اليسار) مع نسخة إنجليزية، ومحتوى الدورة، والأسئلة الشائعة، ونبذة عن المدرّب، وصفحة دفع مع وصول فوري.",
+        "content": "## المشروع\n\nمنصة لدورة **ناصر بن قزيع** عبر الإنترنت في صناعة الأفلام بالجوال (*احتراف صناعة الأفلام بالجوال*). يتعرّف الزوار على الدورة، ويشاهدون نماذج من اللقطات، ويشترونها بدفعة واحدة تمنحهم وصولًا فوريًا.\n\n## أبرز الميزات\n\n- تصميم **بالعربية أولًا ومن اليمين إلى اليسار** مع نسخة إنجليزية\n- صفحة للدورة تضم الدروس والأسئلة الشائعة ونبذة عن المدرّب\n- **صفحة دفع** مع وصول فوري بعد الدفع\n- تفاصيل تصميم سينمائية، مثل مؤقّت التسجيل وعلامة 4K · 24FPS\n\n**التقنيات:** Next.js وReact وConvex."
+      },
+      "fr": {
+        "title": "Nasser bin Qazea — Cours de cinéma au smartphone",
+        "role": "Développeur full-stack",
+        "summary": "Une plateforme bilingue de vente et d'apprentissage pour le cours de cinéma au smartphone de Nasser bin Qazea : en arabe d'abord (de droite à gauche) avec une version anglaise, contenu du cours, FAQ, présentation du formateur et paiement avec accès immédiat.",
+        "content": "## Le projet\n\nUne plateforme pour le cours en ligne de **Nasser bin Qazea** sur le cinéma au smartphone (*From an ordinary place, make an extraordinary shot*). Les visiteurs découvrent le cours, voient des exemples de plans et l'achètent en un paiement unique qui donne un accès immédiat.\n\n## Points forts\n\n- Design **en arabe d'abord, de droite à gauche**, avec une version anglaise\n- Page du cours avec leçons, FAQ et présentation du formateur\n- **Paiement** avec accès immédiat\n- Détails de design cinématographiques, comme un timecode d'enregistrement et des labels 4K · 24 FPS\n\n**Stack :** Next.js, React et Convex."
+      }
+    },
+    {
+      "shared": {
+        "slug": "ayama",
+        "projectType": "client",
+        "organization": "five-angles",
+        "client": "ayama",
+        "startDate": "2024-08-01",
+        "endDate": "2024-12-31",
+        "liveUrl": "https://ayama-store.org",
+        "featured": true,
+        "order": 4
+      },
+      "en": {
+        "title": "Ayama",
+        "role": "Backend lead",
+        "summary": "Internal management platform for Ayama, a donation platform. I led backend development for operations tracking and the admin tools.",
+        "content": "## The project\n\nAyama needed an internal platform to run its operations. I led the **backend development**, building operations tracking and the admin tools the team uses every day.\n\n## My role\n\n- Led backend development\n- Built **operations tracking**\n- Built the **admin tools**"
+      },
+      "ar": {
+        "title": "أيامى",
+        "role": "قائد تطوير الواجهة الخلفية",
+        "summary": "منصة إدارة داخلية لأيامى، منصة التبرعات. قدت تطوير الواجهة الخلفية لتتبّع العمليات وأدوات الإدارة.",
+        "content": "## المشروع\n\nاحتاجت أيامى إلى منصة داخلية لإدارة عملياتها. قدت **تطوير الواجهة الخلفية**، وبنيت نظام تتبّع العمليات وأدوات الإدارة التي يستخدمها الفريق يوميًا.\n\n## دوري\n\n- قيادة تطوير الواجهة الخلفية\n- بناء **تتبّع العمليات**\n- بناء **أدوات الإدارة**"
+      },
+      "fr": {
+        "title": "Ayama",
+        "role": "Responsable backend",
+        "summary": "Plateforme de gestion interne pour Ayama, une plateforme de dons. J'ai dirigé le développement backend du suivi des opérations et des outils d'administration.",
+        "content": "## Le projet\n\nAyama avait besoin d'une plateforme interne pour gérer ses opérations. J'ai dirigé le **développement backend**, avec le suivi des opérations et les outils d'administration que l'équipe utilise au quotidien.\n\n## Mon rôle\n\n- Direction du développement backend\n- Développement du **suivi des opérations**\n- Développement des **outils d'administration**"
+      }
+    },
+    {
+      "shared": {
+        "slug": "almoharib-pharmacy",
+        "projectType": "client",
+        "organization": "five-angles",
+        "client": "almoharib",
+        "startDate": "2025-01-01",
+        "endDate": "2025-10-31",
+        "order": 5
+      },
+      "en": {
+        "title": "Pharmacy Management System",
+        "role": "Full-stack developer",
+        "summary": "A complete pharmacy management system for Almoharib Pharmacy, covering inventory, sales, orders and user management.",
+        "content": "## The project\n\nA full management system for **Almoharib Pharmacy**, built as the full-stack developer.\n\n## Features\n\n- **Inventory** management\n- **Sales**\n- **Orders**\n- **User management**"
+      },
+      "ar": {
+        "title": "نظام إدارة صيدلية",
+        "role": "مطوّر Full-Stack",
+        "summary": "نظام متكامل لإدارة صيدلية المحارب، يشمل المخزون والمبيعات والطلبات وإدارة المستخدمين.",
+        "content": "## المشروع\n\nنظام إدارة متكامل لـ**صيدلية المحارب**، طوّرته كمطوّر Full-Stack.\n\n## الميزات\n\n- إدارة **المخزون**\n- **المبيعات**\n- **الطلبات**\n- **إدارة المستخدمين**"
+      },
+      "fr": {
+        "title": "Système de gestion de pharmacie",
+        "role": "Développeur full-stack",
+        "summary": "Un système complet de gestion de pharmacie pour la pharmacie Almoharib : stocks, ventes, commandes et gestion des utilisateurs.",
+        "content": "## Le projet\n\nUn système de gestion complet pour la **pharmacie Almoharib**, développé en tant que développeur full-stack.\n\n## Fonctionnalités\n\n- Gestion des **stocks**\n- **Ventes**\n- **Commandes**\n- **Gestion des utilisateurs**"
+      }
+    },
+    {
+      "shared": { "slug": "propath", "projectType": "client", "client": "propath", "liveUrl": "https://productivity-pathways.com", "order": 6 },
+      "en": {
+        "title": "ProPath",
+        "summary": "Website for ProPath, a consultancy that helps organizations re-engineer their performance.",
+        "content": "## The project\n\nThe website for **ProPath**, whose promise is to re-engineer performance for organizations and their leadership. The site is Arabic-first."
+      },
+      "ar": {
+        "title": "ProPath",
+        "summary": "موقع ProPath، جهة استشارية تساعد المؤسسات على إعادة هندسة أدائها.",
+        "content": "## المشروع\n\nموقع **ProPath** التي تَعِد بإعادة هندسة الأداء للمؤسسات وقياداتها. الموقع بالعربية أولًا."
+      },
+      "fr": {
+        "title": "ProPath",
+        "summary": "Site web de ProPath, un cabinet de conseil qui aide les organisations à réinventer leur performance.",
+        "content": "## Le projet\n\nLe site de **ProPath**, dont la promesse est de réinventer la performance des organisations et de leurs dirigeants. Le site est d'abord en arabe."
+      }
+    },
+    {
+      "shared": { "slug": "ecommerce-web-app", "projectType": "academic", "organization": "univ-tlemcen", "endDate": "2022-06-30", "order": 7 },
+      "en": {
+        "title": "E-commerce Web Application",
+        "role": "Full-stack developer (Bachelor's project)",
+        "summary": "My Bachelor's project: a fully functional e-commerce web application with product management, a checkout flow, authentication and an admin dashboard.",
+        "content": "## Features\n\n- **Product management**\n- **Checkout flow**\n- **Authentication**\n- **Admin dashboard**"
+      },
+      "ar": {
+        "title": "تطبيق تجارة إلكترونية",
+        "role": "مطوّر Full-Stack (مشروع الليسانس)",
+        "summary": "مشروع الليسانس: تطبيق تجارة إلكترونية متكامل يشمل إدارة المنتجات، ومسار الدفع، والمصادقة، ولوحة تحكم إدارية.",
+        "content": "## الميزات\n\n- **إدارة المنتجات**\n- **مسار الدفع**\n- **المصادقة**\n- **لوحة تحكم إدارية**"
+      },
+      "fr": {
+        "title": "Application e-commerce",
+        "role": "Développeur full-stack (projet de licence)",
+        "summary": "Mon projet de licence : une application e-commerce complète avec gestion des produits, tunnel de commande, authentification et tableau de bord d'administration.",
+        "content": "## Fonctionnalités\n\n- **Gestion des produits**\n- **Tunnel de commande**\n- **Authentification**\n- **Tableau de bord d'administration**"
+      }
+    }
+  ],
+
+  "services": [
+    {
+      "shared": { "slug": "full-stack-web-apps", "icon": "layers", "technologies": ["laravel", "node-js", "django", "react", "next-js"], "order": 1 },
+      "en": { "title": "Full-stack web applications", "summary": "Production-ready web apps from planning to deployment, with Laravel, Node.js or Django on the backend and React or Next.js on the frontend." },
+      "ar": { "title": "تطبيقات ويب متكاملة", "summary": "تطبيقات ويب جاهزة للإنتاج من التخطيط حتى النشر، باستخدام Laravel أو Node.js أو Django للواجهة الخلفية، وReact أو Next.js للواجهة الأمامية." },
+      "fr": { "title": "Applications web full-stack", "summary": "Des applications web prêtes pour la production, de la conception au déploiement, avec Laravel, Node.js ou Django côté backend et React ou Next.js côté frontend." }
+    },
+    {
+      "shared": { "slug": "dashboards-internal-tools", "icon": "layout-dashboard", "technologies": ["laravel", "inertia-js", "react", "postgresql", "mysql"], "order": 2 },
+      "en": { "title": "Dashboards & internal tools", "summary": "Management platforms for day-to-day operations: inventory, sales, orders, user roles and admin tools." },
+      "ar": { "title": "لوحات التحكم والأدوات الداخلية", "summary": "منصات إدارة للعمليات اليومية: المخزون والمبيعات والطلبات وصلاحيات المستخدمين وأدوات الإدارة." },
+      "fr": { "title": "Tableaux de bord et outils internes", "summary": "Des plateformes de gestion pour les opérations au quotidien : stocks, ventes, commandes, rôles utilisateurs et outils d'administration." }
+    },
+    {
+      "shared": { "slug": "ai-features", "icon": "sparkles", "technologies": ["python"], "order": 3 },
+      "en": { "title": "AI-powered features", "summary": "Bringing AI into your product, such as automatic captions and subtitles, built on a solid full-stack foundation." },
+      "ar": { "title": "ميزات مدعومة بالذكاء الاصطناعي", "summary": "دمج الذكاء الاصطناعي في منتجك، مثل توليد الترجمات تلقائيًا، على أساس تقني متين." },
+      "fr": { "title": "Fonctionnalités propulsées par l'IA", "summary": "Intégrer l'IA à votre produit, par exemple le sous-titrage automatique, sur une base full-stack solide." }
+    },
+    {
+      "shared": { "slug": "devops-deployment", "icon": "server", "technologies": ["docker", "linux", "git"], "order": 4 },
+      "en": { "title": "DevOps & deployment", "summary": "Docker, Linux servers and reliable deployments, so your app stays fast, secure and easy to update." },
+      "ar": { "title": "DevOps والنشر", "summary": "Docker وخوادم Linux وعمليات نشر موثوقة، ليبقى تطبيقك سريعًا وآمنًا وسهل التحديث." },
+      "fr": { "title": "DevOps et déploiement", "summary": "Docker, serveurs Linux et déploiements fiables, pour une application rapide, sécurisée et facile à mettre à jour." }
+    },
+    {
+      "shared": { "slug": "technical-leadership", "icon": "users", "order": 5 },
+      "en": { "title": "Technical leadership", "summary": "Leading small development teams, with code reviews and best practices that cut bugs and maintenance costs." },
+      "ar": { "title": "القيادة التقنية", "summary": "قيادة فرق تطوير صغيرة، مع مراجعة الكود وأفضل الممارسات التي تقلّل الأخطاء وتكاليف الصيانة." },
+      "fr": { "title": "Leadership technique", "summary": "Encadrement de petites équipes de développement, avec revues de code et bonnes pratiques qui réduisent les bugs et les coûts de maintenance." }
+    }
+  ]
+}

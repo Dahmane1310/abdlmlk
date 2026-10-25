@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_shared_spoken_languages",
+  "info": {
+    "displayName": "Spoken language",
+    "icon": "earth"
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "level": {
+      "type": "enumeration",
+      "enum": [
+        "native",
+        "fluent",
+        "professional",
+        "intermediate",
+        "beginner"
+      ],
+      "required": true
+    },
+    "cefr": {
+      "type": "string",
+      "maxLength": 3
+    }
+  },
+  "options": {}
+}

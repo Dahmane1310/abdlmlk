@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_shared_callouts",
+  "info": {
+    "displayName": "Callout",
+    "icon": "information"
+  },
+  "attributes": {
+    "variant": {
+      "type": "enumeration",
+      "enum": [
+        "note",
+        "tip",
+        "warning",
+        "danger"
+      ],
+      "required": true,
+      "default": "note"
+    },
+    "title": {
+      "type": "string"
+    },
+    "body": {
+      "type": "richtext",
+      "required": true
+    }
+  },
+  "options": {}
+}

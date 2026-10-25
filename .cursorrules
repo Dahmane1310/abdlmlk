@@ -1,0 +1,8 @@
+# shadcn instructions
+
+Use the latest version of Shadcn to install new components, like this command to add a button component. The site lives in `apps/web`, so run it from there:
+
+```bash
+cd apps/web
+pnpm dlx shadcn@latest add button
+```

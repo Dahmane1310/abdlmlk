@@ -1,0 +1,60 @@
+{
+  "kind": "collectionType",
+  "collectionName": "comments",
+  "info": {
+    "singularName": "comment",
+    "pluralName": "comments",
+    "displayName": "Comment",
+    "description": "Blog comments. New comments wait for approval."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "authorName": {
+      "type": "string",
+      "required": true,
+      "maxLength": 80
+    },
+    "authorEmail": {
+      "type": "email",
+      "required": true,
+      "private": true
+    },
+    "body": {
+      "type": "text",
+      "required": true,
+      "maxLength": 4000
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "pending",
+        "approved",
+        "rejected",
+        "spam"
+      ],
+      "required": true,
+      "default": "pending"
+    },
+    "isAuthorReply": {
+      "type": "boolean",
+      "default": false
+    },
+    "article": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::article.article"
+    },
+    "parent": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::comment.comment"
+    },
+    "ipHash": {
+      "type": "string",
+      "private": true
+    }
+  }
+}

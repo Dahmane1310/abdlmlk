@@ -1,0 +1,42 @@
+{
+  "collectionName": "components_shared_codes",
+  "info": {
+    "displayName": "Code",
+    "icon": "code"
+  },
+  "attributes": {
+    "filename": {
+      "type": "string"
+    },
+    "language": {
+      "type": "enumeration",
+      "enum": [
+        "typescript",
+        "javascript",
+        "tsx",
+        "jsx",
+        "php",
+        "python",
+        "java",
+        "bash",
+        "json",
+        "yaml",
+        "sql",
+        "html",
+        "css",
+        "dockerfile",
+        "nginx",
+        "diff",
+        "markdown",
+        "plaintext"
+      ],
+      "required": true,
+      "default": "typescript"
+    },
+    "code": {
+      "type": "text",
+      "required": true
+    }
+  },
+  "options": {}
+}

@@ -1,0 +1,25 @@
+{
+  "bundler": "vite",
+  "projectName": "abdlmlk",
+  "mode": "file-router",
+  "typescript": true,
+  "packageManager": "pnpm",
+  "includeExamples": false,
+  "tailwind": true,
+  "projectPreset": "default",
+  "routerOnly": false,
+  "addOnOptions": {},
+  "git": false,
+  "install": true,
+  "intent": true,
+  "version": 1,
+  "framework": "react",
+  "chosenAddOns": [
+    "nitro",
+    "strapi",
+    "shadcn",
+    "t3env",
+    "store",
+    "tanstack-query"
+  ]
+}

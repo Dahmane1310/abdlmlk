@@ -1,0 +1,69 @@
+{
+  "kind": "collectionType",
+  "collectionName": "messages",
+  "info": {
+    "singularName": "message",
+    "pluralName": "messages",
+    "displayName": "Message",
+    "description": "Contact form messages"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "maxLength": 120
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "subject": {
+      "type": "string",
+      "maxLength": 200
+    },
+    "body": {
+      "type": "text",
+      "required": true,
+      "maxLength": 5000
+    },
+    "reason": {
+      "type": "enumeration",
+      "enum": [
+        "job",
+        "freelance",
+        "collaboration",
+        "other"
+      ],
+      "required": true,
+      "default": "other"
+    },
+    "budget": {
+      "type": "string",
+      "maxLength": 100
+    },
+    "language": {
+      "type": "enumeration",
+      "enum": [
+        "en",
+        "ar",
+        "fr"
+      ],
+      "default": "en"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "new",
+        "read",
+        "replied",
+        "archived"
+      ],
+      "required": true,
+      "default": "new"
+    }
+  }
+}

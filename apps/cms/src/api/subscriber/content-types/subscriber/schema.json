@@ -1,0 +1,55 @@
+{
+  "kind": "collectionType",
+  "collectionName": "subscribers",
+  "info": {
+    "singularName": "subscriber",
+    "pluralName": "subscribers",
+    "displayName": "Subscriber",
+    "description": "Newsletter subscribers (double opt-in)"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "email": {
+      "type": "email",
+      "required": true,
+      "unique": true
+    },
+    "language": {
+      "type": "enumeration",
+      "enum": [
+        "en",
+        "ar",
+        "fr"
+      ],
+      "required": true,
+      "default": "en"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "pending",
+        "subscribed",
+        "unsubscribed"
+      ],
+      "required": true,
+      "default": "pending"
+    },
+    "confirmToken": {
+      "type": "string",
+      "private": true
+    },
+    "unsubscribeToken": {
+      "type": "string",
+      "private": true
+    },
+    "confirmedAt": {
+      "type": "datetime"
+    },
+    "unsubscribedAt": {
+      "type": "datetime"
+    }
+  }
+}
