@@ -46,7 +46,8 @@ src/
     blog/  comments/  newsletter/  contact/
                                A page feature (home/, about/) composes other features' components;
                                career/ owns the experience timeline and education cards that the About page
-                               (and later the home page) shows.
+                               (and later the home page) shows. technologies/ owns the skills grid, the shared
+                               technology schema and the server-only logo lookup (technology-icon.server.ts).
 
   components/
     ui/                        shadcn components, generated then adapted to our design
@@ -240,7 +241,9 @@ Every page is built from the same pieces, so home, about and projects feel like 
 - **The accent colour marks what's current or measured,** never decoration: the current job's timeline marker and badge, filled steps of a language meter, achievement bullets.
 - **Visual-only indicators are hidden from screen readers** when the same information is written out next to them: language meters (the level is written below), organization initials tiles (the name is next to them).
 - **Durations that depend on today** (how long a job has lasted) are computed in the server function, not in the component. The server render and the browser then agree, so the page can't flip between two values on hydration.
-- **Technology logos:** looked up from Simple Icons on the server and sent as SVG path data, so the browser never downloads the icon library.
+- **Technology logos:** the CMS stores a Simple Icons slug per technology ("nodedotjs"). Server functions swap it for the logo's SVG path with `withIconPath`, so the browser gets the shape and never the icon library (the `simple-icons` package is only imported in a `.server.ts` file).
+  - **One colour:** logos use the text colour (`fill-current`), so they fit the one-accent design and switch with the theme. They're decorative (`aria-hidden`): the name is always next to them.
+  - **The same chip everywhere:** `TechList` shows logo and name on the About skills, the timeline, project cards and project pages. An unknown or missing slug shows the name only (Convex has no logo in Simple Icons).
 - **Accessibility:** semantic HTML, every control reachable by keyboard, visible focus, labelled inputs, sufficient contrast, motion reduced when the visitor asks for it.
 
 ## Server and security rules
@@ -257,7 +260,7 @@ Every page is built from the same pieces, so home, about and projects feel like 
 
 - **Imports** use the `@/` alias for `src/` (a `tsconfig.json` path, resolved by Vite; shadcn is configured for it too).
 - **File names** are kebab-case: `project-card.tsx`, `use-translation.ts`. One component per file, named exports. Route files export `Route`, as TanStack Router requires.
-- **Types come from Zod** (`z.infer`), never hand-written copies of the same shape.
+- **Types come from Zod** (`z.infer`), never hand-written copies of the same shape. When a server function reshapes the data (rendered HTML, logo paths, durations), components take their type from the function's return type instead (`ProjectSummary`, `Career`, `SkillGroup`).
 - **Route files stay thin.** Params, loader, `head` (SEO) and one feature component. Logic and markup live in `features/`.
 - **Page titles** are set in the route's `head`: "Page — Site name", with the page name from `dictionaries[params.lang]` and the site name from the root's context. They replace the root's default title and description.
 - **URL filters** use a Zod `validateSearch` schema with `.catch(undefined)` on each field, so a bad value (`?type=bogus`) is ignored instead of crashing the page. Filter links use `activeOptions={{ exact: true }}` (so "All" is only active when nothing is set) and `resetScroll={false}` (the page doesn't jump to the top).
@@ -316,4 +319,7 @@ Every page is built from the same pieces, so home, about and projects feel like 
 | Section numbers from a CSS counter                     | Keeps numbers in order across `PageSection`s and CMS Markdown headings without counting in code; `content: … / ""` hides them from screen readers                                    |
 | One title size, home included                          | Consistency over a bigger hero                                                                                                                                                       |
 | Project metrics titled "Key numbers"                   | Case studies have their own "Results" heading; two sections with the same name read as a mistake                                                                                     |
+| `simple-icons` for technology logos                    | Free (CC0), maintained, 3,000+ logos as SVG path data; covers 22 of the 23 technologies. Owner approved the dependency. Only loaded on the server.                                   |
+| Logos in one colour, on every tech chip                | Owner's choice: brand colours would break the one-accent design; one chip style keeps the pages consistent                                                                           |
+| Skills right after Experience                          | What someone scanning a portfolio looks for next, before education                                                                                                                   |
 | Long unit names in durations                           | Intl's short forms are unclear in French ("5 m.")                                                                                                                                    |

@@ -1,6 +1,7 @@
 import { createServerFn } from '@tanstack/react-start'
 import { z } from 'zod'
 
+import { withIconPath } from '@/features/technologies/technology-icon.server'
 import { languageSchema } from '@/lib/i18n/config'
 import { renderMarkdown } from '@/lib/markdown/render.server'
 import { getStrapiClient } from '@/lib/strapi/client.server'
@@ -43,7 +44,7 @@ export const getCareer = createServerFn({ method: 'GET' })
         ...query,
         populate: {
           organization: ORGANIZATION_POPULATE,
-          technologies: { fields: ['name', 'slug'] },
+          technologies: { fields: ['name', 'slug', 'icon'] },
         },
       }),
       client.collection('educations').find({
@@ -60,6 +61,7 @@ export const getCareer = createServerFn({ method: 'GET' })
         experience.map(async ({ achievements, ...job }) => ({
           ...job,
           months: monthsBetween(job.startDate, job.endDate),
+          technologies: job.technologies.map(withIconPath),
           achievementsHtml: achievements
             ? await renderMarkdown(achievements)
             : null,

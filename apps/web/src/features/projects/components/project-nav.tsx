@@ -5,7 +5,7 @@ import { useLanguage } from '@/lib/i18n/use-language'
 import { useTranslation } from '@/lib/i18n/use-translation'
 import { cn } from '@/lib/utils'
 
-import type { ProjectSummary } from '../projects.schema'
+import type { ProjectSummary } from '../projects.functions'
 
 function ProjectNavLink({
   project,

@@ -3,7 +3,8 @@ import { Link } from '@tanstack/react-router'
 import { useTranslation } from '@/lib/i18n/use-translation'
 
 import { projectTypeSchema } from '../projects.schema'
-import type { ProjectsSearch, ProjectSummary } from '../projects.schema'
+import type { ProjectSummary } from '../projects.functions'
+import type { ProjectsSearch } from '../projects.schema'
 
 /** A filter is a link, so filtered views are shareable and work with the back button. */
 function FilterChip({

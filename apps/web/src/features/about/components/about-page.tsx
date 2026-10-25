@@ -10,6 +10,8 @@ import {
   profileDetailsQuery,
   profileQuery,
 } from '@/features/profile/profile.queries'
+import { SkillsGrid } from '@/features/technologies/components/skills-grid'
+import { skillsQuery } from '@/features/technologies/technologies.queries'
 import { useLanguage } from '@/lib/i18n/use-language'
 import { useTranslation } from '@/lib/i18n/use-translation'
 
@@ -22,6 +24,7 @@ export function AboutPage() {
   const { data: profile } = useSuspenseQuery(profileQuery(lang))
   const { data: details } = useSuspenseQuery(profileDetailsQuery(lang))
   const { data: career } = useSuspenseQuery(careerQuery(lang))
+  const { data: skills } = useSuspenseQuery(skillsQuery(lang))
 
   return (
     <Page>
@@ -34,6 +37,12 @@ export function AboutPage() {
       {career.experience.length > 0 && (
         <PageSection id="experience" title={t.about.experience}>
           <ExperienceList jobs={career.experience} />
+        </PageSection>
+      )}
+
+      {skills.length > 0 && (
+        <PageSection id="skills" title={t.about.skills}>
+          <SkillsGrid groups={skills} />
         </PageSection>
       )}
 

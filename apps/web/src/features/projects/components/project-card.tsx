@@ -5,7 +5,7 @@ import { TechList } from '@/components/content/tech-list'
 import { useLanguage } from '@/lib/i18n/use-language'
 import { useTranslation } from '@/lib/i18n/use-translation'
 
-import type { ProjectSummary } from '../projects.schema'
+import type { ProjectSummary } from '../projects.functions'
 import { ProjectCover } from './project-cover'
 import { ProjectMeta } from './project-meta'
 

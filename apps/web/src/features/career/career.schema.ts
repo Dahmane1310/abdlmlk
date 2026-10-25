@@ -1,5 +1,6 @@
 import { z } from 'zod'
 
+import { technologyRefSchema } from '@/features/technologies/technologies.schema'
 import { mediaSchema } from '@/lib/strapi/schemas'
 
 export const employmentTypeSchema = z.enum([
@@ -32,7 +33,7 @@ const experienceSchema = z.object({
   summary: z.string().nullable(),
   /** Markdown. */
   achievements: z.string().nullable(),
-  technologies: z.array(z.object({ name: z.string(), slug: z.string() })),
+  technologies: z.array(technologyRefSchema),
 })
 
 /** A degree in the "Education" collection. */

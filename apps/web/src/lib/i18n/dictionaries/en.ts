@@ -38,12 +38,25 @@ export const en = {
     description:
       "Who I am, where I've worked, what I studied and the languages I speak.",
     experience: 'Experience',
+    skills: 'Skills',
     education: 'Education',
     spokenLanguages: 'Spoken languages',
     status: 'Status',
     currently: 'Currently',
     basedIn: 'Based in',
     workingSince: 'Working since',
+  },
+  technologies: {
+    categories: {
+      language: 'Languages',
+      frontend: 'Frontend',
+      backend: 'Backend',
+      mobile: 'Mobile',
+      ai: 'AI',
+      database: 'Databases',
+      devops: 'DevOps',
+      tool: 'Tools',
+    },
   },
   career: {
     current: 'Current',

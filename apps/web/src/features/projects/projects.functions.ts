@@ -2,6 +2,7 @@ import { notFound } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { z } from 'zod'
 
+import { withIconPath } from '@/features/technologies/technology-icon.server'
 import { CONTENT_BLOCKS_POPULATE } from '@/lib/content/blocks.schema'
 import { renderContentBlocks } from '@/lib/content/blocks.server'
 import { languageSchema } from '@/lib/i18n/config'
@@ -12,7 +13,7 @@ import { projectDetailListSchema, projectListSchema } from './projects.schema'
 // Relations every project view shows.
 const CARD_POPULATE = {
   cover: true,
-  technologies: { fields: ['name', 'slug'] },
+  technologies: { fields: ['name', 'slug', 'icon'] },
   client: { fields: ['name'] },
   organization: { fields: ['name'] },
 }
@@ -29,7 +30,10 @@ export const getProjects = createServerFn({ method: 'GET' })
         pagination: { pageSize: 100 },
         populate: CARD_POPULATE,
       })
-    return projectListSchema.parse(response).data
+    return projectListSchema.parse(response).data.map((project) => ({
+      ...project,
+      technologies: project.technologies.map(withIconPath),
+    }))
   })
 
 export const getProject = createServerFn({ method: 'GET' })
@@ -54,7 +58,11 @@ export const getProject = createServerFn({ method: 'GET' })
 
     return {
       ...project,
+      technologies: project.technologies.map(withIconPath),
       gallery: project.gallery ?? [],
       content: await renderContentBlocks(project.content ?? []),
     }
   })
+
+/** A project as the list and cards show it, technologies with their logos. */
+export type ProjectSummary = Awaited<ReturnType<typeof getProjects>>[number]

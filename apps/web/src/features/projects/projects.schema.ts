@@ -1,5 +1,6 @@
 import { z } from 'zod'
 
+import { technologyRefSchema } from '@/features/technologies/technologies.schema'
 import { contentBlockSchema } from '@/lib/content/blocks.schema'
 import { mediaSchema, seoSchema } from '@/lib/strapi/schemas'
 
@@ -9,8 +10,6 @@ export const projectTypeSchema = z.enum([
   'personal',
   'academic',
 ])
-
-const technologySchema = z.object({ name: z.string(), slug: z.string() })
 
 const organizationSchema = z.object({ name: z.string() })
 
@@ -30,14 +29,13 @@ export const projectSummarySchema = z.object({
   client: organizationSchema.nullable(),
   /** Where it was built: the company or university. */
   organization: organizationSchema.nullable(),
-  technologies: z.array(technologySchema),
+  technologies: z.array(technologyRefSchema),
 })
 
 export const projectListSchema = z.object({
   data: z.array(projectSummarySchema),
 })
 
-export type ProjectSummary = z.output<typeof projectSummarySchema>
 export type ProjectType = z.output<typeof projectTypeSchema>
 
 /** A project's own page: the card fields plus the case study. */

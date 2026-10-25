@@ -3,7 +3,7 @@ import { formatDateRange } from '@/lib/i18n/format'
 import { useLanguage } from '@/lib/i18n/use-language'
 import { useTranslation } from '@/lib/i18n/use-translation'
 
-import type { ProjectSummary } from '../projects.schema'
+import type { ProjectSummary } from '../projects.functions'
 
 /** "Client project · Ayama · Aug 2024 — Dec 2024" */
 export function ProjectMeta({
