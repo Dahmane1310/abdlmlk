@@ -6,3 +6,6 @@ src/routeTree.gen.ts
 .nitro/
 .tanstack/
 dist/
+
+# Approved design mockup: a frozen reference, kept exactly as approved
+design/mockup/

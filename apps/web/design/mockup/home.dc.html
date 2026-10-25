@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Home — refreshed</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.theme-light{--bg:oklch(0.99 0.002 264);--fg:oklch(0.17 0.015 264);--card:oklch(1 0 0);--primary:oklch(0.55 0.23 264);--on-primary:oklch(0.99 0 0);--muted:oklch(0.965 0.004 264);--muted-fg:oklch(0.47 0.015 264);--border:oklch(0.91 0.005 264);--input:oklch(0.64 0.012 264);--grid:oklch(0.55 0.23 264 / 0.07)}
+.theme-dark{--bg:oklch(0.15 0.008 264);--fg:oklch(0.97 0.003 264);--card:oklch(0.18 0.009 264);--primary:oklch(0.68 0.19 259);--on-primary:oklch(0.15 0.008 264);--muted:oklch(0.22 0.01 264);--muted-fg:oklch(0.71 0.012 264);--border:oklch(0.27 0.01 264);--input:oklch(0.5 0.012 264);--grid:oklch(0.68 0.19 259 / 0.1)}
+.grid-on .blueprint{background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:32px 32px}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.strip>div{padding:28px 24px 32px;border-inline-start:1px solid var(--border)}
+.strip>div:first-child{border-inline-start:0;padding-inline-start:0}
+a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline;text-underline-offset:4px}
+.card:hover{border-color:var(--input)}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="min-height: 100%; background: var(--bg); color: var(--fg); font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased;">
+
+<header style="border-bottom: 1px solid var(--border); background: var(--bg);">
+  <div style="max-width: 1024px; margin: 0 auto; padding: 12px 24px; min-height: 40px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px;">
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 32px;">
+      <a href="Main.dc.html" style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 500; color: var(--fg);">Dahmane Abdelmalek</a>
+      <nav aria-label="Main navigation" style="display: flex; gap: 24px; font-size: 14px;">
+        <a href="Main.dc.html" aria-current="page" style="color: var(--fg); font-weight: 500;">Home</a>
+        <a href="About.dc.html" style="color: var(--muted-fg);">About</a>
+        <a href="#work" style="color: var(--muted-fg);">Projects</a>
+      </nav>
+    </div>
+    <div style="display: flex; align-items: center; gap: 4px;">
+      <button type="button" aria-label="Change language" style="display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 10px; border: 0; border-radius: 6px; background: transparent; color: var(--fg); font: 500 12px 'IBM Plex Mono', monospace; cursor: pointer;">
+        <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8l6 6 M4 14l6-6 2-3 M2 5h12 M7 2h1 M22 22l-5-10-5 10 M14 18h6"></path></svg>
+        EN
+      </button>
+      <button type="button" aria-label="Switch theme" onClick="{{toggleTheme}}" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 0; border-radius: 6px; background: transparent; color: var(--fg); cursor: pointer;">
+        <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z M8 21h8 M12 17v4"></path></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<section class="blueprint" aria-labelledby="hero-title" style="border-bottom: 1px solid var(--border);">
+  <div style="max-width: 1024px; margin: 0 auto; padding: 96px 24px 0; display: flex; flex-direction: column; gap: 24px;">
+    <p style="margin: 0; display: flex; align-items: center; gap: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted-fg);"><span aria-hidden="true" style="width: 8px; height: 8px; flex: none; border-radius: 999px; background: var(--primary);"></span>Open to work · Tlemcen, Algeria</p>
+    <h1 id="hero-title" style="margin: 0; font-size: clamp(44px, 7vw, 84px); line-height: 1.02; font-weight: 600; letter-spacing: -0.035em;">Dahmane<br>Abdelmalek</h1>
+    <p style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--primary);">Full-Stack Engineer</p>
+    <p style="margin: 0; max-width: 640px; font-size: 20px; line-height: 1.6;">I'm a full-stack developer who builds stable, well-architected applications. I work independently across the stack, quickly grasp system design, and prioritize sustainable solutions that deliver business value.</p>
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 8px;">
+      <a href="#contact" style="display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 20px; border-radius: 6px; background: var(--primary); color: var(--on-primary); font-size: 15px; font-weight: 500; text-decoration: none;">
+        <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7 M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path></svg>
+        Email me
+      </a>
+      <a href="#contact" style="display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 20px; border-radius: 6px; border: 1px solid var(--input); background: var(--bg); color: var(--fg); font-size: 15px; font-weight: 500; text-decoration: none;">
+        <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3 M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4 M7 10l5 5 5-5"></path></svg>
+        Download CV
+      </a>
+      <a href="#work" style="display: inline-flex; align-items: center; gap: 6px; height: 44px; padding: 0 8px; color: var(--fg); font-size: 15px; font-weight: 500;">
+        See my work
+        <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14 M12 5l7 7-7 7"></path></svg>
+      </a>
+    </div>
+    <dl class="strip" style="margin: 72px 0 0; border-top: 1px solid var(--border);">
+      <sc-for list="{{metrics}}" as="m" hint-placeholder-count="4">
+        <div style="display: flex; flex-direction: column-reverse; gap: 10px;">
+          <dt style="font-size: 14px; line-height: 1.45; color: var(--muted-fg);">{{m.label}}</dt>
+          <dd style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 36px; font-weight: 500; line-height: 1; letter-spacing: -0.02em;">{{m.value}}</dd>
+        </div>
+      </sc-for>
+    </dl>
+  </div>
+</section>
+
+<main style="max-width: 1024px; margin: 0 auto; padding: 112px 24px; display: flex; flex-direction: column; gap: 128px;">
+
+  <section id="work" aria-labelledby="work-title">
+    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 40px;">
+      <span aria-hidden="true" style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--primary);">01</span>
+      <h2 id="work-title" style="margin: 0; font-size: 28px; line-height: 1.2; font-weight: 600; letter-spacing: -0.02em;">Selected work</h2>
+      <span aria-hidden="true" style="flex: 1; height: 1px; background: var(--border);"></span>
+      <a href="#work" style="font-size: 14px; font-weight: 500;">All projects</a>
+    </div>
+
+    <article class="card" style="display: flex; flex-wrap: wrap; margin-bottom: 24px; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--card);">
+      <div class="blueprint" style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; aspect-ratio: 16 / 10; background-color: var(--muted); border-inline-end: 1px solid var(--border);">
+        <div style="height: 36px; flex: none; display: flex; align-items: center; gap: 6px; padding: 0 14px; border-bottom: 1px solid var(--border); background: var(--card);">
+          <span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 2px; background: var(--border);"></span>
+          <span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 2px; background: var(--border);"></span>
+          <span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 2px; background: var(--border);"></span>
+          <span style="margin-inline-start: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted-fg);">subfast</span>
+        </div>
+        <div aria-hidden="true" style="flex: 1; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 88px; font-weight: 500; letter-spacing: -0.04em; color: var(--primary);">S</div>
+      </div>
+      <div style="flex: 1 1 320px; min-width: 0; padding: 36px; display: flex; flex-direction: column; justify-content: center; gap: 14px;">
+        <p style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted-fg);">Product · 2023 — 2024</p>
+        <h3 style="margin: 0; font-size: 30px; line-height: 1.15; font-weight: 600; letter-spacing: -0.02em;"><a href="#work" style="color: var(--fg);">Subfast</a></h3>
+        <p style="margin: 0; font-size: 16px; color: var(--muted-fg);">An AI-powered video captioning and editing platform. I built the frontend and the backend, and integrated the AI that generates subtitles and powers video editing.</p>
+        <a href="#work" style="display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 500;">Read the case study
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14 M12 5l7 7-7 7"></path></svg>
+        </a>
+      </div>
+    </article>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+      <sc-for list="{{projects}}" as="p" hint-placeholder-count="3">
+        <article class="card" style="display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--card);">
+          <div class="blueprint" style="display: flex; flex-direction: column; aspect-ratio: 16 / 10; background-color: var(--muted); border-bottom: 1px solid var(--border);">
+            <div style="height: 32px; flex: none; display: flex; align-items: center; gap: 5px; padding: 0 12px; border-bottom: 1px solid var(--border); background: var(--card);">
+              <span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 2px; background: var(--border);"></span>
+              <span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 2px; background: var(--border);"></span>
+              <span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 2px; background: var(--border);"></span>
+              <span style="margin-inline-start: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted-fg);">{{p.domain}}</span>
+            </div>
+            <div aria-hidden="true" style="flex: 1; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 56px; font-weight: 500; letter-spacing: -0.04em; color: var(--primary);">{{p.initials}}</div>
+          </div>
+          <div style="flex: 1; padding: 24px; display: flex; flex-direction: column; gap: 10px;">
+            <p style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted-fg);">{{p.meta}}</p>
+            <h3 style="margin: 0; font-size: 20px; line-height: 1.3; font-weight: 600;"><a href="#work" style="color: var(--fg);">{{p.title}}</a></h3>
+            <p style="margin: 0; font-size: 15px; color: var(--muted-fg);">{{p.summary}}</p>
+            <sc-if value="{{p.hasTech}}" hint-placeholder-val="{{ false }}">
+              <ul style="list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 16px;">
+                <sc-for list="{{p.tech}}" as="t" hint-placeholder-count="3">
+                  <li style="display: inline-flex; align-items: center; gap: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted-fg);">
+                    <sc-if value="{{t.hasLogo}}" hint-placeholder-val="{{ true }}">
+                      <svg aria-hidden="true" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="{{t.path}}"></path></svg>
+                    </sc-if>
+                    {{t.name}}
+                  </li>
+                </sc-for>
+              </ul>
+            </sc-if>
+            <sc-if value="{{p.live}}" hint-placeholder-val="{{ false }}">
+              <a href="#work" style="margin-top: auto; padding-top: 6px; display: inline-flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 500;">Visit site
+                <svg aria-hidden="true" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10 M7 17 17 7"></path></svg>
+              </a>
+            </sc-if>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+  </section>
+
+  <section aria-labelledby="services-title">
+    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 40px;">
+      <span aria-hidden="true" style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--primary);">02</span>
+      <h2 id="services-title" style="margin: 0; font-size: 28px; line-height: 1.2; font-weight: 600; letter-spacing: -0.02em;">What I do</h2>
+      <span aria-hidden="true" style="flex: 1; height: 1px; background: var(--border);"></span>
+    </div>
+    <ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 48px 40px;">
+      <sc-for list="{{services}}" as="s" hint-placeholder-count="5">
+        <li style="padding-top: 20px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px;">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary);"><path d="{{s.icon}}"></path></svg>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted-fg);">{{s.index}}</span>
+          </div>
+          <h3 style="margin: 4px 0 0; font-size: 18px; line-height: 1.35; font-weight: 600;">{{s.title}}</h3>
+          <p style="margin: 0; font-size: 15px; color: var(--muted-fg);">{{s.summary}}</p>
+        </li>
+      </sc-for>
+    </ul>
+  </section>
+
+  <section aria-labelledby="experience-title">
+    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+      <span aria-hidden="true" style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--primary);">03</span>
+      <h2 id="experience-title" style="margin: 0; font-size: 28px; line-height: 1.2; font-weight: 600; letter-spacing: -0.02em;">Experience</h2>
+      <span aria-hidden="true" style="flex: 1; height: 1px; background: var(--border);"></span>
+      <a href="About.dc.html" style="font-size: 14px; font-weight: 500;">Full story</a>
+    </div>
+    <ol style="list-style: none; margin: 0; padding: 0;">
+      <sc-for list="{{jobs}}" as="j" hint-placeholder-count="2">
+        <li style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 24px; padding: 24px 0; border-bottom: 1px solid var(--border);">
+          <span style="flex: 0 0 220px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--muted-fg);">{{j.period}}</span>
+          <span style="flex: 1 1 280px; display: inline-flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 18px; font-weight: 600;">{{j.role}}
+            <sc-if value="{{j.current}}" hint-placeholder-val="{{ false }}">
+              <span style="padding: 0 6px; border: 1px solid var(--primary); border-radius: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 400; line-height: 18px; color: var(--primary);">Current</span>
+            </sc-if>
+          </span>
+          <span style="flex: 0 1 auto; font-size: 15px; color: var(--muted-fg);">{{j.where}}</span>
+        </li>
+      </sc-for>
+    </ol>
+  </section>
+
+  <section id="contact" aria-labelledby="contact-title" style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 32px; padding: 56px 48px; border-radius: 16px; background: var(--primary); color: var(--on-primary);">
+    <div style="flex: 1 1 420px; display: flex; flex-direction: column; gap: 14px;">
+      <p style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;">Contact</p>
+      <h2 id="contact-title" style="margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.1; font-weight: 600; letter-spacing: -0.025em;">Have a project in mind?<br>Let's build it.</h2>
+      <p style="margin: 0; font-size: 17px;">Open to remote roles and freelance projects.</p>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+      <a href="#contact" style="display: inline-flex; align-items: center; gap: 8px; height: 48px; padding: 0 22px; border-radius: 6px; background: var(--on-primary); color: var(--primary); font-size: 15px; font-weight: 600; text-decoration: none;">
+        <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7 M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path></svg>
+        Email me
+      </a>
+      <a href="#contact" style="display: inline-flex; align-items: center; gap: 6px; height: 48px; padding: 0 20px; border-radius: 6px; border: 1px solid currentColor; color: var(--on-primary); font-size: 15px; font-weight: 500; text-decoration: none;">LinkedIn
+        <svg aria-hidden="true" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10 M7 17 17 7"></path></svg>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer style="border-top: 1px solid var(--border);">
+  <div style="max-width: 1024px; margin: 0 auto; padding: 28px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; font-size: 13px;">
+    <p style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted-fg);">© 2026 Dahmane Abdelmalek</p>
+    <div style="display: flex; flex-wrap: wrap; gap: 12px 28px;">
+      <span style="display: flex; gap: 16px; font-family: 'IBM Plex Mono', monospace; font-size: 12px;"><a href="#contact" style="color: var(--muted-fg);">LinkedIn</a><a href="#contact" style="color: var(--muted-fg);">GitHub</a></span>
+      <span style="display: flex; gap: 14px;"><a href="Main.dc.html" style="color: var(--fg);">English</a><a href="Main.dc.html" lang="ar" style="color: var(--muted-fg);">العربية</a><a href="Main.dc.html" lang="fr" style="color: var(--muted-fg);">Français</a></span>
+    </div>
+  </div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"grid":{"editor":"boolean","default":true},"$preview":{"width":1280,"height":3500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const state = this.state || {};
+    const dark = state.dark ?? this.props.dark ?? false;
+    const grid = this.props.grid ?? true;
+    const NEXT = 'M18.665 21.978C16.758 23.255 14.465 24 12 24 5.377 24 0 18.623 0 12S5.377 0 12 0s12 5.377 12 12c0 3.583-1.574 6.801-4.067 9.001L9.219 7.2H7.2v9.596h1.615V9.251l9.85 12.727Zm-3.332-8.533 1.6 2.061V7.2h-1.6v6.245Z';
+    const REACT = 'M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.345-.034-.46 0-.915.01-1.36.034.44-.572.895-1.096 1.345-1.565zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87-.728.063-1.466.098-2.21.098-.74 0-1.477-.035-2.202-.093-.406-.582-.802-1.204-1.183-1.86-.372-.64-.71-1.29-1.018-1.946.303-.657.646-1.313 1.013-1.954.38-.66.773-1.286 1.18-1.868.728-.064 1.466-.098 2.21-.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933-.2-.39-.41-.783-.64-1.174-.225-.392-.465-.774-.705-1.146zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493-.28-.958-.646-1.956-1.1-2.98.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98-.45 1.017-.812 2.01-1.086 2.964-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39.24-.375.48-.762.705-1.158.225-.39.435-.788.636-1.18zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143-.695-.102-1.365-.23-2.006-.386.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295-.22-.005-.406-.05-.553-.132-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.345.034.46 0 .915-.01 1.36-.034-.44.572-.895 1.095-1.345 1.565-.455-.47-.91-.993-1.36-1.565z';
+    return {
+      rootClass: (dark ? 'theme-dark' : 'theme-light') + (grid ? ' grid-on' : ''),
+      toggleTheme: () => this.setState({ dark: !dark }),
+      metrics: [
+        { value: '6+', label: 'production-ready projects delivered' },
+        { value: '15–25%', label: 'revenue growth on shipped products' },
+        { value: '30%', label: 'fewer bugs and less maintenance' },
+        { value: '100%', label: 'on-time delivery at StackInTech' },
+      ],
+      projects: [
+        { title: 'QuickCap', initials: 'QC', domain: 'quickcap', meta: 'Academic project · 2024', summary: "My Master's graduation project: a full-stack web app that uses AI to automatically generate and manage video captions and subtitles. Graded 19/20.", hasTech: false, tech: [], live: false },
+        { title: 'Nasser bin Qazea — Mobile Filmmaking Course', initials: 'NB', domain: 'nasser.five-angles.com', meta: 'Client project', summary: "A bilingual sales and learning platform for Nasser bin Qazea's mobile filmmaking course: Arabic-first with English, course content and a checkout with instant access.", hasTech: true, tech: [ { name: 'Next.js', hasLogo: true, path: NEXT }, { name: 'React', hasLogo: true, path: REACT }, { name: 'Convex', hasLogo: false, path: '' } ], live: true },
+        { title: 'Ayama', initials: 'A', domain: 'ayama-store.org', meta: 'Client project · 2024', summary: 'Internal management platform for Ayama, a donation platform. I led backend development for operations tracking and the admin tools.', hasTech: false, tech: [], live: true },
+      ],
+      services: [
+        { index: '01', title: 'Full-stack web applications', summary: 'Production-ready web apps from planning to deployment, with Laravel, Node.js or Django on the backend and React or Next.js on the frontend.', icon: 'M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12 M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17' },
+        { index: '02', title: 'Dashboards & internal tools', summary: 'Management platforms for day-to-day operations: inventory, sales, orders, user roles and admin tools.', icon: 'M4 3h5a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z M15 3h5a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z M15 12h5a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1z M4 16h5a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1z' },
+        { index: '03', title: 'AI-powered features', summary: 'Bringing AI into your product, such as automatic captions and subtitles, built on a solid full-stack foundation.', icon: 'M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z M20 2v4 M22 4h-4 M2 20a2 2 0 1 0 4 0a2 2 0 1 0-4 0' },
+        { index: '04', title: 'DevOps & deployment', summary: 'Docker, Linux servers and reliable deployments, so your app stays fast, secure and easy to update.', icon: 'M4 2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z M4 14h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2z M6 6h.01 M6 18h.01' },
+        { index: '05', title: 'Technical leadership', summary: 'Leading small development teams, with code reviews and best practices that cut bugs and maintenance costs.', icon: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M16 3.128a4 4 0 0 1 0 7.744 M22 21v-2a4 4 0 0 0-3-3.87 M5 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0' },
+      ],
+      jobs: [
+        { period: 'Jun 2024 — Present', role: 'Full-Stack Engineer', where: 'Five Angles · Remote', current: true },
+        { period: 'Apr 2023 — Nov 2023', role: 'Co-founder & Full-Stack Engineer', where: 'StackInTech · Tlemcen', current: false },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

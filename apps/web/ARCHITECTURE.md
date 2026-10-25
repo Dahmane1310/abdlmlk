@@ -1,6 +1,6 @@
 # Web app architecture
 
-How `apps/web` is built: the structure, the rules and the reasons behind them. Every change follows this document. When a decision changes, this document changes in the same step.
+How `apps/web` is built: the structure, the rules and the reasons behind them. Every change follows this document. When a decision changes, this document changes in the same step. How the site **looks** (the approved visual design, its patterns and the content map) is in [`DESIGN.md`](./DESIGN.md).
 
 ## What it is
 
@@ -215,7 +215,7 @@ Every page is built from the same pieces, so home, about and projects feel like 
 
 ## Styling and UI
 
-- **Design:** modern and techy, flat. 1px borders, high contrast, one accent colour (electric blue), monospace for details (dates, labels, numbers). No gradients, glows or decorative shadows.
+- **Design:** modern and techy, flat. 1px borders, high contrast, one accent colour (electric blue), monospace for details (dates, labels, numbers). No gradients, glows or decorative shadows. The full visual design, approved from a mockup, is in `DESIGN.md`; pages built before it are moving over step by step (its last section).
 - **Design tokens** (colours, fonts, radius) are CSS variables in `styles/app.css`, exposed to Tailwind as `bg-primary`, `text-muted-foreground`, `border-input` and so on. Components use tokens, never raw colour values. Names follow shadcn's convention:
   - `primary` is the brand colour (electric blue): links, main buttons, focus ring.
   - `accent` is shadcn's subtle **hover background**, not the brand colour.
