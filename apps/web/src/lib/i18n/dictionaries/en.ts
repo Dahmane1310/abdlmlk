@@ -21,6 +21,9 @@ export const en = {
   },
   home: {
     highlights: 'Highlights',
+    seeMyWork: 'See my work',
+    selectedWork: 'Selected work',
+    allProjects: 'All projects',
   },
   profile: {
     emailMe: 'Email me',
@@ -117,6 +120,7 @@ export const en = {
     moreProjects: 'More projects',
     previous: 'Previous project',
     next: 'Next project',
+    readCaseStudy: 'Read the case study',
   },
   content: {
     // Callout titles when the CMS block has none.

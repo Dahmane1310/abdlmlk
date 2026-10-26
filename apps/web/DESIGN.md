@@ -69,8 +69,8 @@ Site footer        © · LinkedIn GitHub · English العربية Français
 - **Section title:** a mono number in `primary` ("01", hidden from screen readers), the title, and an optional link at the end of the row ("All projects", "Full story"). No line after the title: right under the header band it doubled the band's bottom edge (owner's choice). Numbers count the sections shown on the page.
 - **Section divider:** a 1px line in `border`, running edge to edge like the header band's bottom edge, midway between two sections. None above the first section (the band's edge is there) and none above the contact band (the blue card separates itself). Owner's choice, so the page reads as a stack of full-width bands.
 - **Project card:** bordered and rounded (12px) on `card`; the border darkens to `input` on hover. Top: the cover. Body: meta (type · year, mono), title, summary (grey), technologies, "Visit site ↗".
-  - **Featured card:** the first project on Home is wide, with the cover on one side and a larger body on the other, plus a "Read the case study →" link.
-  - **Cover placeholder** (until a screenshot is uploaded): an "app window" bar (three small squares, then the project's address or slug in mono) over the blueprint grid on `muted`, with the project's initials large in mono `primary`.
+  - **Featured card:** the first of Home's four featured projects (the CMS's "featured" flag, in its order) is wide: the cover on one side (about 60%), a larger body on the other (30px title), ending with "Read the case study →". On phones the cover goes on top. The other three are normal cards in a row.
+  - **Cover placeholder** (until a screenshot is uploaded): an "app window" bar (three small squares, then the project's address or slug in mono) over the blueprint grid on `muted`, with the project's initials large in mono `primary` (48px on cards, 88px on the featured card).
 - **Technologies:** logo (one colour, `currentColor`) then the name, with no border, in rows with generous gaps.
 - **Services ("What I do"):** borderless grid, each item with a 1px top line, a Lucide icon in `primary` (stroke 1.75), a mono index ("01"), the title and a grey summary.
 - **Experience summary (Home):** rows with a 1px bottom line: period (mono, grey) · role (600, with a "Current" badge) · company and place (grey). Links to the full story on About.
@@ -81,7 +81,7 @@ Site footer        © · LinkedIn GitHub · English العربية Français
   - **Education:** label: the period. Content: degree and field (20px 600), the school and place like a job's, and a short grey description.
   - **Languages:** label: the language. Content: the level in words, a five-step meter (filled steps in `primary`, the rest in `border`) and the CEFR level in mono, at fixed widths so the meters line up.
 - **Contact band:** solid `primary`, text in `on-primary`, radius 16px, 56px padding. A white (`on-primary`) "Email me" button with blue text, and an outlined "LinkedIn ↗".
-- **Buttons:** 44px tall (48px on the contact band), radius 6px. Primary: solid blue. Secondary: 1px `input` border. Text links with an arrow for "See my work →" and similar.
+- **Buttons:** 44px tall (48px on the contact band), radius 6px. Primary: solid blue. Secondary: 1px `input` border. Text links with an arrow, pointing the reading way (left in Arabic): "See my work →" in Home's header (jumps to Selected work), and "All projects →" / "Full story →" at the end of a section title.
 
 ## Content map
 
@@ -103,6 +103,6 @@ Everything mirrors with logical CSS (start/end): the spec rows' label column, th
 The pages built so far predate this design. They move over step by step:
 
 1. **Shared pieces** (done): the blueprint band in `PageHeader`, `FactsStrip` and `MetricGrid` as strips in the transition band (Home and project pages), 28px section titles, the contact band (added by `Page`, so 404 and error pages don't get it), technology chips without borders, the branded cover placeholder, and black body text.
-2. **Home:** featured work, "What I do", the experience summary (this replaces the planned step 5), and section titles' optional end link ("All projects", "Full story"), first used here.
+2. **Home:** featured work with "See my work" and the section titles' end link (done), then "What I do", then the experience summary (this replaces the planned step 5).
 3. **About** (done): the online CV with a plain header, then experience, skills, education and languages as spec rows.
 4. **Projects and project page:** cards and covers in the new style.

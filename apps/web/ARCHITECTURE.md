@@ -60,7 +60,8 @@ src/
                                (see "Page anatomy")
     content/                   shared content display: content-blocks (CMS blocks), facts-strip (key facts),
                                metric-grid (figures with labels), meta-line ("A · B · C" facts),
-                               spec-list (label-column rows), tech-list (technology chips), responsive-image
+                               spec-list (label-column rows), tech-list (technology chips), responsive-image,
+                               arrow-link (a router Link with an arrow, from createLink)
 
   lib/
     strapi/
@@ -209,7 +210,9 @@ Every page is built from the same pieces, so home, about and projects feel like 
     buttons, filters
   </PageHeader>
 }>
-  <PageSection title="Experience">   "01 Experience", then the content
+  <PageSection id="experience" title="Experience" action={<ArrowLink …>}>
+                                     "01 Experience        Full story →", then the content;
+                                     the section's id makes it a link target
   …
   (ContactBand, added by Page)       solid blue: contact headline, availability, Email me, LinkedIn
 </Page>
@@ -248,7 +251,8 @@ Every page is built from the same pieces, so home, about and projects feel like 
 - **Missing images never show as broken.** Project covers sit in an "app window" frame (a bar with the site's address, or the slug), and until a screenshot is uploaded show the project's initials in blue on the blueprint grid; Arabic initials are joined with a zero-width non-joiner, so they stay separate letters instead of joining into a word. The project page shows its cover only when there is one: the title right above already says what the project is.
 - **Reading width:** long-form content (Markdown, blocks) is capped at `max-w-3xl` (48rem) for a comfortable line length.
 - **Grids with content use `grid-cols-1`** (`minmax(0, 1fr)`) rather than an implicit column. A grid column otherwise grows to fit its widest content, and one long code line would make the page wider than a phone screen instead of scrolling inside its code block.
-- **Whole-card links:** a project card is clickable everywhere through its title link, whose `::after` covers the card (a "stretched link"). Screen readers hear one link per card, not a link wrapping the whole card's text. Other links inside the card (Visit site) sit above it with `relative z-10`, and the card shows the focus ring when its title link has keyboard focus (`has-[a:focus-visible]`).
+- **Whole-card links:** a project card is clickable everywhere through its title link, whose `::after` covers the card (a "stretched link"). Screen readers hear one link per card, not a link wrapping the whole card's text. Other links inside the card (Visit site) sit above it with `relative z-10`, and the card shows the focus ring when its title link has keyboard focus (`has-[a:focus-visible]`). The featured card's "Read the case study →" is text, not a second link to the same page; it's hidden from screen readers, who already hear the title link. Card titles are h2 on the Projects page and h3 under a section title (`headingLevel`).
+- **Featured projects** are the ones with the CMS's `featured` flag, in its `order`; Home shows the first four. Home reads them from the same `projectsQuery` as the Projects page, so going from one page to the other needs no new request.
 - **The accent colour marks what's current or measured,** never decoration: the current job's badge, filled steps of a language meter, achievement bullets.
 - **Visual-only indicators are hidden from screen readers** when the same information is written out next to them: language meters (the level is written beside them).
 - **Durations that depend on today** (how long a job has lasted) are computed in the server function, not in the component. The server render and the browser then agree, so the page can't flip between two values on hydration.
@@ -337,3 +341,5 @@ Every page is built from the same pieces, so home, about and projects feel like 
 | Tighter section spacing on About only                  | The online CV reads as one document; landing-page gaps made its short sections look empty. Other pages keep the standard rhythm.                                                      |
 | Fewer lines: no row lines on About, no title rules     | Owner's choice: lines between rows and after section titles were too busy, and the first title's rule doubled the header band's bottom edge. Space and the blue numbers separate.     |
 | Full-width lines between sections                      | Owner's choice: they echo the header band's edge-to-edge border. Drawn with a box-shadow (`section-dividers` in `app.css`), which reaches the screen edges without widening the page. |
+| `ArrowLink` built with `createLink`                    | TanStack Router's way to style a link: it keeps Link's typed `to` and `params`, so a wrong route fails to compile                                                                     |
+| Featured projects filtered from the full list          | One cached request serves Home and the Projects page; a handful of projects doesn't justify a second query                                                                            |

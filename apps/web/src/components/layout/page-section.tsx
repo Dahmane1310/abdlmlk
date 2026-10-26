@@ -2,18 +2,25 @@
 export function PageSection({
   id,
   title,
+  action,
   children,
 }: {
-  /** Unique on the page; the title's id is derived from it. */
+  /** Unique on the page: the section's id, for links to it, and its title's. */
   id: string
   title: string
+  /** At the end of the title row, e.g. an "All projects" ArrowLink. */
+  action?: React.ReactNode
   children: React.ReactNode
 }) {
   return (
-    <section aria-labelledby={`${id}-title`}>
-      <h2 id={`${id}-title`} className="section-title mb-10">
-        {title}
-      </h2>
+    // scroll-mt: a link to the section stops below the sticky site header.
+    <section id={id} aria-labelledby={`${id}-title`} className="scroll-mt-20">
+      <div className="mb-10 flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
+        <h2 id={`${id}-title`} className="section-title">
+          {title}
+        </h2>
+        {action}
+      </div>
       {children}
     </section>
   )

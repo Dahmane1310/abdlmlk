@@ -20,6 +20,8 @@ export const projectSummarySchema = z.object({
   summary: z.string(),
   role: z.string().nullable(),
   projectType: projectTypeSchema,
+  /** Shown on the home page, in "order". */
+  featured: z.boolean(),
   startDate: z.iso.date().nullable(),
   endDate: z.iso.date().nullable(),
   liveUrl: z.url().nullable(),

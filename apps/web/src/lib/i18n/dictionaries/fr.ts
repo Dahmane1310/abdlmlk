@@ -21,6 +21,9 @@ export const fr = {
   },
   home: {
     highlights: 'Chiffres clés',
+    seeMyWork: 'Voir mes projets',
+    selectedWork: 'Travaux sélectionnés',
+    allProjects: 'Tous les projets',
   },
   profile: {
     emailMe: "M'écrire",
@@ -115,6 +118,7 @@ export const fr = {
     moreProjects: 'Autres projets',
     previous: 'Projet précédent',
     next: 'Projet suivant',
+    readCaseStudy: "Lire l'étude de cas",
   },
   content: {
     callout: {

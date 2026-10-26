@@ -1,11 +1,25 @@
+import { ArrowRightIcon } from 'lucide-react'
+
 import { PageHeader } from '@/components/layout/page-header'
+import { Button } from '@/components/ui/button'
 import { AvailabilityStatus } from '@/features/profile/components/availability-status'
 import { ProfileActions } from '@/features/profile/components/profile-actions'
 import type { Profile } from '@/features/profile/profile.schema'
+import { useTranslation } from '@/lib/i18n/use-translation'
 
 import { Highlights } from './highlights'
+import { SELECTED_WORK_ID } from './selected-work'
 
-export function Hero({ profile }: { profile: Profile }) {
+export function Hero({
+  profile,
+  showWorkLink,
+}: {
+  profile: Profile
+  /** Only when the page has a "Selected work" section to jump to. */
+  showWorkLink: boolean
+}) {
+  const t = useTranslation()
+
   return (
     <PageHeader
       eyebrow={
@@ -29,7 +43,16 @@ export function Hero({ profile }: { profile: Profile }) {
         )
       }
     >
-      <ProfileActions profile={profile} />
+      <ProfileActions profile={profile}>
+        {showWorkLink && (
+          <Button asChild size="lg" variant="ghost">
+            <a href={`#${SELECTED_WORK_ID}`}>
+              {t.home.seeMyWork}
+              <ArrowRightIcon aria-hidden className="rtl:rotate-180" />
+            </a>
+          </Button>
+        )}
+      </ProfileActions>
     </PageHeader>
   )
 }

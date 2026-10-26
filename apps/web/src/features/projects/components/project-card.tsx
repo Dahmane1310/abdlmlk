@@ -9,9 +9,17 @@ import type { ProjectSummary } from '../projects.functions'
 import { ProjectCover } from './project-cover'
 import { ProjectMeta } from './project-meta'
 
-export function ProjectCard({ project }: { project: ProjectSummary }) {
+export function ProjectCard({
+  project,
+  headingLevel = 'h2',
+}: {
+  project: ProjectSummary
+  /** h3 when the cards sit under a section title, as on the home page. */
+  headingLevel?: 'h2' | 'h3'
+}) {
   const t = useTranslation()
   const lang = useLanguage()
+  const Heading = headingLevel
 
   return (
     // The title link stretches over the whole card (after:absolute), so the
@@ -25,7 +33,7 @@ export function ProjectCard({ project }: { project: ProjectSummary }) {
 
       <div className="flex flex-1 flex-col gap-3 p-5">
         <ProjectMeta project={project} />
-        <h2 className="text-lg font-semibold tracking-tight">
+        <Heading className="text-lg font-semibold tracking-tight">
           <Link
             to="/$lang/projects/$slug"
             params={{ lang, slug: project.slug }}
@@ -33,7 +41,7 @@ export function ProjectCard({ project }: { project: ProjectSummary }) {
           >
             {project.title}
           </Link>
-        </h2>
+        </Heading>
         <p className="text-sm text-muted-foreground">{project.summary}</p>
 
         <div className="mt-auto flex flex-col gap-4 pt-2">

@@ -21,6 +21,9 @@ export const ar = {
   },
   home: {
     highlights: 'أبرز الأرقام',
+    seeMyWork: 'شاهد أعمالي',
+    selectedWork: 'أعمال مختارة',
+    allProjects: 'كل المشاريع',
   },
   profile: {
     emailMe: 'راسلني',
@@ -113,6 +116,7 @@ export const ar = {
     moreProjects: 'مشاريع أخرى',
     previous: 'المشروع السابق',
     next: 'المشروع التالي',
+    readCaseStudy: 'اقرأ دراسة الحالة',
   },
   content: {
     callout: {

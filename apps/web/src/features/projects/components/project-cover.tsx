@@ -4,10 +4,17 @@ import { cn } from '@/lib/utils'
 
 import type { ProjectSummary } from '../projects.functions'
 
+// The placeholder initials: "lg" for the wide featured card (DESIGN.md).
+const INITIALS_SIZES = {
+  md: 'text-5xl',
+  lg: 'text-[5.5rem]',
+}
+
 interface ProjectCoverProps {
   project: Pick<ProjectSummary, 'title' | 'slug' | 'liveUrl' | 'cover'>
   /** How wide the cover is shown, for picking an image size. */
   sizes: string
+  initialsSize?: keyof typeof INITIALS_SIZES
   className?: string
 }
 
@@ -16,7 +23,12 @@ interface ProjectCoverProps {
  * site's address (or the slug), then the screenshot, or until one is uploaded
  * the project's initials in blue on the blueprint grid.
  */
-export function ProjectCover({ project, sizes, className }: ProjectCoverProps) {
+export function ProjectCover({
+  project,
+  sizes,
+  initialsSize = 'md',
+  className,
+}: ProjectCoverProps) {
   const address = project.liveUrl ? new URL(project.liveUrl).host : project.slug
 
   return (
@@ -50,7 +62,10 @@ export function ProjectCover({ project, sizes, className }: ProjectCoverProps) {
       ) : (
         <div
           aria-hidden
-          className="flex flex-1 items-center justify-center blueprint font-mono text-5xl font-medium tracking-tighter text-primary"
+          className={cn(
+            'flex flex-1 items-center justify-center blueprint font-mono font-medium tracking-tighter text-primary',
+            INITIALS_SIZES[initialsSize],
+          )}
         >
           {initials(project.title)}
         </div>
