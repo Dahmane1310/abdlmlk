@@ -31,9 +31,11 @@ export function ProjectCard({
         className="border-b"
       />
 
-      <div className="flex flex-1 flex-col gap-3 p-5">
+      {/* Sizes from DESIGN.md, "Project card": 24px padding, a 20px title,
+          a 15px grey summary. */}
+      <div className="flex flex-1 flex-col gap-2.5 p-6">
         <ProjectMeta project={project} />
-        <Heading className="text-lg font-semibold tracking-tight">
+        <Heading className="text-xl leading-snug font-semibold tracking-tight">
           <Link
             to="/$lang/projects/$slug"
             params={{ lang, slug: project.slug }}
@@ -42,7 +44,9 @@ export function ProjectCard({
             {project.title}
           </Link>
         </Heading>
-        <p className="text-sm text-muted-foreground">{project.summary}</p>
+        <p className="text-[0.9375rem] text-muted-foreground">
+          {project.summary}
+        </p>
 
         <div className="mt-auto flex flex-col gap-4 pt-2">
           <TechList technologies={project.technologies} />

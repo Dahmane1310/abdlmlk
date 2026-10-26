@@ -61,3 +61,22 @@ export function formatDateRange(
   }
   return end ? formatMonthYear(end, language) : null
 }
+
+/**
+ * Years only, for one-line summaries: "2023 — 2024", "2024" (one year, or an
+ * end date only) or "2025 — Present" (no end). Null when neither date is set.
+ * The year is the ISO date's first four characters, in Latin digits like
+ * every number on the site.
+ */
+export function formatYearRange(
+  start: string | null,
+  end: string | null,
+  presentLabel: string,
+) {
+  const from = start?.slice(0, 4)
+  const to = end?.slice(0, 4)
+
+  if (!from) return to ?? null
+  if (!to) return `${from} — ${presentLabel}`
+  return from === to ? from : `${from} — ${to}`
+}

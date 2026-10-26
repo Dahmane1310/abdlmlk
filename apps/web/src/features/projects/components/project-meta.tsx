@@ -1,11 +1,14 @@
 import { MetaLine } from '@/components/content/meta-line'
-import { formatDateRange } from '@/lib/i18n/format'
-import { useLanguage } from '@/lib/i18n/use-language'
+import { formatYearRange } from '@/lib/i18n/format'
 import { useTranslation } from '@/lib/i18n/use-translation'
 
 import type { ProjectSummary } from '../projects.functions'
 
-/** "Client project · Ayama · Aug 2024 — Dec 2024" */
+/**
+ * "Client project · 2024": the type and years, short enough for one line on
+ * a card (DESIGN.md, "Project card"). The client and exact dates are on the
+ * project's page.
+ */
 export function ProjectMeta({
   project,
   className,
@@ -14,20 +17,13 @@ export function ProjectMeta({
   className?: string
 }) {
   const t = useTranslation()
-  const lang = useLanguage()
 
   return (
     <MetaLine
       className={className}
       items={[
         t.projects.types[project.projectType],
-        project.client?.name ?? project.organization?.name,
-        formatDateRange(
-          project.startDate,
-          project.endDate,
-          lang,
-          t.dates.present,
-        ),
+        formatYearRange(project.startDate, project.endDate, t.dates.present),
       ]}
     />
   )
