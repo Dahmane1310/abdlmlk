@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils'
 
 import { STRIP_CELL_CLASS, STRIP_CLASS } from './strip'
 
-interface Fact {
+export interface Fact {
   label: string
   value: React.ReactNode
 }

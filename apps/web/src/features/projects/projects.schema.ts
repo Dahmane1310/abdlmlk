@@ -52,10 +52,9 @@ export const projectDetailListSchema = z.object({
   data: z.array(projectDetailSchema),
 })
 
-/** Filters in the URL (?type=client&tech=laravel). Invalid values are ignored, not errors. */
+/** The filter in the URL (?type=client). An invalid value is ignored, not an error. */
 export const projectsSearchSchema = z.object({
   type: projectTypeSchema.optional().catch(undefined),
-  tech: z.string().optional().catch(undefined),
 })
 
 export type ProjectsSearch = z.output<typeof projectsSearchSchema>

@@ -18,9 +18,12 @@ interface PageHeaderProps {
   lead?: string
   /** "hero" for the home page's larger title. */
   size?: keyof typeof TITLE_SIZES
-  /** A FactsStrip or MetricGrid, shown in the transition band below the grid. */
+  /**
+   * The page's figures or controls (FactsStrip, MetricGrid, filters), shown
+   * in the transition band below the grid.
+   */
   strip?: React.ReactNode
-  /** Under the title block: buttons, filters. */
+  /** Under the title block: the page's buttons. */
   children?: React.ReactNode
 }
 

@@ -48,6 +48,7 @@ export const ar = {
     skills: 'المهارات',
     education: 'التعليم',
     spokenLanguages: 'اللغات',
+    currently: 'حاليًا',
   },
   contact: {
     label: 'تواصل',
@@ -95,7 +96,6 @@ export const ar = {
     description: 'منتجات ومشاريع لعملاء بنيتها من التخطيط حتى الإطلاق.',
     filters: 'تصفية المشاريع',
     type: 'النوع',
-    technology: 'التقنية',
     all: 'الكل',
     empty: 'لا توجد مشاريع تطابق هذه التصفية.',
     showAll: 'عرض كل المشاريع',

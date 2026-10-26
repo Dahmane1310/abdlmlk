@@ -48,6 +48,7 @@ export const en = {
     skills: 'Skills',
     education: 'Education',
     spokenLanguages: 'Spoken languages',
+    currently: 'Currently',
   },
   // The blue band that closes every page.
   contact: {
@@ -99,7 +100,6 @@ export const en = {
       "Products and client work I've built, from planning to production.",
     filters: 'Filter projects',
     type: 'Type',
-    technology: 'Technology',
     all: 'All',
     empty: 'No projects match these filters.',
     showAll: 'Show all projects',

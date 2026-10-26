@@ -8,21 +8,20 @@ import { useTranslation } from '@/lib/i18n/use-translation'
 
 import { projectsQuery } from '../projects.queries'
 import { ProjectCard } from './project-card'
-import { ProjectFilters } from './project-filters'
+import { getFilterOptions, ProjectFilters } from './project-filters'
 
 const routeApi = getRouteApi('/$lang/projects/')
 
 export function ProjectsPage() {
   const t = useTranslation()
   const lang = useLanguage()
-  const { type, tech } = routeApi.useSearch()
+  const { type } = routeApi.useSearch()
   const { data: projects } = useSuspenseQuery(projectsQuery(lang))
+  const filterOptions = getFilterOptions(projects)
 
   // Few enough projects to filter here, without another request per filter.
   const visible = projects.filter(
-    (project) =>
-      (!type || project.projectType === type) &&
-      (!tech || project.technologies.some(({ slug }) => slug === tech)),
+    (project) => !type || project.projectType === type,
   )
 
   return (
@@ -32,9 +31,8 @@ export function ProjectsPage() {
           eyebrow={t.projects.eyebrow}
           title={t.projects.title}
           lead={t.projects.description}
-        >
-          <ProjectFilters projects={projects} />
-        </PageHeader>
+          strip={filterOptions && <ProjectFilters options={filterOptions} />}
+        />
       }
     >
       {visible.length > 0 ? (

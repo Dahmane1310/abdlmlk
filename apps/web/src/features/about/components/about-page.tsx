@@ -27,7 +27,16 @@ export function AboutPage() {
   const { data: skills } = useSuspenseQuery(skillsQuery(lang))
 
   return (
-    <Page header={<AboutHeader resume={profile.resume} />} spacing="document">
+    <Page
+      header={
+        <AboutHeader
+          resume={profile.resume}
+          career={career}
+          languages={languages}
+        />
+      }
+      spacing="document"
+    >
       {career.experience.length > 0 && (
         <PageSection id="experience" title={t.about.experience}>
           <ExperienceList jobs={career.experience} />

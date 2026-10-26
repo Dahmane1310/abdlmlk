@@ -48,6 +48,7 @@ export const fr = {
     skills: 'Compétences',
     education: 'Formation',
     spokenLanguages: 'Langues parlées',
+    currently: 'Actuellement',
   },
   contact: {
     label: 'Contact',
@@ -97,7 +98,6 @@ export const fr = {
       "Des produits et des projets clients que j'ai réalisés, de la conception à la mise en production.",
     filters: 'Filtrer les projets',
     type: 'Type',
-    technology: 'Technologie',
     all: 'Tous',
     empty: 'Aucun projet ne correspond à ces filtres.',
     showAll: 'Voir tous les projets',
