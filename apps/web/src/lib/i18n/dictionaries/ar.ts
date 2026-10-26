@@ -24,6 +24,7 @@ export const ar = {
     seeMyWork: 'شاهد أعمالي',
     selectedWork: 'أعمال مختارة',
     allProjects: 'كل المشاريع',
+    whatIDo: 'ما أقدّمه',
   },
   profile: {
     emailMe: 'راسلني',

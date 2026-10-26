@@ -48,6 +48,7 @@ src/
                                career/ owns the experience and education rows that the About page
                                (and later the home page) shows. technologies/ owns the skills list, the shared
                                technology schema and the server-only logo lookup (technology-icon.server.ts).
+                               services/ owns the "What I do" list and its icon map (service-icon.tsx).
 
   components/
     ui/                        shadcn components, generated then adapted to our design
@@ -259,6 +260,7 @@ Every page is built from the same pieces, so home, about and projects feel like 
 - **Technology logos:** the CMS stores a Simple Icons slug per technology ("nodedotjs"). Server functions swap it for the logo's SVG path with `withIconPath`, so the browser gets the shape and never the icon library (the `simple-icons` package is only imported in a `.server.ts` file).
   - **One colour:** logos use the text colour (`fill-current`), so they fit the one-accent design and switch with the theme. They're decorative (`aria-hidden`): the name is always next to them.
   - **The same chip everywhere:** `TechList` shows logo and name, without a border (borders are for clickable things), on the About skills and jobs, project cards and project pages. `size="lg"` is the larger version for the skills rows; the default is the small mono one. An unknown or missing slug shows the name only (Convex has no logo in Simple Icons).
+- **Service icons** are Lucide icons named in the CMS ("layout-dashboard"). `service-icon.tsx` maps the names in use to their components, so the browser only downloads those; a name missing from the map shows the service without an icon. Adding an icon in the CMS means adding it to the map.
 - **Accessibility:** semantic HTML, every control reachable by keyboard, visible focus, labelled inputs, sufficient contrast, motion reduced when the visitor asks for it.
 
 ## Server and security rules
@@ -343,3 +345,4 @@ Every page is built from the same pieces, so home, about and projects feel like 
 | Full-width lines between sections                      | Owner's choice: they echo the header band's edge-to-edge border. Drawn with a box-shadow (`section-dividers` in `app.css`), which reaches the screen edges without widening the page. |
 | `ArrowLink` built with `createLink`                    | TanStack Router's way to style a link: it keeps Link's typed `to` and `params`, so a wrong route fails to compile                                                                     |
 | Featured projects filtered from the full list          | One cached request serves Home and the Projects page; a handful of projects doesn't justify a second query                                                                            |
+| Service icons from a small map in code                 | Five icons in use: a typed map keeps the browser bundle to those five. Any-icon-from-the-CMS would need server rendering for little gain.                                             |

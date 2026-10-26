@@ -24,6 +24,7 @@ export const en = {
     seeMyWork: 'See my work',
     selectedWork: 'Selected work',
     allProjects: 'All projects',
+    whatIDo: 'What I do',
   },
   profile: {
     emailMe: 'Email me',
