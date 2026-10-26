@@ -13,7 +13,6 @@ import { PageSection } from '@/components/layout/page-section'
 import { Button } from '@/components/ui/button'
 import { formatDateRange } from '@/lib/i18n/format'
 import { useTranslation } from '@/lib/i18n/use-translation'
-import { cn } from '@/lib/utils'
 
 import { projectQuery, projectsQuery } from '../projects.queries'
 import { ProjectNav } from './project-nav'
@@ -113,28 +112,23 @@ export function ProjectPage() {
           </PageSection>
         )}
 
-        {/* The case study's own Markdown headings are numbered sections too
-            (app.css). grid-cols-1 is minmax(0, 1fr): without it a long code
-            line widens the column past the screen instead of scrolling. */}
-        <div
-          className={cn(
-            'grid grid-cols-1 gap-12',
-            project.technologies.length > 0 &&
-              'lg:grid-cols-[minmax(0,1fr)_14rem]',
-          )}
-        >
-          {/* Capped at a comfortable line length, like the header above. */}
-          <ContentBlocks blocks={project.content} className="max-w-3xl" />
-          {project.technologies.length > 0 && (
-            <aside aria-labelledby="tech-title">
-              {/* A side panel's label, not a numbered page section. */}
-              <h2 id="tech-title" className="mb-4 mono-label">
-                {t.projects.techStack}
-              </h2>
-              <TechList technologies={project.technologies} />
-            </aside>
-          )}
-        </div>
+        {/* The case study's own Markdown headings are numbered, spaced and
+            divided like the page's sections: "case-study" is the hook for
+            that (app.css, section-dividers). Capped at a comfortable line
+            length; min-w-0 keeps a long code line scrolling inside its block
+            instead of widening the page. */}
+        {project.content.length > 0 && (
+          <ContentBlocks
+            blocks={project.content}
+            className="case-study max-w-3xl min-w-0"
+          />
+        )}
+
+        {project.technologies.length > 0 && (
+          <PageSection id="tech-stack" title={t.projects.techStack}>
+            <TechList technologies={project.technologies} size="lg" />
+          </PageSection>
+        )}
 
         {project.gallery.length > 0 && (
           <PageSection id="gallery" title={t.projects.gallery}>

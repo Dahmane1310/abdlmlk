@@ -275,19 +275,19 @@
         "title": "Nasser bin Qazea — Mobile Filmmaking Course",
         "role": "Full-stack developer",
         "summary": "A bilingual sales and learning platform for Nasser bin Qazea's mobile filmmaking course: Arabic-first (right-to-left) with English, course content, FAQ, instructor bio and a checkout with instant access.",
-        "content": "## The project\n\nA platform for **Nasser bin Qazea**'s online course on mobile filmmaking (*From an ordinary place, make an extraordinary shot*). Visitors discover the course, see sample shots and buy it with a one-time payment that unlocks instant access.\n\n## Highlights\n\n- **Arabic-first, right-to-left** design with an English version\n- Course page with lessons, FAQ and instructor bio\n- **Checkout** with instant access after payment\n- Cinematic design details, such as a recording timecode and 4K · 24 FPS labels\n\n**Stack:** Next.js, React and Convex."
+        "content": "## The project\n\nA platform for **Nasser bin Qazea**'s online course on mobile filmmaking (*From an ordinary place, make an extraordinary shot*). Visitors discover the course, see sample shots and buy it with a one-time payment that unlocks instant access.\n\n## Highlights\n\n- **Arabic-first, right-to-left** design with an English version\n- Course page with lessons, FAQ and instructor bio\n- **Checkout** with instant access after payment\n- Cinematic design details, such as a recording timecode and 4K · 24 FPS labels"
       },
       "ar": {
         "title": "ناصر بن قزيع — دورة صناعة الأفلام بالجوال",
         "role": "مطوّر Full-Stack",
         "summary": "منصة بيع وتعلّم ثنائية اللغة لدورة صناعة الأفلام بالجوال لناصر بن قزيع: بالعربية أولًا (من اليمين إلى اليسار) مع نسخة إنجليزية، ومحتوى الدورة، والأسئلة الشائعة، ونبذة عن المدرّب، وصفحة دفع مع وصول فوري.",
-        "content": "## المشروع\n\nمنصة لدورة **ناصر بن قزيع** عبر الإنترنت في صناعة الأفلام بالجوال (*احتراف صناعة الأفلام بالجوال*). يتعرّف الزوار على الدورة، ويشاهدون نماذج من اللقطات، ويشترونها بدفعة واحدة تمنحهم وصولًا فوريًا.\n\n## أبرز الميزات\n\n- تصميم **بالعربية أولًا ومن اليمين إلى اليسار** مع نسخة إنجليزية\n- صفحة للدورة تضم الدروس والأسئلة الشائعة ونبذة عن المدرّب\n- **صفحة دفع** مع وصول فوري بعد الدفع\n- تفاصيل تصميم سينمائية، مثل مؤقّت التسجيل وعلامة 4K · 24FPS\n\n**التقنيات:** Next.js وReact وConvex."
+        "content": "## المشروع\n\nمنصة لدورة **ناصر بن قزيع** عبر الإنترنت في صناعة الأفلام بالجوال (*احتراف صناعة الأفلام بالجوال*). يتعرّف الزوار على الدورة، ويشاهدون نماذج من اللقطات، ويشترونها بدفعة واحدة تمنحهم وصولًا فوريًا.\n\n## أبرز الميزات\n\n- تصميم **بالعربية أولًا ومن اليمين إلى اليسار** مع نسخة إنجليزية\n- صفحة للدورة تضم الدروس والأسئلة الشائعة ونبذة عن المدرّب\n- **صفحة دفع** مع وصول فوري بعد الدفع\n- تفاصيل تصميم سينمائية، مثل مؤقّت التسجيل وعلامة 4K · 24FPS"
       },
       "fr": {
         "title": "Nasser bin Qazea — Cours de cinéma au smartphone",
         "role": "Développeur full-stack",
         "summary": "Une plateforme bilingue de vente et d'apprentissage pour le cours de cinéma au smartphone de Nasser bin Qazea : en arabe d'abord (de droite à gauche) avec une version anglaise, contenu du cours, FAQ, présentation du formateur et paiement avec accès immédiat.",
-        "content": "## Le projet\n\nUne plateforme pour le cours en ligne de **Nasser bin Qazea** sur le cinéma au smartphone (*From an ordinary place, make an extraordinary shot*). Les visiteurs découvrent le cours, voient des exemples de plans et l'achètent en un paiement unique qui donne un accès immédiat.\n\n## Points forts\n\n- Design **en arabe d'abord, de droite à gauche**, avec une version anglaise\n- Page du cours avec leçons, FAQ et présentation du formateur\n- **Paiement** avec accès immédiat\n- Détails de design cinématographiques, comme un timecode d'enregistrement et des labels 4K · 24 FPS\n\n**Stack :** Next.js, React et Convex."
+        "content": "## Le projet\n\nUne plateforme pour le cours en ligne de **Nasser bin Qazea** sur le cinéma au smartphone (*From an ordinary place, make an extraordinary shot*). Les visiteurs découvrent le cours, voient des exemples de plans et l'achètent en un paiement unique qui donne un accès immédiat.\n\n## Points forts\n\n- Design **en arabe d'abord, de droite à gauche**, avec une version anglaise\n- Page du cours avec leçons, FAQ et présentation du formateur\n- **Paiement** avec accès immédiat\n- Détails de design cinématographiques, comme un timecode d'enregistrement et des labels 4K · 24 FPS"
       }
     },
     {

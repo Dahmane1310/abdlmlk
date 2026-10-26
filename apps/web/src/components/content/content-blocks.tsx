@@ -61,7 +61,7 @@ function Block({ block }: { block: ContentBlock }) {
     case 'rich-text':
       return (
         <div
-          className="prose max-w-none"
+          className="square-bullets prose max-w-none"
           dangerouslySetInnerHTML={{ __html: block.html }}
         />
       )

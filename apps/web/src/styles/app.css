@@ -177,17 +177,18 @@
 }
 
 /*
- * Lists with small square bullets in the accent colour (DESIGN.md, timeline
- * achievements), for rendered Markdown inside .prose.
+ * Bulleted lists with small square bullets in the accent colour (DESIGN.md:
+ * job achievements, case studies), for rendered Markdown inside .prose.
+ * Numbered lists keep their numbers.
  */
 @utility square-bullets {
   & ul {
     @apply list-none ps-0;
   }
-  & li {
+  & ul > li {
     @apply relative ps-5;
   }
-  & li::before {
+  & ul > li::before {
     content: '';
     @apply absolute inset-s-0 top-[0.7em] size-1.5 bg-primary;
   }
@@ -212,10 +213,24 @@
  * element, a shadow never makes the page scroll sideways.
  */
 @utility section-dividers {
-  & > :not(:first-child) {
+  & > :not(:first-child),
+  & .case-study .prose h2 {
     position: relative;
   }
-  & > :not(:first-child)::before {
+  /* A case study's own sections (its Markdown h2s) are spaced and divided
+     like the page's. The first follows the page's own line instead. */
+  & .case-study .prose h2 {
+    margin-top: var(--section-gap);
+  }
+  & .case-study > :first-child > h2:first-child {
+    margin-top: 0;
+  }
+  & .case-study > :first-child > h2:first-child::after {
+    content: none;
+  }
+  /* The h2's ::before is its section number, so its line is the ::after. */
+  & > :not(:first-child)::before,
+  & .case-study .prose h2::after {
     content: '';
     position: absolute;
     inset-inline: 0;
