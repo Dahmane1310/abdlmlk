@@ -25,6 +25,7 @@ export const ar = {
     selectedWork: 'أعمال مختارة',
     allProjects: 'كل المشاريع',
     whatIDo: 'ما أقدّمه',
+    fullStory: 'المسيرة كاملة',
   },
   profile: {
     emailMe: 'راسلني',

@@ -25,6 +25,7 @@ export const en = {
     selectedWork: 'Selected work',
     allProjects: 'All projects',
     whatIDo: 'What I do',
+    fullStory: 'Full story',
   },
   profile: {
     emailMe: 'Email me',

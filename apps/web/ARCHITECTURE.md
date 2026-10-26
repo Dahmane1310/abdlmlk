@@ -45,8 +45,8 @@ src/
     home/  about/  profile/  career/  services/  testimonials/  technologies/
     blog/  comments/  newsletter/  contact/
                                A page feature (home/, about/) composes other features' components;
-                               career/ owns the experience and education rows that the About page
-                               (and later the home page) shows. technologies/ owns the skills list, the shared
+                               career/ owns the experience and education rows that About shows, and
+                               Home's short version of the jobs (ExperienceList brief). technologies/ owns the skills list, the shared
                                technology schema and the server-only logo lookup (technology-icon.server.ts).
                                services/ owns the "What I do" list and its icon map (service-icon.tsx).
 
@@ -253,7 +253,7 @@ Every page is built from the same pieces, so home, about and projects feel like 
 - **Reading width:** long-form content (Markdown, blocks) is capped at `max-w-3xl` (48rem) for a comfortable line length.
 - **Grids with content use `grid-cols-1`** (`minmax(0, 1fr)`) rather than an implicit column. A grid column otherwise grows to fit its widest content, and one long code line would make the page wider than a phone screen instead of scrolling inside its code block.
 - **Whole-card links:** a project card is clickable everywhere through its title link, whose `::after` covers the card (a "stretched link"). Screen readers hear one link per card, not a link wrapping the whole card's text. Other links inside the card (Visit site) sit above it with `relative z-10`, and the card shows the focus ring when its title link has keyboard focus (`has-[a:focus-visible]`). The featured card's "Read the case study →" is text, not a second link to the same page; it's hidden from screen readers, who already hear the title link. Card titles are h2 on the Projects page and h3 under a section title (`headingLevel`).
-- **Featured projects** are the ones with the CMS's `featured` flag, in its `order`; Home shows the first four. Home reads them from the same `projectsQuery` as the Projects page, so going from one page to the other needs no new request.
+- **Featured projects** are the ones with the CMS's `featured` flag, in its `order`; Home shows the first four. Home reads them from the same `projectsQuery` as the Projects page, so going from one page to the other needs no new request. Home's jobs work the same way: `careerQuery` is About's, and the rows are About's `ExperienceList` with `brief` (the shared label column is `JobPeriod`).
 - **The accent colour marks what's current or measured,** never decoration: the current job's badge, filled steps of a language meter, achievement bullets.
 - **Visual-only indicators are hidden from screen readers** when the same information is written out next to them: language meters (the level is written beside them).
 - **Durations that depend on today** (how long a job has lasted) are computed in the server function, not in the component. The server render and the browser then agree, so the page can't flip between two values on hydration.
@@ -346,3 +346,4 @@ Every page is built from the same pieces, so home, about and projects feel like 
 | `ArrowLink` built with `createLink`                    | TanStack Router's way to style a link: it keeps Link's typed `to` and `params`, so a wrong route fails to compile                                                                     |
 | Featured projects filtered from the full list          | One cached request serves Home and the Projects page; a handful of projects doesn't justify a second query                                                                            |
 | Service icons from a small map in code                 | Five icons in use: a typed map keeps the browser bundle to those five. Any-icon-from-the-CMS would need server rendering for little gain.                                             |
+| Home's jobs are About's rows with `brief`              | One component for both pages, so the jobs can't look different; the mockup's separate one-line rows would have been a second design for the same data                                 |

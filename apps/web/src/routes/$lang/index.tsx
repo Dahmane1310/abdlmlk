@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 
+import { careerQuery } from '@/features/career/career.queries'
 import { HomePage } from '@/features/home/components/home-page'
 import { profileQuery } from '@/features/profile/profile.queries'
 import { projectsQuery } from '@/features/projects/projects.queries'
@@ -19,6 +20,10 @@ export const Route = createFileRoute('/$lang/')({
       }),
       context.queryClient.query({
         ...servicesQuery(params.lang),
+        staleTime: 'static',
+      }),
+      context.queryClient.query({
+        ...careerQuery(params.lang),
         staleTime: 'static',
       }),
     ])
