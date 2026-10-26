@@ -49,7 +49,7 @@ The colour tokens are the CSS variables in `src/styles/app.css` (light and dark)
 ## Page anatomy
 
 ```
-Site header        logo (mono) · Home · About · Projects        language · theme
+Site header        [DA] name          HOME  ABOUT  PROJECTS          language · theme · [Contact]
 Blueprint band     label (mono, uppercase)
                    page title
                    subtitle (mono, blue) and/or lead text (Home's intro, a project summary)
@@ -65,6 +65,11 @@ Site footer        © · LinkedIn GitHub · English العربية Français
 
 ## Patterns
 
+- **Site header:** sticky, 64px, on `background` with a 1px bottom border (the "spec bar", owner's choice).
+  - **Start:** a 28px `primary` square with the site name's initials in mono ("DA", decorative), then the name in mono.
+  - **Pages:** centred in the bar (three columns, the outer two equal), as mono labels without numbers (owner's choice), grey until hovered. The current page turns foreground with a 2px `primary` line on the header's bottom edge, the same marker as the project filters.
+  - **End:** language, theme, then a small solid "Contact" button that jumps to the page's contact band. Every page with the header ends with that band (the 404 page included); the button hides only when the CMS has neither email nor LinkedIn, like the band.
+  - **Below 1024px:** the mark, the name, "Contact" and a menu button. The menu (a panel from the end side) lists the pages large (24px 600), the current one foreground with a 2px `primary` line on its start edge, then the languages and the theme switch at the bottom.
 - **Blueprint band:** a full-width area behind the page header with a 32px grid of 1px lines in the grid colour, closed by a 1px bottom border. Plain flat lines, not a gradient effect.
 - **Transition band and strip:** on every page, a full-width band in solid `muted` sits between the blueprint band and the plain page, closed by a 1px bottom border, so the page steps from grid to tint to plain (owner's choice; the mockup had the strip inside the grid, and pages without one felt empty). The blueprint band holds text and buttons; the transition band holds the page's figures or controls. Figures go in a strip: a row of cells with 1px vertical lines between them and the first cell flush with the text, two cells per row on phones (with a 1px line between the rows).
   - **Home:** the headline numbers (big mono number above a grey caption).
@@ -108,7 +113,7 @@ Everything mirrors with logical CSS (start/end): the spec rows' label column, th
 
 The pages built so far predate this design. They move over step by step:
 
-1. **Shared pieces** (done): the blueprint band in `PageHeader`, the transition band on every page (numbers, facts or filters), 28px section titles, the contact band (added by `Page`, so 404 and error pages don't get it), technology chips without borders, the branded cover placeholder, and black body text.
+1. **Shared pieces** (done): the blueprint band in `PageHeader`, the transition band on every page (numbers, facts or filters), 28px section titles, the contact band (added by `Page`, and by the 404 page; the error page, shown when the CMS is down, has no CMS data for it), technology chips without borders, the branded cover placeholder, and black body text.
 2. **Home** (done): featured work with "See my work" and the section titles' end link, "What I do", and the experience summary (this replaced the planned step 5).
 3. **About** (done): the online CV with a plain header, then experience, skills, education and languages as spec rows.
 4. **Projects and project page:** cards and covers in the new style.
