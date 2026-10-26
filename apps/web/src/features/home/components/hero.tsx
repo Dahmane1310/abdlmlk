@@ -3,6 +3,8 @@ import { AvailabilityStatus } from '@/features/profile/components/availability-s
 import { ProfileActions } from '@/features/profile/components/profile-actions'
 import type { Profile } from '@/features/profile/profile.schema'
 
+import { Highlights } from './highlights'
+
 export function Hero({ profile }: { profile: Profile }) {
   return (
     <PageHeader
@@ -20,6 +22,12 @@ export function Hero({ profile }: { profile: Profile }) {
       title={profile.fullName}
       subtitle={profile.headline}
       lead={profile.intro}
+      size="hero"
+      strip={
+        profile.highlights.length > 0 && (
+          <Highlights items={profile.highlights} />
+        )
+      }
     >
       <ProfileActions profile={profile} />
     </PageHeader>

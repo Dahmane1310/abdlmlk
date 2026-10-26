@@ -97,12 +97,10 @@ const spokenLanguageSchema = z.object({
 })
 
 /**
- * Profile fields only the About page shows. Kept out of profileSchema, which
- * every page loads for the layout, so the bio isn't sent with every page.
+ * Only the About page shows the spoken languages, so they're kept out of
+ * profileSchema, which every page loads for the layout.
  */
-export const profileDetailsSchema = z.object({
-  bio: z.string().nullable(),
-  avatar: mediaSchema.nullable(),
+export const profileLanguagesSchema = z.object({
   spokenLanguages: z.array(spokenLanguageSchema),
 })
 

@@ -2,13 +2,13 @@
 
 The approved visual design for the whole site. Every page is built from it; when the design changes, this document changes in the same step. `ARCHITECTURE.md` covers how the code is organized; this file covers how the site looks.
 
-**Status:** approved by the owner on 2026-10-25, from a mockup of the Home and About pages. The mockup's source is in `design/mockup/` (`home.dc.html`, `about.dc.html`): a frozen reference with the exact sizes and spacing. It was written for a design canvas, so it doesn't open as a normal web page; read it for values, and build the real pages in `src/`.
+**Status:** approved by the owner on 2026-10-25, from a mockup of the Home and About pages. The mockup's source is in `design/mockup/` (`home.dc.html`, `about.dc.html`): a frozen reference with the exact sizes and spacing. It was written for a design canvas, so it doesn't open as a normal web page; read it for values, and build the real pages in `src/`. One change since: on 2026-10-26 the owner made About the online CV, so the mockup's About page no longer applies: its header (statement title, photo, facts, bio) became a plain header, and its timeline and language columns became spec rows (see "About header" and "Spec rows").
 
 ## Principles
 
 1. **Flat and techy, one accent.** Electric blue on cool neutrals, IBM Plex Sans and Mono. No gradients, glows, shadows or decorative colour.
 2. **Two loud moments per page, no more.** Every page opens on the **blueprint band** (a faint blue grid behind the page header) and ends with the **contact band** (solid blue). Everything between is calm.
-3. **Borders mean "clickable".** Only cards you can click (projects) have a border. Information (numbers, facts, services, skills, education, languages) sits in borderless rows separated by thin lines.
+3. **Borders mean "clickable".** Only cards you can click (projects) have a border. Information (numbers, facts, services, skills, education, languages) sits in borderless rows, separated by thin lines or, on About, by space alone.
 4. **Black text for content, grey for metadata.** Body text and titles use the foreground colour. Grey (`muted-foreground`) is only for dates, captions, labels and secondary details.
 5. **Mono for labels and data only.** Plex Mono is for small uppercase labels, dates, durations, numbers, addresses and code. Everything else is Plex Sans.
 6. **Each fact lives in one place.** A number, a description or a detail appears once per page, and site-wide where possible (see "Content map").
@@ -20,6 +20,7 @@ The colour tokens are the CSS variables in `src/styles/app.css` (light and dark)
 | Token / value                                           | Use                                             |
 | ------------------------------------------------------- | ----------------------------------------------- |
 | Grid line: `primary` at 7% (light) / 10% (dark) opacity | The blueprint band's 32px grid                  |
+| `muted`                                                 | The transition band under the blueprint band    |
 | `on-primary` (`primary-foreground`)                     | Text and buttons on the solid blue contact band |
 | Radius 6px                                              | Buttons                                         |
 | Radius 12px                                             | Cards                                           |
@@ -43,7 +44,7 @@ The colour tokens are the CSS variables in `src/styles/app.css` (light and dark)
 | Meta / dates       | Plex Mono 12–13px, `muted-foreground`                                                                                           |
 | Big numbers        | Plex Mono 500, 36px, letter-spacing −0.02em                                                                                     |
 
-**Spacing:** header band padding 96px on top; 112–128px between sections; 40px from a section title to its content.
+**Spacing:** header band padding 96px on top; 112–128px between sections; 40px from a section title to its content. About is the one exception, with 80px between sections: it's the online CV and reads as one document (owner's choice).
 
 ## Page anatomy
 
@@ -51,11 +52,12 @@ The colour tokens are the CSS variables in `src/styles/app.css` (light and dark)
 Site header        logo (mono) · Home · About · Projects        language · theme
 Blueprint band     label (mono, uppercase)
                    page title
-                   subtitle (mono, blue) and/or lead paragraph
-                   buttons
-                   strip: numbers (Home) or facts (About), first cell flush with the text
-Sections           "01  Title ──────────────────  optional link"
+                   subtitle (mono, blue) and/or lead text (Home's intro, a project summary)
+                   buttons or filters
+Transition band    solid, under the grid: the strip of numbers (Home) or facts (project pages)
+Sections           "01  Title                       optional link"
                    content
+                   ─────────── full-width line, midway between two sections ───────────
 Contact band       solid blue: "Contact" label, headline, availability line, Email me + LinkedIn
 Site footer        © · LinkedIn GitHub · English العربية Français
 ```
@@ -63,41 +65,44 @@ Site footer        © · LinkedIn GitHub · English العربية Français
 ## Patterns
 
 - **Blueprint band:** a full-width area behind the page header with a 32px grid of 1px lines in the grid colour, closed by a 1px bottom border. Plain flat lines, not a gradient effect.
-- **Strip:** a row of cells (`auto-fit`, at least 200px), a 1px top border, 1px vertical lines between cells, and the first cell flush with the text above. Home uses it for the headline numbers (big mono number above a grey caption); About uses it for facts (mono label above a value, with an optional grey second line).
-- **Section title:** a mono number in `primary` ("01", hidden from screen readers), the title, a 1px line filling the rest of the row, and an optional link at the end ("All projects", "Full story"). Numbers count the sections shown on the page.
+- **Transition band and strip:** on pages that have figures, a full-width band in solid `muted` sits between the blueprint band and the plain page, closed by a 1px bottom border, so the page steps from grid to tint to plain (owner's choice; the mockup had the strip inside the grid). The blueprint band holds text and buttons; the transition band holds the strip: a row of cells with 1px vertical lines between them and the first cell flush with the text, two cells per row on phones (with a 1px line between the rows). Home uses it for the headline numbers (big mono number above a grey caption); project pages for facts (mono label above a value, with an optional grey second line).
+- **Section title:** a mono number in `primary` ("01", hidden from screen readers), the title, and an optional link at the end of the row ("All projects", "Full story"). No line after the title: right under the header band it doubled the band's bottom edge (owner's choice). Numbers count the sections shown on the page.
+- **Section divider:** a 1px line in `border`, running edge to edge like the header band's bottom edge, midway between two sections. None above the first section (the band's edge is there) and none above the contact band (the blue card separates itself). Owner's choice, so the page reads as a stack of full-width bands.
 - **Project card:** bordered and rounded (12px) on `card`; the border darkens to `input` on hover. Top: the cover. Body: meta (type · year, mono), title, summary (grey), technologies, "Visit site ↗".
   - **Featured card:** the first project on Home is wide, with the cover on one side and a larger body on the other, plus a "Read the case study →" link.
   - **Cover placeholder** (until a screenshot is uploaded): an "app window" bar (three small squares, then the project's address or slug in mono) over the blueprint grid on `muted`, with the project's initials large in mono `primary`.
 - **Technologies:** logo (one colour, `currentColor`) then the name, with no border, in rows with generous gaps.
 - **Services ("What I do"):** borderless grid, each item with a 1px top line, a Lucide icon in `primary` (stroke 1.75), a mono index ("01"), the title and a grey summary.
 - **Experience summary (Home):** rows with a 1px bottom line: period (mono, grey) · role (600, with a "Current" badge) · company and place (grey). Links to the full story on About.
-- **Timeline (About):** a 1px line along the start edge; a filled blue dot for the current job, hollow for past ones; period and duration in mono, with a "Current" badge (1px blue border, blue mono text); role (22px 600), company and place (grey), summary, then achievements with small square blue bullets.
-- **Skills:** spec-sheet rows with a 1px bottom line: a mono label column (180px), then the technologies.
-- **Education:** rows like skills: the period in the label column, then degree and field (600), the school (link) and place, and a short grey description.
-- **Languages:** three columns, each with a 1px top line, the name, a five-step meter (filled steps in `primary`, the rest in `border`) and the level in mono.
+- **About header:** the same plain header as Projects: the label, a factual title ("Experience & skills"), one line, and "Download CV". No name, photo, bio, facts or Email me: Home introduces the owner, so About doesn't do it a second time (owner's choice).
+- **Spec rows (About):** every About section uses the same rows, so all their content starts at the same edge and the page reads as one document (owner's choice, replacing the mockup's timeline and language columns). Each row has a 180px label column (dates in mono, or a mono label) and the content beside it, baseline-aligned. Rows are separated by space, not lines (the owner found row lines too busy; the label column already marks each row): 48px between jobs and degrees, 20px between skills and languages. On phones the label sits above the content.
+  - **Experience:** label: period, duration and a "Current" badge (1px blue border, blue mono text) on the current job. Content: role (20px 600), company (a blue link when it has a website) · work mode · place in grey, summary, achievements with small square blue bullets, technologies.
+  - **Skills:** label: the category. Content: the technologies.
+  - **Education:** label: the period. Content: degree and field (20px 600), the school and place like a job's, and a short grey description.
+  - **Languages:** label: the language. Content: the level in words, a five-step meter (filled steps in `primary`, the rest in `border`) and the CEFR level in mono, at fixed widths so the meters line up.
 - **Contact band:** solid `primary`, text in `on-primary`, radius 16px, 56px padding. A white (`on-primary`) "Email me" button with blue text, and an outlined "LinkedIn ↗".
 - **Buttons:** 44px tall (48px on the contact band), radius 6px. Primary: solid blue. Secondary: 1px `input` border. Text links with an arrow for "See my work →" and similar.
 
 ## Content map
 
-| Page         | Says                                                                                                                                                 | Doesn't repeat                                        |
-| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
-| Home         | Who (name, headline, pitch), proof (the headline numbers), selected work (featured projects), what I do (services), experience in two lines, contact | Full job details, education, skills                   |
-| About        | A statement title ("I build web products, end to end."), facts strip, the story, timeline with achievements, skills, education, languages, contact   | The headline numbers as a block, project descriptions |
-| Projects     | The full list with filters                                                                                                                           |                                                       |
-| Project page | The case study                                                                                                                                       |                                                       |
+| Page         | Says                                                                                                                                                 | Doesn't repeat                                                                            |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| Home         | Who (name, headline, pitch), proof (the headline numbers), selected work (featured projects), what I do (services), experience in two lines, contact | Full job details, education, skills                                                       |
+| About        | The online CV: a plain header with Download CV, jobs with achievements, skills, education, languages, contact                                        | Who I am (name, photo, bio, status, location), the headline numbers, project descriptions |
+| Projects     | The full list with filters                                                                                                                           |                                                                                           |
+| Project page | The case study                                                                                                                                       |                                                                                           |
 
-Copy introduced with the design (editable): the About title "I build web products, end to end.", the contact headline "Have a project in mind? Let's build it.", and a bio trimmed to a story without the stats (to edit in the CMS).
+Copy introduced with the design (editable, in the dictionaries): the contact headline "Have a project in mind? Let's build it.", and the About title "Experience & skills" with its line "The jobs, tools and studies behind my work."
 
 ## Arabic
 
-Everything mirrors with logical CSS (start/end): the timeline line and markers, strip dividers and the section-title rule move to the right. Labels in Arabic use the sans font with normal spacing (see `mono-label` in `ARCHITECTURE.md`).
+Everything mirrors with logical CSS (start/end): the spec rows' label column, the square bullets, strip dividers and the section titles' end links move to the right. Labels in Arabic use the sans font with normal spacing (see `mono-label` in `ARCHITECTURE.md`).
 
 ## Moving the current pages to this design
 
 The pages built so far predate this design. They move over step by step:
 
-1. **Shared pieces:** the blueprint band in `PageHeader`, borderless `FactsStrip` and `MetricGrid` as strips, section titles with an optional end link, the contact band in the site layout, technology chips without borders, and the branded cover placeholder.
-2. **Home:** featured work, "What I do", the experience summary (this replaces the planned step 5).
-3. **About:** statement title, skills, education and languages as rows, the timeline without company tiles.
+1. **Shared pieces** (done): the blueprint band in `PageHeader`, `FactsStrip` and `MetricGrid` as strips in the transition band (Home and project pages), 28px section titles, the contact band (added by `Page`, so 404 and error pages don't get it), technology chips without borders, the branded cover placeholder, and black body text.
+2. **Home:** featured work, "What I do", the experience summary (this replaces the planned step 5), and section titles' optional end link ("All projects", "Full story"), first used here.
+3. **About** (done): the online CV with a plain header, then experience, skills, education and languages as spec rows.
 4. **Projects and project page:** cards and covers in the new style.

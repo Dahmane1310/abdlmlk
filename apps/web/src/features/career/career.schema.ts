@@ -1,7 +1,6 @@
 import { z } from 'zod'
 
 import { technologyRefSchema } from '@/features/technologies/technologies.schema'
-import { mediaSchema } from '@/lib/strapi/schemas'
 
 export const employmentTypeSchema = z.enum([
   'full_time',
@@ -17,7 +16,6 @@ export const workModeSchema = z.enum(['remote', 'onsite', 'hybrid'])
 const organizationSchema = z.object({
   name: z.string(),
   website: z.url().nullable(),
-  logo: mediaSchema.nullable(),
 })
 
 /** A job in the "Experience" collection. */
@@ -56,5 +54,3 @@ export const experienceListSchema = z.object({
 export const educationListSchema = z.object({
   data: z.array(educationSchema),
 })
-
-export type Organization = z.output<typeof organizationSchema>

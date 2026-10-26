@@ -1,4 +1,4 @@
-import { MetaLine } from '@/components/content/meta-line'
+import { SpecList, SpecRow } from '@/components/content/spec-list'
 import { useTranslation } from '@/lib/i18n/use-translation'
 import { cn } from '@/lib/utils'
 
@@ -13,7 +13,10 @@ const LEVEL_STEPS: Record<SpokenLanguage['level'], number> = {
   beginner: 1,
 }
 
-/** One card per language: its name, a five-step level meter and the level in words. */
+/**
+ * Languages as spec rows (DESIGN.md, "Languages"): the name in the label
+ * column, then the level in words, a five-step meter and the CEFR level.
+ */
 export function SpokenLanguages({
   languages,
 }: {
@@ -22,13 +25,19 @@ export function SpokenLanguages({
   const t = useTranslation()
 
   return (
-    <dl className="grid gap-4 sm:grid-cols-3">
+    <SpecList>
       {languages.map((language) => (
-        <div key={language.name} className="rounded-xl border bg-card p-5">
-          <dt className="font-medium">{language.name}</dt>
-          <dd className="mt-4 flex flex-col gap-2">
-            {/* Decorative: the level is written out right below. */}
-            <span aria-hidden className="flex gap-1">
+        <SpecRow
+          key={language.name}
+          label={<p className="mono-label">{language.name}</p>}
+        >
+          {/* Fixed widths, so the meters line up from row to row. */}
+          <p className="flex flex-wrap items-center gap-x-6 gap-y-2">
+            <span className="w-32 text-[1.0625rem]">
+              {t.profile.languageLevels[language.level]}
+            </span>
+            {/* Decorative: the level is written out beside it. */}
+            <span aria-hidden className="flex w-40 gap-1">
               {Array.from({ length: 5 }, (_, step) => (
                 <span
                   key={step}
@@ -41,12 +50,14 @@ export function SpokenLanguages({
                 />
               ))}
             </span>
-            <MetaLine
-              items={[t.profile.languageLevels[language.level], language.cefr]}
-            />
-          </dd>
-        </div>
+            {language.cefr && (
+              <span className="font-mono text-[0.8125rem] text-muted-foreground">
+                {language.cefr}
+              </span>
+            )}
+          </p>
+        </SpecRow>
       ))}
-    </dl>
+    </SpecList>
   )
 }

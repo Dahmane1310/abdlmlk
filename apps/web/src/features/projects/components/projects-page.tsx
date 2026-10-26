@@ -26,15 +26,17 @@ export function ProjectsPage() {
   )
 
   return (
-    <Page>
-      <PageHeader
-        eyebrow={t.projects.eyebrow}
-        title={t.projects.title}
-        lead={t.projects.description}
-      >
-        <ProjectFilters projects={projects} />
-      </PageHeader>
-
+    <Page
+      header={
+        <PageHeader
+          eyebrow={t.projects.eyebrow}
+          title={t.projects.title}
+          lead={t.projects.description}
+        >
+          <ProjectFilters projects={projects} />
+        </PageHeader>
+      }
+    >
       {visible.length > 0 ? (
         <ul className="grid gap-6 sm:grid-cols-2">
           {visible.map((project) => (

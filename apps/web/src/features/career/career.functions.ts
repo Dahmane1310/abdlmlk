@@ -8,10 +8,7 @@ import { getStrapiClient } from '@/lib/strapi/client.server'
 
 import { educationListSchema, experienceListSchema } from './career.schema'
 
-const ORGANIZATION_POPULATE = {
-  fields: ['name', 'website'],
-  populate: ['logo'],
-}
+const ORGANIZATION_POPULATE = { fields: ['name', 'website'] }
 
 /**
  * Months from the start month to the end month (today if still ongoing), both

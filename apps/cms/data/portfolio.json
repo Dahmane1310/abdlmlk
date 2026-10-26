@@ -75,7 +75,7 @@
       "fullName": "Dahmane Abdelmalek",
       "headline": "Full-Stack Engineer",
       "intro": "I'm a full-stack developer who builds stable, well-architected applications. I work independently across the stack, quickly grasp system design, and prioritize sustainable solutions that deliver business value.",
-      "bio": "I've been building production web applications since 2023: first as co-founder of StackInTech, a software development agency in Tlemcen, and today as a full-stack engineer at Five Angles, where I lead a team of 3–5 developers and have shipped four production-ready projects from planning to deployment.\n\nI enjoy owning a product end to end: understanding the problem, designing the architecture, building the backend and the frontend, and deploying it. Along the way I've learned that the best code is the code that stays easy to change, so I invest in code reviews, clear structure and sensible defaults.\n\nI hold a Master's degree in Software Engineering from Abou Bekr Belkaid University in Tlemcen, where my graduation project, QuickCap, an AI-powered captioning app, earned a 19/20.",
+      "bio": "I've been building production web applications since 2023: first as co-founder of StackInTech, a software development agency in Tlemcen, and today as a full-stack engineer at Five Angles, where I lead a small development team.\n\nI enjoy owning a product end to end: understanding the problem, designing the architecture, building the backend and the frontend, and deploying it. Along the way I've learned that the best code is the code that stays easy to change, so I invest in code reviews, clear structure and sensible defaults.",
       "location": "Tlemcen, Algeria",
       "availabilityNote": "Open to remote roles and freelance projects.",
       "highlights": [
@@ -94,7 +94,7 @@
       "fullName": "دحمان عبد الملك",
       "headline": "مهندس Full-Stack",
       "intro": "أنا مطوّر Full-Stack أبني تطبيقات مستقرة ومُصمَّمة بعناية. أعمل باستقلالية على جميع طبقات المشروع، وأستوعب تصميم الأنظمة بسرعة، وأُعطي الأولوية للحلول المستدامة التي تحقق قيمة فعلية للأعمال.",
-      "bio": "أبني تطبيقات ويب جاهزة للإنتاج منذ عام 2023: بدايةً كشريك مؤسس في StackInTech، وهي وكالة لتطوير البرمجيات في تلمسان، واليوم كمهندس Full-Stack في Five Angles، حيث أقود فريقًا من 3 إلى 5 مطوّرين، وسلّمت أربعة مشاريع جاهزة للإنتاج من التخطيط حتى النشر.\n\nأستمتع بتولّي المنتج من البداية إلى النهاية: فهم المشكلة، وتصميم البنية، وبناء الواجهة الخلفية والأمامية، ثم نشره. وتعلّمت أن أفضل كود هو الذي يبقى سهل التعديل، لذلك أستثمر في مراجعة الكود والبنية الواضحة.\n\nحاصل على شهادة الماستر في هندسة البرمجيات من جامعة أبو بكر بلقايد بتلمسان، حيث نال مشروع تخرّجي QuickCap، وهو تطبيق لتوليد الترجمات بالذكاء الاصطناعي، علامة 19/20.",
+      "bio": "أبني تطبيقات ويب جاهزة للإنتاج منذ عام 2023: بدايةً كشريك مؤسس في StackInTech، وهي وكالة لتطوير البرمجيات في تلمسان، واليوم كمهندس Full-Stack في Five Angles، حيث أقود فريق تطوير صغيرًا.\n\nأستمتع بتولّي المنتج من البداية إلى النهاية: فهم المشكلة، وتصميم البنية، وبناء الواجهة الخلفية والأمامية، ثم نشره. وتعلّمت أن أفضل كود هو الذي يبقى سهل التعديل، لذلك أستثمر في مراجعة الكود والبنية الواضحة.",
       "location": "تلمسان، الجزائر",
       "availabilityNote": "متاح لوظائف عن بُعد ولمشاريع العمل الحر.",
       "highlights": [
@@ -113,7 +113,7 @@
       "fullName": "Dahmane Abdelmalek",
       "headline": "Ingénieur Full-Stack",
       "intro": "Je suis développeur full-stack et je conçois des applications stables et bien architecturées. Je travaille en autonomie sur toute la stack, je comprends rapidement la conception des systèmes et je privilégie des solutions durables qui apportent une réelle valeur métier.",
-      "bio": "Je développe des applications web en production depuis 2023 : d'abord comme cofondateur de StackInTech, une agence de développement logiciel à Tlemcen, puis aujourd'hui comme ingénieur full-stack chez Five Angles, où j'encadre une équipe de 3 à 5 développeurs et où j'ai livré quatre projets en production, de la conception au déploiement.\n\nJ'aime prendre en charge un produit de bout en bout : comprendre le besoin, concevoir l'architecture, développer le backend et le frontend, puis le déployer. J'ai appris que le meilleur code est celui qui reste facile à faire évoluer ; c'est pourquoi j'investis dans les revues de code et une structure claire.\n\nJe suis titulaire d'un master en génie logiciel de l'Université Abou Bekr Belkaïd de Tlemcen, où mon projet de fin d'études, QuickCap, une application de sous-titrage par IA, a obtenu 19/20.",
+      "bio": "Je développe des applications web en production depuis 2023 : d'abord comme cofondateur de StackInTech, une agence de développement logiciel à Tlemcen, puis aujourd'hui comme ingénieur full-stack chez Five Angles, où j'encadre une petite équipe de développement.\n\nJ'aime prendre en charge un produit de bout en bout : comprendre le besoin, concevoir l'architecture, développer le backend et le frontend, puis le déployer. J'ai appris que le meilleur code est celui qui reste facile à faire évoluer ; c'est pourquoi j'investis dans les revues de code et une structure claire.",
       "location": "Tlemcen, Algérie",
       "availabilityNote": "Ouvert aux postes en télétravail et aux missions freelance.",
       "highlights": [
@@ -179,19 +179,19 @@
         "degree": "Master's degree",
         "field": "Software Engineering",
         "location": "Tlemcen, Algeria",
-        "description": "Graduation project: **QuickCap**, a full-stack web application that uses AI to automatically generate and manage video captions and subtitles. The project was fully deployed, earned a **19/20** grade, and was recognized as an innovative project for its originality and impact."
+        "description": "Graduation project: **QuickCap**, a full-stack web application that uses AI to automatically generate and manage video captions and subtitles."
       },
       "ar": {
         "degree": "ماستر",
         "field": "هندسة البرمجيات",
         "location": "تلمسان، الجزائر",
-        "description": "مشروع التخرّج: **QuickCap**، تطبيق ويب متكامل يستخدم الذكاء الاصطناعي لتوليد ترجمات الفيديو وإدارتها تلقائيًا. نُشر المشروع بالكامل، ونال علامة **19/20**، وحظي بالتقدير كمشروع مبتكر لأصالته وأثره."
+        "description": "مشروع التخرّج: **QuickCap**، تطبيق ويب متكامل يستخدم الذكاء الاصطناعي لتوليد ترجمات الفيديو وإدارتها تلقائيًا."
       },
       "fr": {
         "degree": "Master",
         "field": "Génie logiciel",
         "location": "Tlemcen, Algérie",
-        "description": "Projet de fin d'études : **QuickCap**, une application web full-stack qui utilise l'IA pour générer et gérer automatiquement les sous-titres de vidéos. Le projet a été entièrement déployé, a obtenu la note de **19/20** et a été distingué comme projet innovant pour son originalité et son impact."
+        "description": "Projet de fin d'études : **QuickCap**, une application web full-stack qui utilise l'IA pour générer et gérer automatiquement les sous-titres de vidéos."
       }
     },
     {

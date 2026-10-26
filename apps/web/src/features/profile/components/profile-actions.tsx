@@ -1,10 +1,11 @@
-import { DownloadIcon, MailIcon } from 'lucide-react'
+import { MailIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { useTranslation } from '@/lib/i18n/use-translation'
 import { cn } from '@/lib/utils'
 
 import type { Profile } from '../profile.schema'
+import { DownloadCvButton } from './download-cv-button'
 
 /** "Email me" and "Download CV" buttons, each shown when the profile has it. */
 export function ProfileActions({
@@ -28,14 +29,7 @@ export function ProfileActions({
           </a>
         </Button>
       )}
-      {profile.resume && (
-        <Button asChild size="lg" variant="outline">
-          <a href={profile.resume.url} download>
-            <DownloadIcon aria-hidden />
-            {t.profile.downloadCv}
-          </a>
-        </Button>
-      )}
+      {profile.resume && <DownloadCvButton resume={profile.resume} />}
     </div>
   )
 }

@@ -36,15 +36,19 @@ export const en = {
   about: {
     title: 'About',
     description:
-      "Who I am, where I've worked, what I studied and the languages I speak.",
+      "Where I've worked, the tools I use, what I studied and the languages I speak.",
+    heading: 'Experience & skills',
+    lead: 'The jobs, tools and studies behind my work.',
     experience: 'Experience',
     skills: 'Skills',
     education: 'Education',
     spokenLanguages: 'Spoken languages',
-    status: 'Status',
-    currently: 'Currently',
-    basedIn: 'Based in',
-    workingSince: 'Working since',
+  },
+  // The blue band that closes every page.
+  contact: {
+    label: 'Contact',
+    question: 'Have a project in mind?',
+    answer: "Let's build it.",
   },
   technologies: {
     categories: {
@@ -59,6 +63,8 @@ export const en = {
     },
   },
   career: {
+    // Between a degree and its field: "Master's degree, Software Engineering".
+    fieldSeparator: ', ',
     current: 'Current',
     employmentTypes: {
       full_time: 'Full-time',

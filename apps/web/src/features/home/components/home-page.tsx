@@ -5,16 +5,12 @@ import { profileQuery } from '@/features/profile/profile.queries'
 import { useLanguage } from '@/lib/i18n/use-language'
 
 import { Hero } from './hero'
-import { Highlights } from './highlights'
 
 export function HomePage() {
   const lang = useLanguage()
   const { data: profile } = useSuspenseQuery(profileQuery(lang))
 
-  return (
-    <Page>
-      <Hero profile={profile} />
-      <Highlights items={profile.highlights} />
-    </Page>
-  )
+  // The sections from the design (selected work, what I do, experience)
+  // come in the next step; the contact band closes the page meanwhile.
+  return <Page header={<Hero profile={profile} />} />
 }

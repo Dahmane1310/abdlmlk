@@ -1,3 +1,13 @@
+import { cn } from '@/lib/utils'
+
+import { Container } from './container'
+
+// The home page's title is one step larger (DESIGN.md, "Type scale").
+const TITLE_SIZES = {
+  page: 'text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.04]',
+  hero: 'text-[clamp(2.75rem,7vw,5.25rem)] leading-[1.02]',
+}
+
 interface PageHeaderProps {
   /** Small label above the title: where you are, or a status. */
   eyebrow?: React.ReactNode
@@ -6,44 +16,63 @@ interface PageHeaderProps {
   subtitle?: string
   /** One or two sentences under the title. */
   lead?: string
-  /** At the end of the title row, e.g. a photo. */
-  media?: React.ReactNode
-  /** Under the title block: facts, buttons, filters. */
+  /** "hero" for the home page's larger title. */
+  size?: keyof typeof TITLE_SIZES
+  /** A FactsStrip or MetricGrid, shown in the transition band below the grid. */
+  strip?: React.ReactNode
+  /** Under the title block: buttons, filters. */
   children?: React.ReactNode
 }
 
 /**
- * The header every page starts with: label, title, then a subtitle and/or a
- * lead, then anything else the page needs. One title size for every page.
+ * The header every page starts with (DESIGN.md): the blueprint band with the
+ * label, the title, a subtitle and/or a lead, then the page's buttons or
+ * filters; then, when the page has one, its strip in a solid transition band
+ * between the grid and the plain page below.
  */
 export function PageHeader({
   eyebrow,
   title,
   subtitle,
   lead,
-  media,
+  size = 'page',
+  strip,
   children,
 }: PageHeaderProps) {
   return (
-    <header className="flex flex-col gap-8">
-      <div className="flex items-start justify-between gap-6">
-        <div className="flex max-w-3xl flex-col gap-4">
-          {/* Flex, so a label with an icon (the back link) is as tall as a
-              text-only one and every title starts at the same height. */}
-          {eyebrow && (
-            <div className="flex items-center mono-label">{eyebrow}</div>
-          )}
-          <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">
-            {title}
-          </h1>
-          {subtitle && (
-            <p className="font-mono text-lg text-primary">{subtitle}</p>
-          )}
-          {lead && <p className="text-lg text-muted-foreground">{lead}</p>}
-        </div>
-        {media}
+    <header>
+      {/* Full width, so the grid runs edge to edge behind the content. */}
+      <div className="border-b blueprint">
+        <Container className="flex flex-col gap-10 pt-16 pb-12 md:pt-24 md:pb-16">
+          <div className="flex max-w-3xl flex-col gap-6">
+            {/* Flex, so a label with an icon (the back link) is as tall as a
+                text-only one and every title starts at the same height. */}
+            {eyebrow && (
+              <div className="flex items-center mono-label">{eyebrow}</div>
+            )}
+            <h1
+              className={cn(
+                'font-semibold tracking-[-0.035em]',
+                TITLE_SIZES[size],
+              )}
+            >
+              {title}
+            </h1>
+            {subtitle && (
+              <p className="font-mono text-lg text-primary">{subtitle}</p>
+            )}
+            {lead && (
+              <p className="max-w-2xl text-xl leading-relaxed">{lead}</p>
+            )}
+          </div>
+          {children}
+        </Container>
       </div>
-      {children}
+      {strip && (
+        <div className="border-b bg-muted">
+          <Container>{strip}</Container>
+        </div>
+      )}
     </header>
   )
 }

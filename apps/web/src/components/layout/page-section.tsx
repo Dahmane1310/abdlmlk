@@ -11,7 +11,7 @@ export function PageSection({
 }) {
   return (
     <section aria-labelledby={`${id}-title`}>
-      <h2 id={`${id}-title`} className="section-title">
+      <h2 id={`${id}-title`} className="section-title mb-10">
         {title}
       </h2>
       {children}

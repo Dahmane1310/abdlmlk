@@ -53,47 +53,49 @@ export function ProjectPage() {
 
   return (
     <article>
-      <Page>
-        <PageHeader
-          eyebrow={
-            <Link
-              to="/$lang/projects"
-              params={{ lang }}
-              className="inline-flex items-center gap-1.5 hover:text-foreground"
-            >
-              <ArrowLeftIcon aria-hidden className="size-4 rtl:rotate-180" />
-              {t.projects.backToAll}
-            </Link>
-          }
-          title={project.title}
-          lead={project.summary}
-        >
-          <FactsStrip facts={facts} />
-          {(project.liveUrl ?? project.repoUrl) && (
-            <div className="flex flex-wrap gap-3">
-              {project.liveUrl && (
-                <Button asChild>
-                  <a href={project.liveUrl}>
-                    {t.projects.visitSite}
-                    <ArrowUpRightIcon
-                      aria-hidden
-                      className="rtl:-scale-x-100"
-                    />
-                  </a>
-                </Button>
-              )}
-              {project.repoUrl && (
-                <Button asChild variant="outline">
-                  <a href={project.repoUrl}>
-                    <CodeIcon aria-hidden />
-                    {t.projects.sourceCode}
-                  </a>
-                </Button>
-              )}
-            </div>
-          )}
-        </PageHeader>
-
+      <Page
+        header={
+          <PageHeader
+            eyebrow={
+              <Link
+                to="/$lang/projects"
+                params={{ lang }}
+                className="inline-flex items-center gap-1.5 hover:text-foreground"
+              >
+                <ArrowLeftIcon aria-hidden className="size-4 rtl:rotate-180" />
+                {t.projects.backToAll}
+              </Link>
+            }
+            title={project.title}
+            lead={project.summary}
+            strip={<FactsStrip facts={facts} />}
+          >
+            {(project.liveUrl ?? project.repoUrl) && (
+              <div className="flex flex-wrap gap-3">
+                {project.liveUrl && (
+                  <Button asChild size="lg">
+                    <a href={project.liveUrl}>
+                      {t.projects.visitSite}
+                      <ArrowUpRightIcon
+                        aria-hidden
+                        className="rtl:-scale-x-100"
+                      />
+                    </a>
+                  </Button>
+                )}
+                {project.repoUrl && (
+                  <Button asChild size="lg" variant="outline">
+                    <a href={project.repoUrl}>
+                      <CodeIcon aria-hidden />
+                      {t.projects.sourceCode}
+                    </a>
+                  </Button>
+                )}
+              </div>
+            )}
+          </PageHeader>
+        }
+      >
         {/* No placeholder here: the title right above already says what the
             project is, so an empty cover would only push the story down. */}
         {project.cover && (

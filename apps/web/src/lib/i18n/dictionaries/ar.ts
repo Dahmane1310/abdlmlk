@@ -35,15 +35,19 @@ export const ar = {
   },
   about: {
     title: 'نبذة عني',
-    description: 'من أنا، وأين عملت، وماذا درست، واللغات التي أتحدثها.',
+    description:
+      'أين عملت، والأدوات التي أستخدمها، وماذا درست، واللغات التي أتحدثها.',
+    heading: 'الخبرة والمهارات',
+    lead: 'الوظائف والأدوات والدراسة التي يقوم عليها عملي.',
     experience: 'الخبرة المهنية',
     skills: 'المهارات',
     education: 'التعليم',
     spokenLanguages: 'اللغات',
-    status: 'الحالة',
-    currently: 'حاليًا',
-    basedIn: 'مقيم في',
-    workingSince: 'أعمل منذ',
+  },
+  contact: {
+    label: 'تواصل',
+    question: 'لديك مشروع في ذهنك؟',
+    answer: 'لنبنِه معًا.',
   },
   technologies: {
     categories: {
@@ -58,6 +62,7 @@ export const ar = {
     },
   },
   career: {
+    fieldSeparator: '، ',
     current: 'الحالي',
     employmentTypes: {
       full_time: 'دوام كامل',

@@ -18,8 +18,7 @@ export function ProjectCard({ project }: { project: ProjectSummary }) {
     // card is clickable with one accessible link; other links sit above it.
     <article className="relative flex h-full flex-col overflow-hidden rounded-xl border bg-card text-card-foreground transition-colors hover:border-input has-[a:focus-visible]:ring-[3px] has-[a:focus-visible]:ring-ring/50">
       <ProjectCover
-        title={project.title}
-        cover={project.cover}
+        project={project}
         sizes="(min-width: 1024px) 496px, (min-width: 640px) 50vw, 100vw"
         className="border-b"
       />

@@ -52,6 +52,9 @@
   /* Form control borders: stronger, so inputs stay visible. */
   --input: oklch(0.64 0.012 264);
   --ring: oklch(0.55 0.23 264);
+
+  /* The blueprint band's grid lines: the accent, barely there. */
+  --blueprint: oklch(0.55 0.23 264 / 0.07);
 }
 
 .dark {
@@ -82,6 +85,8 @@
   --border: oklch(0.27 0.01 264);
   --input: oklch(0.5 0.012 264);
   --ring: oklch(0.68 0.19 259);
+
+  --blueprint: oklch(0.68 0.19 259 / 0.1);
 }
 
 @theme {
@@ -172,10 +177,62 @@
 }
 
 /*
- * Section titles, numbered in page order: "01 Experience ───────". The same
- * look for <PageSection> titles and for h2s in CMS Markdown, so a case study's
- * own sections count along with the page's. "/ ''" hides the number from
- * screen readers, which read the title only.
+ * Lists with small square bullets in the accent colour (DESIGN.md, timeline
+ * achievements), for rendered Markdown inside .prose.
+ */
+@utility square-bullets {
+  & ul {
+    @apply list-none ps-0;
+  }
+  & li {
+    @apply relative ps-5;
+  }
+  & li::before {
+    content: '';
+    @apply absolute inset-s-0 top-[0.7em] size-1.5 bg-primary;
+  }
+}
+
+/*
+ * The blueprint band behind every page header (DESIGN.md): a 32px grid of 1px
+ * lines. Two hard-edged line patterns, not a colour gradient.
+ */
+@utility blueprint {
+  background-image:
+    linear-gradient(var(--blueprint) 1px, transparent 1px),
+    linear-gradient(90deg, var(--blueprint) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/*
+ * A full-width line between a page's sections (DESIGN.md, "Section divider"),
+ * midway through the gap that Page sets in --section-gap. Not above the first
+ * section: the header band's edge is there. The shadow stretches the 1px line
+ * to the screen edges and the clip-path keeps it 1px tall: unlike a 100vw
+ * element, a shadow never makes the page scroll sideways.
+ */
+@utility section-dividers {
+  & > :not(:first-child) {
+    position: relative;
+  }
+  & > :not(:first-child)::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: calc(var(--section-gap) / -2);
+    height: 1px;
+    background: var(--border);
+    box-shadow: 0 0 0 100vmax var(--border);
+    clip-path: inset(0 -100vmax);
+  }
+}
+
+/*
+ * Section titles, numbered in page order: "01 Experience". The same look for
+ * <PageSection> titles and for h2s in CMS Markdown, so a case study's own
+ * sections count along with the page's. "/ ''" hides the number from screen
+ * readers, which read the title only. No rule after the title: right under
+ * the header band it doubled the band's bottom edge (owner's choice).
  */
 main {
   counter-reset: section;
@@ -183,7 +240,11 @@ main {
 .section-title,
 .prose h2 {
   counter-increment: section;
-  @apply mb-8 flex items-center gap-4 text-2xl font-semibold tracking-tight text-foreground;
+  @apply flex items-center gap-4 text-[1.75rem] leading-tight font-semibold tracking-tight text-foreground;
+}
+/* PageSection spaces its own title; Markdown titles need the gap here. */
+.prose h2 {
+  @apply mb-10;
 }
 .section-title::before,
 .prose h2::before {
@@ -191,14 +252,10 @@ main {
   content: counter(section, decimal-leading-zero) / '';
   @apply font-mono text-sm font-normal tracking-normal text-primary;
 }
-.section-title::after,
-.prose h2::after {
-  content: '';
-  @apply h-px min-w-8 flex-1 bg-border;
-}
 
 .prose {
-  --tw-prose-body: var(--muted-foreground);
+  /* Content text is black (DESIGN.md); grey is for metadata. */
+  --tw-prose-body: var(--foreground);
   --tw-prose-headings: var(--foreground);
   --tw-prose-lead: var(--muted-foreground);
   --tw-prose-links: var(--primary);

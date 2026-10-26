@@ -36,15 +36,19 @@ export const fr = {
   about: {
     title: 'À propos',
     description:
-      "Qui je suis, où j'ai travaillé, ce que j'ai étudié et les langues que je parle.",
+      "Où j'ai travaillé, les outils que j'utilise, ce que j'ai étudié et les langues que je parle.",
+    heading: 'Parcours et compétences',
+    lead: 'Les postes, les outils et les études derrière mon travail.',
     experience: 'Expérience',
     skills: 'Compétences',
     education: 'Formation',
     spokenLanguages: 'Langues parlées',
-    status: 'Statut',
-    currently: 'Actuellement',
-    basedIn: 'Basé à',
-    workingSince: 'Actif depuis',
+  },
+  contact: {
+    label: 'Contact',
+    // No-break space: French puts a space before "?", never at a line start.
+    question: 'Un projet en tête ?',
+    answer: 'Construisons-le.',
   },
   technologies: {
     categories: {
@@ -59,6 +63,7 @@ export const fr = {
     },
   },
   career: {
+    fieldSeparator: ', ',
     current: 'Actuel',
     employmentTypes: {
       full_time: 'Temps plein',

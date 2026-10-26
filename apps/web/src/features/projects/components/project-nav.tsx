@@ -54,9 +54,10 @@ export function ProjectNav({
   if (!previous && !next) return null
 
   return (
+    // No line of its own: the page draws one between sections (Page).
     <nav
       aria-label={t.projects.moreProjects}
-      className="grid gap-4 border-t pt-8 sm:grid-cols-2"
+      className="grid gap-4 sm:grid-cols-2"
     >
       {previous && <ProjectNavLink project={previous} direction="previous" />}
       {next && <ProjectNavLink project={next} direction="next" />}

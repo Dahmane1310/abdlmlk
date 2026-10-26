@@ -45,8 +45,8 @@ src/
     home/  about/  profile/  career/  services/  testimonials/  technologies/
     blog/  comments/  newsletter/  contact/
                                A page feature (home/, about/) composes other features' components;
-                               career/ owns the experience timeline and education cards that the About page
-                               (and later the home page) shows. technologies/ owns the skills grid, the shared
+                               career/ owns the experience and education rows that the About page
+                               (and later the home page) shows. technologies/ owns the skills list, the shared
                                technology schema and the server-only logo lookup (technology-icon.server.ts).
 
   components/
@@ -56,10 +56,11 @@ src/
                                mobile-menu, nav-items (the one list of nav links), language-switcher,
                                language-link, theme-toggle, container (page width), not-found-page,
                                error-page (CMS unreachable; dictionaries only, no CMS data),
-                               and the page anatomy: page, page-header, page-section (see "Page anatomy")
+                               and the page anatomy: page, page-header, page-section, contact-band
+                               (see "Page anatomy")
     content/                   shared content display: content-blocks (CMS blocks), facts-strip (key facts),
                                metric-grid (figures with labels), meta-line ("A · B · C" facts),
-                               tech-list (technology chips), responsive-image
+                               spec-list (label-column rows), tech-list (technology chips), responsive-image
 
   lib/
     strapi/
@@ -124,7 +125,7 @@ component ──► useSuspenseQuery(projectQuery(lang, slug))   reads the cache
 - **Cached for 5 minutes by default** (`staleTime` in the Query client). CMS content changes rarely; without it, every query would refetch right after hydration.
 - **Queries are keyed by language,** so switching language never shows content from the wrong language.
 - **Layout data loads in the root route's `beforeLoad`.** The header, footer and `<head>` need the site settings and profile on every page, including root-level 404s that never reach `$lang`. `beforeLoad` gets the URL, so it loads them for the language in the path. Page data belongs in each page's own loader.
-  - **Keep layout data small:** it's sent with every page. The profile is split in two: `profileQuery` (name, headline, socials… for the layout and home) and `profileDetailsQuery` (bio, photo, spoken languages), which only the About page loads.
+  - **Keep layout data small:** it's sent with every page. The profile is split in two: `profileQuery` (name, headline, socials… for the layout and home) and `spokenLanguagesQuery`, which only the About page loads.
 - **If the CMS is unreachable,** the root `errorComponent` shows a translated error page (status 500) with a "Try again" button that re-runs the loaders. It only uses the dictionaries, since CMS data is exactly what's missing. Error details show in development only.
 - **Missing content** (an unknown slug) makes the server function throw `notFound()`, which renders the 404 page.
 - **404s always show the site layout,** with a real 404 status:
@@ -150,7 +151,7 @@ Strapi blocks ──► blocks.schema.ts (Zod) ──► blocks.server.ts ──
 - **Code highlighting:** one Shiki highlighter per server, created on first use, with a fixed list of languages; an unknown language shows as plain text instead of failing. Light and dark colours are both written into the HTML as CSS variables, and `app.css` picks one from the `.dark` class, so code switches theme instantly with the rest of the page. Code blocks are always `dir="ltr"`, also on Arabic pages.
 - **Populating blocks:** Strapi only returns a block's images when asked. `CONTENT_BLOCKS_POPULATE` asks per block type (`on` fragments), so each type fetches only its own media.
 - **Text styling:** Markdown output uses Tailwind Typography (`prose`), with its colours mapped to the design tokens in `app.css`.
-- **Single Markdown fields** (the bio, a job's achievements, a degree's description) go through the same pipeline in their server function and come back as a `…Html` field (`bioHtml`), so the name says it's ready to render. Empty fields come back as `null`.
+- **Single Markdown fields** (a job's achievements, a degree's description) go through the same pipeline in their server function and come back as a `…Html` field (`achievementsHtml`), so the name says it's ready to render. Empty fields come back as `null`.
 
 ## Writing data (forms)
 
@@ -189,29 +190,39 @@ There is no global store. Adding one needs a real cross-page state that none of 
 
 ## Page anatomy
 
-Every page is built from the same pieces, so home, about and projects feel like one site. New pages use them instead of their own header or section markup.
+Every page is built from the same pieces, so home, about and projects feel like one site. New pages use them instead of their own header or section markup. They implement `DESIGN.md`'s page anatomy.
 
 ```
-<Page>                          frame: site width, space above and below, gap between blocks
-  <PageHeader
+<Page header={                  frame: the header band full width, then the sections at the
+                                site width with the same spacing and a full-width line
+                                between them, then the contact band
+                                (spacing="document" for About's tighter rhythm)
+  <PageHeader                   the blueprint band (full width, grid behind, bottom border)
     eyebrow    small label above the title: "About", "Selected work", "← All projects",
                "● Open to work · Tlemcen, Algeria"
-    title      the h1, one size on every page (home included)
+    title      the h1: one size on every page, size="hero" for Home's larger one
     subtitle   optional mono line in the accent colour (a person's headline)
-    lead       optional one or two sentences
-    media      optional, at the end of the title row (the photo)
+    lead       optional one or two sentences (Home's intro, a project summary)
+    strip      optional <FactsStrip /> or <MetricGrid />, shown in the solid transition
+               band under the grid: the blueprint band holds text, the strip figures
   >
-    facts strip, buttons, filters
+    buttons, filters
   </PageHeader>
-  <PageSection title="Experience">   "01 Experience ───────", then the content
+}>
+  <PageSection title="Experience">   "01 Experience", then the content
   …
+  (ContactBand, added by Page)       solid blue: contact headline, availability, Email me, LinkedIn
 </Page>
 ```
 
 - **Labels** use the `mono-label` utility (`app.css`): mono, small, uppercase, letter-spaced, muted. That covers the label above the title, fact labels, filter labels and side-panel titles. Arabic labels use the sans font with normal spacing: Arabic has no capitals, and Plex Mono's space is far too wide between Arabic words.
-- **Key facts** go in a `FactsStrip`: on About, the current job, location, start year and status; on project pages, the type, client or university, role and dates. **Headline numbers** go in a `MetricGrid`. Both are bordered grids drawn with 1px gaps.
+- **Key facts** go in a `FactsStrip`: on project pages, the type, client or university, role and dates. **Headline numbers** go in a `MetricGrid`. Both are borderless strips (`components/content/strip.ts`), passed to `PageHeader` as `strip`: dividers between cells, two cells per row on phones (a line between the rows) and one row on large screens. The cell classes are written so no two rules compete for the same cell: in Tailwind's output `odd:` comes after `first:`, so an `odd:` rule silently beat the `first:` one.
+- **The contact band** closes every page through `Page`, from the profile already loaded for the layout. On its blue background the usual blue focus ring would vanish, so its buttons use an outline in the text colour.
 - **Section numbers** come from a CSS counter on `<main>`, shared by `.section-title` (`PageSection`) and Markdown h2s, so a case study's own headings count along with the page's sections. `content: … / ""` keeps the numbers out of what screen readers announce. Side-panel titles (Tech stack) use `mono-label` instead and aren't counted.
-- **Availability** is always the short status, "● Open to work" (`AvailabilityStatus`). The CMS note ("Open to remote roles and freelance projects.") is shown under it in the About facts strip.
+- **Availability** is always the short status, "● Open to work" (`AvailabilityStatus`). The CMS note ("Open to remote roles and freelance projects.") is shown in the contact band.
+- **About is the online CV:** a plain header like the Projects page's (label, title, one line, Download CV), then experience, skills, education and languages. Home is the one introduction, so About repeats none of it (no name, photo, bio or facts).
+- **Spec rows** (`components/content/spec-list.tsx`): `SpecList` and `SpecRow` give every About section the same label column and content edge. Sections pass their own label (dates, a category heading, a language) and content; they don't style the row themselves, so the sections can't drift apart. Rows are separated by space, not lines: `spacing="roomy"` for long entries (jobs, degrees), the default compact spacing for one-line rows. A job's or degree's organization line is shared too (`OrganizationLine`).
+- **Lists of achievements** use the `square-bullets` utility (`app.css`): small blue squares on the start edge, so they mirror in Arabic.
 
 ## Styling and UI
 
@@ -234,16 +245,16 @@ Every page is built from the same pieces, so home, about and projects feel like 
   - **Next.js leftovers:** remove `"use client"`; it means nothing here and adds build warnings.
 - **Images:** `ResponsiveImage` (`components/content/`) renders CMS images with a `srcset` built from Strapi's generated sizes (thumbnail, small, medium, large and the original), a `sizes` hint from the caller, explicit width and height to prevent layout shift, and lazy loading unless `priority`. Without alt text an image is decorative (`alt=""`).
   - **`sizes` must match the real layout width,** or the browser downloads a bigger file than it shows. Page content is at most `61rem` wide (the `64rem` container minus its padding) and the reading column `48rem`.
-- **Missing images never show as broken.** Project cards show the project's initials until a cover is uploaded; Arabic initials are joined with a zero-width non-joiner, so they stay separate letters instead of joining into a word. The project page shows its cover only when there is one: the title right above already says what the project is.
+- **Missing images never show as broken.** Project covers sit in an "app window" frame (a bar with the site's address, or the slug), and until a screenshot is uploaded show the project's initials in blue on the blueprint grid; Arabic initials are joined with a zero-width non-joiner, so they stay separate letters instead of joining into a word. The project page shows its cover only when there is one: the title right above already says what the project is.
 - **Reading width:** long-form content (Markdown, blocks) is capped at `max-w-3xl` (48rem) for a comfortable line length.
 - **Grids with content use `grid-cols-1`** (`minmax(0, 1fr)`) rather than an implicit column. A grid column otherwise grows to fit its widest content, and one long code line would make the page wider than a phone screen instead of scrolling inside its code block.
 - **Whole-card links:** a project card is clickable everywhere through its title link, whose `::after` covers the card (a "stretched link"). Screen readers hear one link per card, not a link wrapping the whole card's text. Other links inside the card (Visit site) sit above it with `relative z-10`, and the card shows the focus ring when its title link has keyboard focus (`has-[a:focus-visible]`).
-- **The accent colour marks what's current or measured,** never decoration: the current job's timeline marker and badge, filled steps of a language meter, achievement bullets.
-- **Visual-only indicators are hidden from screen readers** when the same information is written out next to them: language meters (the level is written below), organization initials tiles (the name is next to them).
+- **The accent colour marks what's current or measured,** never decoration: the current job's badge, filled steps of a language meter, achievement bullets.
+- **Visual-only indicators are hidden from screen readers** when the same information is written out next to them: language meters (the level is written beside them).
 - **Durations that depend on today** (how long a job has lasted) are computed in the server function, not in the component. The server render and the browser then agree, so the page can't flip between two values on hydration.
 - **Technology logos:** the CMS stores a Simple Icons slug per technology ("nodedotjs"). Server functions swap it for the logo's SVG path with `withIconPath`, so the browser gets the shape and never the icon library (the `simple-icons` package is only imported in a `.server.ts` file).
   - **One colour:** logos use the text colour (`fill-current`), so they fit the one-accent design and switch with the theme. They're decorative (`aria-hidden`): the name is always next to them.
-  - **The same chip everywhere:** `TechList` shows logo and name on the About skills, the timeline, project cards and project pages. An unknown or missing slug shows the name only (Convex has no logo in Simple Icons).
+  - **The same chip everywhere:** `TechList` shows logo and name, without a border (borders are for clickable things), on the About skills and jobs, project cards and project pages. `size="lg"` is the larger version for the skills rows; the default is the small mono one. An unknown or missing slug shows the name only (Convex has no logo in Simple Icons).
 - **Accessibility:** semantic HTML, every control reachable by keyboard, visible focus, labelled inputs, sufficient contrast, motion reduced when the visitor asks for it.
 
 ## Server and security rules
@@ -276,50 +287,53 @@ Every page is built from the same pieces, so home, about and projects feel like 
 
 ## Decision log
 
-| Decision                                               | Why                                                                                                                                                                                  |
-| ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| TanStack Start, Router and Query                       | Already in place; type-safe routing, SSR and caching that work together                                                                                                              |
-| No global store                                        | Every piece of state has a better home (see "Where state lives")                                                                                                                     |
-| Forms post straight to Strapi                          | Per-visitor spam limits need the visitor's real IP                                                                                                                                   |
-| Zod at every boundary                                  | One schema gives runtime safety and the TypeScript type                                                                                                                              |
-| Markdown and Shiki on the server                       | Smaller pages; the browser doesn't download a parser or highlighter                                                                                                                  |
-| IBM Plex family                                        | One type family for English, French and Arabic, with a matching mono                                                                                                                 |
-| Typed dictionaries instead of an i18n library          | Around 100 interface strings; TypeScript enforces complete translations                                                                                                              |
-| Arabic dates and numbers with Latin digits             | Consistent with the CMS content                                                                                                                                                      |
-| `@/` as the only import alias                          | Owner's preference; one alias instead of two                                                                                                                                         |
-| ESLint 10 + Prettier                                   | TanStack and accessibility lint rules catch real bugs; Prettier ends style debates. ESLint 9 is no longer supported.                                                                 |
-| `eslint-plugin-jsx-a11y-x` for accessibility rules     | The original plugin is unmaintained and stuck on ESLint 9; the fork (es-tooling) is maintained and supports ESLint 10. Owner accepted its 0.x version.                               |
-| Deployed with Dokploy                                  | Owner's VPS setup: Docker containers behind Traefik, configured in the deployment step                                                                                               |
-| Electric blue accent, cool-tinted neutrals             | Owner's choice; techy and high contrast without gradients                                                                                                                            |
-| Separate `input` border token                          | Form controls need 3:1 contrast; decorative borders stay subtle                                                                                                                      |
-| Theme class applied by a script, not React             | No flash on load, and no conflict when switching between system and an explicit theme                                                                                                |
-| Theme cookie readable by JavaScript                    | Not sensitive; lets the browser switch theme with no request                                                                                                                         |
-| Language prefix validated in `params.parse`            | Child routes get a typed language; unknown prefixes become a 404                                                                                                                     |
-| One `@types/react` version (pnpm `overrides`)          | Strapi's React 18 types were hoisted where TanStack Router found them. A `packageExtensions` peer was tried first and split the router into two runtime copies, breaking every link. |
-| One `NAV_ITEMS` list                                   | Header and mobile menu stay in sync; typed links fail to compile for pages that don't exist yet                                                                                      |
-| Layout data in the root `beforeLoad`                   | Every page needs it, including 404s outside `$lang`; cached queries make repeat navigations free                                                                                     |
-| Explicit Zod env modules instead of `@t3-oss/env-core` | The template's setup read server variables from `import.meta.env`, where they don't exist, and evaluated at module level                                                             |
-| Social links open in the same tab, with `rel="me"`     | New tabs without warning hurt accessibility (WCAG G201); `rel="me"` marks the profiles as the owner's                                                                                |
-| Default favicon in `public/favicon.svg`                | Used until one is uploaded in the CMS site settings                                                                                                                                  |
-| Project filters run in the browser                     | A handful of projects: one request loads them all, and filtering needs no round trip. Revisit if the list grows past what one page should load.                                      |
-| Filters in the URL, ignored when invalid               | Shareable, back-button friendly; a typo in a link never breaks the page                                                                                                              |
-| Content blocks rendered to HTML on the server          | The browser gets finished HTML: no parser or highlighter download, and one place to sanitize                                                                                         |
-| `@shikijs/rehype` for code in Markdown                 | Shiki's official plugin; replaced a hand-written one that needed type casts. Reuses the same highlighter as code blocks.                                                             |
-| Sanitize, then highlight                               | Sanitizing removes unsafe content; running it after Shiki would also strip the colours                                                                                               |
-| `notFoundComponent` on routes whose loader can 404     | A loader's `notFound()` replaces the component of the route that catches it; caught by `$lang`, it would drop the header and footer                                                  |
-| Stretched-link project cards                           | The whole card is clickable, while screen readers get one short link instead of the whole card read as a link                                                                        |
-| Amber `warning` token                                  | Warning and danger callouts looked the same in red                                                                                                                                   |
-| Profile split into layout and About queries            | The bio and spoken languages would otherwise be sent with every page                                                                                                                 |
-| About page: facts strip + timeline                     | Owner found the first version too plain and chose this direction (over a bento grid and an editorial layout): structure and accent colour without gradients or glows                 |
-| Facts strip under the name, not a side card            | A short side card next to a long bio left a large empty gap and repeated the bio; a full-width strip is scannable and leaves no gaps. Owner's choice.                                |
-| Experience as a vertical timeline, education as cards  | Jobs are a sequence, with one current; degrees are two self-contained items. The home page timeline (step 5) reuses `Timeline`.                                                      |
-| Photo beside the name, no placeholder                  | The name is the anchor; an empty placeholder would look like a missing image                                                                                                         |
-| Availability as a short status everywhere              | The CMS note is a sentence; as a bordered pill it was too big. It now sits under the status in the About facts strip.                                                                |
-| One page anatomy for every page                        | Owner wanted home, about and projects to feel like one site; they had drifted apart (four header patterns, three section-title styles, different spacing)                            |
-| Section numbers from a CSS counter                     | Keeps numbers in order across `PageSection`s and CMS Markdown headings without counting in code; `content: … / ""` hides them from screen readers                                    |
-| One title size, home included                          | Consistency over a bigger hero                                                                                                                                                       |
-| Project metrics titled "Key numbers"                   | Case studies have their own "Results" heading; two sections with the same name read as a mistake                                                                                     |
-| `simple-icons` for technology logos                    | Free (CC0), maintained, 3,000+ logos as SVG path data; covers 22 of the 23 technologies. Owner approved the dependency. Only loaded on the server.                                   |
-| Logos in one colour, on every tech chip                | Owner's choice: brand colours would break the one-accent design; one chip style keeps the pages consistent                                                                           |
-| Skills right after Experience                          | What someone scanning a portfolio looks for next, before education                                                                                                                   |
-| Long unit names in durations                           | Intl's short forms are unclear in French ("5 m.")                                                                                                                                    |
+| Decision                                               | Why                                                                                                                                                                                   |
+| ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| TanStack Start, Router and Query                       | Already in place; type-safe routing, SSR and caching that work together                                                                                                               |
+| No global store                                        | Every piece of state has a better home (see "Where state lives")                                                                                                                      |
+| Forms post straight to Strapi                          | Per-visitor spam limits need the visitor's real IP                                                                                                                                    |
+| Zod at every boundary                                  | One schema gives runtime safety and the TypeScript type                                                                                                                               |
+| Markdown and Shiki on the server                       | Smaller pages; the browser doesn't download a parser or highlighter                                                                                                                   |
+| IBM Plex family                                        | One type family for English, French and Arabic, with a matching mono                                                                                                                  |
+| Typed dictionaries instead of an i18n library          | Around 100 interface strings; TypeScript enforces complete translations                                                                                                               |
+| Arabic dates and numbers with Latin digits             | Consistent with the CMS content                                                                                                                                                       |
+| `@/` as the only import alias                          | Owner's preference; one alias instead of two                                                                                                                                          |
+| ESLint 10 + Prettier                                   | TanStack and accessibility lint rules catch real bugs; Prettier ends style debates. ESLint 9 is no longer supported.                                                                  |
+| `eslint-plugin-jsx-a11y-x` for accessibility rules     | The original plugin is unmaintained and stuck on ESLint 9; the fork (es-tooling) is maintained and supports ESLint 10. Owner accepted its 0.x version.                                |
+| Deployed with Dokploy                                  | Owner's VPS setup: Docker containers behind Traefik, configured in the deployment step                                                                                                |
+| Electric blue accent, cool-tinted neutrals             | Owner's choice; techy and high contrast without gradients                                                                                                                             |
+| Separate `input` border token                          | Form controls need 3:1 contrast; decorative borders stay subtle                                                                                                                       |
+| Theme class applied by a script, not React             | No flash on load, and no conflict when switching between system and an explicit theme                                                                                                 |
+| Theme cookie readable by JavaScript                    | Not sensitive; lets the browser switch theme with no request                                                                                                                          |
+| Language prefix validated in `params.parse`            | Child routes get a typed language; unknown prefixes become a 404                                                                                                                      |
+| One `@types/react` version (pnpm `overrides`)          | Strapi's React 18 types were hoisted where TanStack Router found them. A `packageExtensions` peer was tried first and split the router into two runtime copies, breaking every link.  |
+| One `NAV_ITEMS` list                                   | Header and mobile menu stay in sync; typed links fail to compile for pages that don't exist yet                                                                                       |
+| Layout data in the root `beforeLoad`                   | Every page needs it, including 404s outside `$lang`; cached queries make repeat navigations free                                                                                      |
+| Explicit Zod env modules instead of `@t3-oss/env-core` | The template's setup read server variables from `import.meta.env`, where they don't exist, and evaluated at module level                                                              |
+| Social links open in the same tab, with `rel="me"`     | New tabs without warning hurt accessibility (WCAG G201); `rel="me"` marks the profiles as the owner's                                                                                 |
+| Default favicon in `public/favicon.svg`                | Used until one is uploaded in the CMS site settings                                                                                                                                   |
+| Project filters run in the browser                     | A handful of projects: one request loads them all, and filtering needs no round trip. Revisit if the list grows past what one page should load.                                       |
+| Filters in the URL, ignored when invalid               | Shareable, back-button friendly; a typo in a link never breaks the page                                                                                                               |
+| Content blocks rendered to HTML on the server          | The browser gets finished HTML: no parser or highlighter download, and one place to sanitize                                                                                          |
+| `@shikijs/rehype` for code in Markdown                 | Shiki's official plugin; replaced a hand-written one that needed type casts. Reuses the same highlighter as code blocks.                                                              |
+| Sanitize, then highlight                               | Sanitizing removes unsafe content; running it after Shiki would also strip the colours                                                                                                |
+| `notFoundComponent` on routes whose loader can 404     | A loader's `notFound()` replaces the component of the route that catches it; caught by `$lang`, it would drop the header and footer                                                   |
+| Stretched-link project cards                           | The whole card is clickable, while screen readers get one short link instead of the whole card read as a link                                                                         |
+| Amber `warning` token                                  | Warning and danger callouts looked the same in red                                                                                                                                    |
+| Spoken languages in their own query                    | Only About shows them; in the layout query they'd be sent with every page                                                                                                             |
+| About as the online CV, with a plain header            | Home already introduces the owner; About's own introduction (name, bio, facts, buttons) repeated it. Owner's choice: About shows the career for recruiters, Home stays short.         |
+| One spec-row layout for every About section            | Owner's choice: the timeline, rows and language columns started content at three different edges and didn't read as a CV. One shared row keeps them aligned.                          |
+| Availability as a short status everywhere              | The CMS note is a sentence; as a bordered pill it was too big. It's shown in the contact band instead.                                                                                |
+| One page anatomy for every page                        | Owner wanted home, about and projects to feel like one site; they had drifted apart (four header patterns, three section-title styles, different spacing)                             |
+| Section numbers from a CSS counter                     | Keeps numbers in order across `PageSection`s and CMS Markdown headings without counting in code; `content: … / ""` hides them from screen readers                                     |
+| One title size, one step larger on Home                | Consistency, with the approved design's slightly larger home title (`size="hero"`)                                                                                                    |
+| Project metrics titled "Key numbers"                   | Case studies have their own "Results" heading; two sections with the same name read as a mistake                                                                                      |
+| `simple-icons` for technology logos                    | Free (CC0), maintained, 3,000+ logos as SVG path data; covers 22 of the 23 technologies. Owner approved the dependency. Only loaded on the server.                                    |
+| Logos in one colour, on every tech chip                | Owner's choice: brand colours would break the one-accent design; one chip style keeps the pages consistent                                                                            |
+| Skills right after Experience                          | What someone scanning a portfolio looks for next, before education                                                                                                                    |
+| Long unit names in durations                           | Intl's short forms are unclear in French ("5 m.")                                                                                                                                     |
+| Strips in a solid transition band                      | Owner's choice: the figures get their own calm band between the grid and the page, on every page that has them                                                                        |
+| No company logos on jobs                               | The approved design: the role and company read clearly without tiles, and the rows stay calm                                                                                          |
+| Tighter section spacing on About only                  | The online CV reads as one document; landing-page gaps made its short sections look empty. Other pages keep the standard rhythm.                                                      |
+| Fewer lines: no row lines on About, no title rules     | Owner's choice: lines between rows and after section titles were too busy, and the first title's rule doubled the header band's bottom edge. Space and the blue numbers separate.     |
+| Full-width lines between sections                      | Owner's choice: they echo the header band's edge-to-edge border. Drawn with a box-shadow (`section-dividers` in `app.css`), which reaches the screen edges without widening the page. |
