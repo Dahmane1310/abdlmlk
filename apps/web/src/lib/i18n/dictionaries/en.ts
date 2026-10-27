@@ -87,6 +87,15 @@ export const en = {
     seriesPart: (part: number, total: number) =>
       `Part ${String(part)} of ${String(total)}`,
   },
+  // Readers' responses under an article.
+  comments: {
+    title: 'Responses',
+    counts: { one: 'response', other: 'responses' } as PluralForms,
+    // Marks the site owner's own replies.
+    author: 'Author',
+    empty: 'No responses yet.',
+    unavailable: "Responses can't be shown right now.",
+  },
   // The blue band that closes every page.
   contact: {
     label: 'Contact',

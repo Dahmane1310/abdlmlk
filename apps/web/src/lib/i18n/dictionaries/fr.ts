@@ -76,6 +76,13 @@ export const fr = {
     seriesPart: (part: number, total: number) =>
       `Partie ${String(part)} sur ${String(total)}`,
   },
+  comments: {
+    title: 'Réponses',
+    counts: { one: 'réponse', other: 'réponses' },
+    author: 'Auteur',
+    empty: "Aucune réponse pour l'instant.",
+    unavailable: 'Les réponses ne peuvent pas être affichées pour le moment.',
+  },
   contact: {
     label: 'Contact',
     // No-break space: French puts a space before "?", never at a line start.

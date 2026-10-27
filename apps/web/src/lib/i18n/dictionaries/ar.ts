@@ -124,6 +124,20 @@ export const ar = {
     seriesPart: (part: number, total: number) =>
       `الجزء ${String(part)} من ${String(total)}`,
   },
+  comments: {
+    title: 'الردود',
+    counts: {
+      zero: 'ردود',
+      one: 'رد',
+      two: 'ردّان',
+      few: 'ردود',
+      many: 'ردًّا',
+      other: 'رد',
+    },
+    author: 'الكاتب',
+    empty: 'لا توجد ردود بعد.',
+    unavailable: 'تعذّر عرض الردود الآن.',
+  },
   contact: {
     label: 'تواصل',
     question: 'لديك مشروع في ذهنك؟',

@@ -6,6 +6,8 @@ import { ContentBlocks } from '@/components/content/content-blocks'
 import { ResponsiveImage } from '@/components/content/responsive-image'
 import { Page } from '@/components/layout/page'
 import { PageHeader } from '@/components/layout/page-header'
+import { CommentSection } from '@/features/comments/components/comment-section'
+import { ResponsesLink } from '@/features/comments/components/responses-link'
 import { LikeButton } from '@/features/likes/components/like-button'
 import { cn } from '@/lib/utils'
 
@@ -71,10 +73,14 @@ export function ArticlePage() {
                   className="reading min-w-0"
                 />
               </div>
-              <LikeButton article={article.documentId} />
+              <div className="flex items-center gap-6">
+                <LikeButton article={article.documentId} />
+                <ResponsesLink article={article.documentId} />
+              </div>
               {article.series && (
                 <SeriesParts series={article.series} current={article.slug} />
               )}
+              <CommentSection article={article.documentId} />
             </div>
             {showContents && (
               // Wide screens only: on a phone it would push the text down.

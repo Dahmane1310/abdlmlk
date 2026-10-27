@@ -6,8 +6,8 @@ const EXTRA_LOCALES = [
   { code: 'fr', name: 'French (fr)' },
 ];
 
-// Content the website reads without authentication. Comments, newsletter and
-// contact use their own public endpoints instead.
+// Content the website reads without authentication. Comments, likes,
+// newsletter and contact use their own public endpoints instead.
 const PUBLIC_READ: Record<string, string[]> = {
   'api::profile.profile': ['find'],
   'api::site-setting.site-setting': ['find'],

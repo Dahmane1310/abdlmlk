@@ -53,7 +53,8 @@ src/
                                article page with its contents, progress bar and series card, the series
                                page, and the reading time (reading-time.ts).
                                likes/ owns the like button: the count and the reader's own like
-                               (stored-like.ts).
+                               (stored-like.ts). comments/ owns an article's responses: reading them,
+                               grouped into threads (threads.ts), and the link to them.
 
   components/
     ui/                        shadcn components, generated then adapted to our design
@@ -176,6 +177,8 @@ Likes, comments, newsletter and contact **post directly from the browser to Stra
 - **Shown at once, sent in order.** A click fills the heart and changes the cached total right away (`setQueryData`). The requests share a mutation `scope`, so TanStack Query sends them one at a time in click order, and only the last one's answer sets the total. If a request fails (rate limit, CMS down), the like is undone and the total fetched again.
 - **The reader's like** lives in `localStorage` (`stored-like.ts`), read through `useSyncExternalStore`: the server renders "not liked" and the browser swaps in the stored answer after hydration, so they never disagree. It only fills the heart; the CMS keeps the real like per visitor.
 - **The total is read through a server function** (`getLikes`), like all reads, in the browser after the page shows: articles are cached for good, the count isn't.
+
+**Responses** (`features/comments/`) are read the same way: `getComments` asks Strapi for an article's approved responses in the page's language (a response belongs to the language it was written in) and groups them into threads one level deep (`threads.ts`): a reply to a reply joins its response's thread, and a reply whose response was since rejected is left out. The speech-bubble link beside the like button shares the same query for its count. A response is shown as plain text with its line breaks (`whitespace-pre-line`), never as HTML or Markdown, so a reader's text never needs sanitizing; `dir="auto"` lets it read in its own direction.
 
 ## Where state lives
 
@@ -384,6 +387,9 @@ Every page is built from the same pieces, so home, about and projects feel like 
 | Likes, one per reader, kept per hashed IP              | Owner's choice: Medium's claps (up to 50 each) were built first and dropped for the plain like everyone knows. With no accounts, the CMS keeps one entry per visitor and article (the IP hashed, as for comments), so one like holds whatever the browser says. |
 | One like count for an article's languages              | Counted by the document id, which Strapi shares between locales: it's one article, translated                                                                                                                                                                   |
 | No captcha on likes                                    | There's no form to show one in; one like per visitor and the rate limit bound what anyone can add                                                                                                                                                               |
+| Responses as an open list, one level of replies        | Owner's choice: nothing to click to read them, and readable on phones, where deeper nesting gets too narrow                                                                                                                                                     |
+| Responses loaded in the browser                        | The article stays cached for good and new approvals show without touching it. They're not in the first HTML; search engines that run JavaScript still see them.                                                                                                 |
+| Responses as plain text                                | A reader's text is never trusted: no HTML or Markdown means nothing to sanitize. Line breaks are kept.                                                                                                                                                          |
 | Heading ids from our own step, not `rehype-slug`       | `rehype-slug` starts over in every block, so two blocks could give the same id, and it doesn't return the headings for the contents. A few lines over the tree the pipeline already builds do both. Owner approved `@types/hast` (types only) for it.           |
 | Contents on wide screens only                          | Beside the text there's room; on a phone it would push the article down a screen before the first line                                                                                                                                                          |
 | A series' parts in one card after the text             | Owner's choice: the whole series and the next part in one place, on phones too. Previous / Next cards alone gave no overview; a second card before the text would push the article down.                                                                        |
