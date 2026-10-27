@@ -25,6 +25,8 @@ const seriesRefSchema = z.object({
 
 /** An article as the CMS sends it: what the list shows, plus its blocks. */
 export const articleSchema = z.object({
+  /** Shared by the article's languages: likes are counted per document. */
+  documentId: z.string(),
   title: z.string(),
   slug: z.string(),
   description: z.string().nullable(),

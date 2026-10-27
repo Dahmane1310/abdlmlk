@@ -50,8 +50,9 @@ Content is available in English (`en`, default), Arabic (`ar`) and French (`fr`)
 | Technology, Organization | Shared lists, not translated |
 | Article, Tag, Series | Blog posts with code and callout blocks, multi-part series |
 | Comment, Subscriber, Message | Filled by visitors; managed in the admin only |
+| Like | Likes on articles, one entry per visitor and article; filled by the site only |
 
-Public form endpoints, protected by a honeypot field (`website`), per-IP rate limits and the optional captcha (`turnstileToken`):
+Public endpoints, protected by a honeypot field (`website`), per-IP rate limits and the optional captcha (`turnstileToken`; not asked for likes, which have no form):
 
 | Endpoint | Does |
 | --- | --- |
@@ -60,6 +61,8 @@ Public form endpoints, protected by a honeypot field (`website`), per-IP rate li
 | `POST /api/newsletter/subscribe` | Sends a confirmation email in the subscriber's language |
 | `GET /api/newsletter/confirm?token=…`, `/unsubscribe?token=…` | Links from emails; redirect back to `SITE_URL` |
 | `POST /api/contact` | Saves a contact message and emails it to `OWNER_EMAIL` |
+| `GET /api/likes?article=<documentId>` | How many visitors like an article, its languages counted together |
+| `POST /api/likes` | Sets whether a visitor likes an article (`article`, `locale`, `liked`); one like per visitor |
 
 Anonymous requests for drafts (`?status=draft`) are refused.
 

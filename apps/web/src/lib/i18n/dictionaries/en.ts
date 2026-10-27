@@ -68,7 +68,10 @@ export const en = {
         one: 'minute of reading',
         other: 'minutes of reading',
       } as PluralForms,
+      // Read out after the number beside the like button.
+      likes: { one: 'like', other: 'likes' } as PluralForms,
     },
+    like: 'Like',
     startSeries: 'Start with part 1',
     // Above a list filtered by topic: "Topic: Arabic ✕".
     topic: 'Topic',

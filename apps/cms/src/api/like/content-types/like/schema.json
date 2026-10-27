@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "likes",
+  "info": {
+    "singularName": "like",
+    "pluralName": "likes",
+    "displayName": "Like",
+    "description": "Likes on blog articles: one entry per visitor and article."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "articleDocumentId": {
+      "type": "string",
+      "required": true,
+      "maxLength": 32
+    },
+    "ipHash": {
+      "type": "string",
+      "required": true,
+      "private": true
+    }
+  }
+}

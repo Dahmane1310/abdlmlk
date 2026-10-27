@@ -1,6 +1,7 @@
 import type { Core } from '@strapi/strapi';
 
-type Config = { max?: number; windowMs?: number };
+// captcha: false for endpoints without a form to show the widget in (likes).
+type Config = { max?: number; windowMs?: number; captcha?: boolean };
 
 // Recent request times per IP + path. In memory: fine for a single server, resets on restart.
 const hits = new Map<string, number[]>();
@@ -26,14 +27,15 @@ async function verifyTurnstile(secret: string, token: unknown, ip: string) {
 }
 
 /**
- * Protects the public form endpoints (comments, newsletter, contact):
+ * Protects the public endpoints (comments, newsletter, contact, likes):
  * - honeypot: a hidden "website" field that real visitors leave empty
  * - rate limit per IP and path
- * - Cloudflare Turnstile check, only when TURNSTILE_SECRET_KEY is set
+ * - Cloudflare Turnstile check, only when TURNSTILE_SECRET_KEY is set and the endpoint asks for it
  */
 const spamGuard: Core.MiddlewareFactory<Config> = (config) => {
   const max = config?.max ?? 5;
   const windowMs = config?.windowMs ?? 10 * 60 * 1000;
+  const captcha = config?.captcha ?? true;
 
   return async (ctx, next) => {
     const body = (ctx.request.body ?? {}) as Record<string, unknown>;
@@ -56,7 +58,7 @@ const spamGuard: Core.MiddlewareFactory<Config> = (config) => {
     if (hits.size > 10_000) prune(now, windowMs);
 
     const secret = process.env.TURNSTILE_SECRET_KEY;
-    if (secret && !(await verifyTurnstile(secret, body.turnstileToken, ctx.request.ip))) {
+    if (captcha && secret && !(await verifyTurnstile(secret, body.turnstileToken, ctx.request.ip))) {
       return ctx.badRequest('Captcha verification failed.');
     }
 

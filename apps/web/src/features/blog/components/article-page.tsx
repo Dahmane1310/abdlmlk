@@ -6,6 +6,7 @@ import { ContentBlocks } from '@/components/content/content-blocks'
 import { ResponsiveImage } from '@/components/content/responsive-image'
 import { Page } from '@/components/layout/page'
 import { PageHeader } from '@/components/layout/page-header'
+import { LikeButton } from '@/features/likes/components/like-button'
 import { cn } from '@/lib/utils'
 
 import { articleQuery } from '../blog.queries'
@@ -70,6 +71,7 @@ export function ArticlePage() {
                   className="reading min-w-0"
                 />
               </div>
+              <LikeButton article={article.documentId} />
               {article.series && (
                 <SeriesParts series={article.series} current={article.slug} />
               )}

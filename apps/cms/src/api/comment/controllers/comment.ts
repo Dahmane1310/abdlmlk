@@ -2,14 +2,10 @@
  * comment controller
  */
 
-import { createHash } from 'node:crypto';
 import { factories } from '@strapi/strapi';
+import { hashIp } from '../../../utils/hash-ip';
 import { cleanText, isEmail, isLanguage } from '../../../utils/validate';
 import { ownerEmail, sendMail } from '../../../utils/mail';
-
-// Lets you spot repeat spammers without storing raw IP addresses.
-const hashIp = (ip: string) =>
-  createHash('sha256').update(`${ip}:${process.env.API_TOKEN_SALT ?? ''}`).digest('hex').slice(0, 32);
 
 export default factories.createCoreController('api::comment.comment', ({ strapi }) => ({
   /** GET /api/comments?article=<documentId>&locale=<en|ar|fr>: approved comments, oldest first. */
