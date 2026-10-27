@@ -1,17 +1,16 @@
 import { useSuspenseQuery } from '@tanstack/react-query'
-import { getRouteApi, Link } from '@tanstack/react-router'
-import { ArrowLeftIcon } from 'lucide-react'
+import { getRouteApi } from '@tanstack/react-router'
 import { useRef } from 'react'
 
 import { ContentBlocks } from '@/components/content/content-blocks'
 import { ResponsiveImage } from '@/components/content/responsive-image'
 import { Page } from '@/components/layout/page'
 import { PageHeader } from '@/components/layout/page-header'
-import { useTranslation } from '@/lib/i18n/use-translation'
 import { cn } from '@/lib/utils'
 
 import { articleQuery } from '../blog.queries'
 import { ArticleByline } from './article-byline'
+import { BackToBlog } from './back-to-blog'
 import { ReadingProgress } from './reading-progress'
 import { SeriesParts } from './series-parts'
 import { TableOfContents } from './table-of-contents'
@@ -25,7 +24,6 @@ const routeApi = getRouteApi('/$lang/blog/$slug')
  * article belongs to one.
  */
 export function ArticlePage() {
-  const t = useTranslation()
   const { lang, slug } = routeApi.useParams()
   const { data: article } = useSuspenseQuery(articleQuery(lang, slug))
   const text = useRef<HTMLDivElement>(null)
@@ -37,16 +35,7 @@ export function ArticlePage() {
       <Page
         header={
           <PageHeader
-            eyebrow={
-              <Link
-                to="/$lang/blog"
-                params={{ lang }}
-                className="inline-flex items-center gap-1.5 hover:text-foreground"
-              >
-                <ArrowLeftIcon aria-hidden className="size-4 rtl:rotate-180" />
-                {t.blog.backToAll}
-              </Link>
-            }
+            eyebrow={<BackToBlog />}
             title={article.title}
             lead={article.description ?? undefined}
             size="article"

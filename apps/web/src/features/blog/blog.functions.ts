@@ -8,7 +8,7 @@ import { renderContentBlocks } from '@/lib/content/blocks.server'
 import { languageSchema } from '@/lib/i18n/config'
 import { getStrapiClient } from '@/lib/strapi/client.server'
 
-import { articleListSchema } from './blog.schema'
+import { articleListSchema, seriesListSchema } from './blog.schema'
 import { readingMinutes } from './reading-time'
 
 const ARTICLE_POPULATE = {
@@ -90,6 +90,26 @@ export const getArticle = createServerFn({ method: 'GET' })
         block.type === 'rich-text' ? block.headings : [],
       ),
     }
+  })
+
+/**
+ * A series' title and description, for its page. Its parts aren't read here:
+ * the page takes them from the article list, which already has their reading
+ * times and is usually cached from the blog page.
+ */
+export const getSeries = createServerFn({ method: 'GET' })
+  .validator(z.object({ lang: languageSchema, slug: z.string() }))
+  .handler(async ({ data }) => {
+    const response = await getStrapiClient()
+      .collection('series-list')
+      .find({
+        locale: data.lang,
+        filters: { slug: { $eq: data.slug } },
+        fields: ['title', 'slug', 'description'],
+      })
+    const series = seriesListSchema.parse(response).data.at(0)
+    if (!series) throw notFound()
+    return series
   })
 
 /** An article as the list shows it. */

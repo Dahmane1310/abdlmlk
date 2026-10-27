@@ -9,9 +9,8 @@ import { pluralForm } from '@/lib/i18n/format'
 import { useLanguage } from '@/lib/i18n/use-language'
 import { useTranslation } from '@/lib/i18n/use-translation'
 
-import type { ArticleSummary } from '../blog.functions'
 import { articlesQuery } from '../blog.queries'
-import { ArticleRow } from './article-row'
+import { ArticleFeed } from './article-feed'
 
 const routeApi = getRouteApi('/$lang/blog/')
 
@@ -90,18 +89,6 @@ export function BlogPage() {
         </div>
       )}
     </Page>
-  )
-}
-
-function ArticleFeed({ articles }: { articles: ArticleSummary[] }) {
-  return (
-    <ul className="flex flex-col gap-14">
-      {articles.map((article) => (
-        <li key={article.slug}>
-          <ArticleRow article={article} />
-        </li>
-      ))}
-    </ul>
   )
 }
 

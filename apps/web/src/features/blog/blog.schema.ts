@@ -44,6 +44,17 @@ export const articleListSchema = z.object({
   data: z.array(articleSchema),
 })
 
+/** A series as its own page shows it; its parts come from the article list. */
+export const seriesSchema = z.object({
+  title: z.string(),
+  slug: z.string(),
+  description: z.string().nullable(),
+})
+
+export const seriesListSchema = z.object({
+  data: z.array(seriesSchema),
+})
+
 /** The filter in the URL (?tag=arabic). An unknown tag shows the empty state. */
 export const blogSearchSchema = z.object({
   tag: z.string().optional().catch(undefined),

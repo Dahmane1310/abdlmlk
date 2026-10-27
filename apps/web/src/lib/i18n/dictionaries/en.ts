@@ -62,7 +62,14 @@ export const en = {
       articles: { one: 'article', other: 'articles' } as PluralForms,
       series: { one: 'series', other: 'series' } as PluralForms,
       topics: { one: 'topic', other: 'topics' } as PluralForms,
+      // A series page's numbers.
+      parts: { one: 'part', other: 'parts' } as PluralForms,
+      minutes: {
+        one: 'minute of reading',
+        other: 'minutes of reading',
+      } as PluralForms,
     },
+    startSeries: 'Start with part 1',
     // Above a list filtered by topic: "Topic: Arabic ✕".
     topic: 'Topic',
     empty: 'No articles here yet.',

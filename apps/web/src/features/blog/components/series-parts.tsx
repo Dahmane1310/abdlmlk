@@ -35,7 +35,13 @@ export function SeriesParts({
           {t.blog.series}
         </p>
         <p id="series-title" className="text-lg font-semibold tracking-tight">
-          {series.title}
+          <Link
+            to="/$lang/blog/series/$slug"
+            params={{ lang, slug: series.slug }}
+            className="decoration-1 underline-offset-4 hover:underline"
+          >
+            {series.title}
+          </Link>
         </p>
       </div>
       <ol className="flex flex-col">
