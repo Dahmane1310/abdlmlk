@@ -33,16 +33,17 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   beforeLoad: async ({ context, location }) => {
     const lang = getLanguageFromPath(location.pathname)
     // 'static': use what's cached, fetch only what's missing.
-    const [siteSettings, siteUrl] = await Promise.all([
+    const [siteSettings, siteUrl, profile] = await Promise.all([
       context.queryClient.query({
         ...siteSettingsQuery(lang),
         staleTime: 'static',
       }),
       // For every page's canonical link and link previews (lib/seo).
       context.queryClient.query({ ...siteUrlQuery(), staleTime: 'static' }),
+      // Also in the context for the pages' structured data (lib/seo).
       context.queryClient.query({ ...profileQuery(lang), staleTime: 'static' }),
     ])
-    return { siteSettings, siteUrl }
+    return { siteSettings, siteUrl, profile }
   },
   // Read once on load; the theme toggle invalidates the router after a change.
   loader: () => ({ theme: getTheme() }),

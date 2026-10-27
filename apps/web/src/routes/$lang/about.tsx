@@ -6,6 +6,7 @@ import { spokenLanguagesQuery } from '@/features/profile/profile.queries'
 import { skillsQuery } from '@/features/technologies/technologies.queries'
 import { dictionaries } from '@/lib/i18n/dictionaries'
 import { pageHead } from '@/lib/seo/page-head'
+import { profilePageData } from '@/lib/seo/structured-data'
 
 export const Route = createFileRoute('/$lang/about')({
   // The base profile is already loaded for the layout by the root route.
@@ -34,6 +35,9 @@ export const Route = createFileRoute('/$lang/about')({
       title: `${t.about.title} — ${match.context.siteSettings.siteName}`,
       description: t.about.description,
       type: 'profile',
+      structuredData: ({ url }) => [
+        profilePageData(match.context, params.lang, url),
+      ],
     })
   },
   component: AboutPage,

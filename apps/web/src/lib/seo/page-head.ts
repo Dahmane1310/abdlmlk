@@ -1,6 +1,8 @@
 import { type Language, LANGUAGES } from '@/lib/i18n/config'
 import type { Media } from '@/lib/strapi/schemas'
 
+import type { JsonLd } from './structured-data'
+
 // Open Graph wants language_TERRITORY.
 const OG_LOCALES: Record<Language, string> = {
   en: 'en_US',
@@ -35,6 +37,11 @@ interface PageSeo {
   /** The languages the page exists in. All three unless it says otherwise. */
   languages?: readonly Language[]
   article?: { publishedTime: string; modifiedTime: string | null }
+  /**
+   * The page's schema.org data (structured-data.ts), given the address and
+   * share image worked out here, so the two can't disagree.
+   */
+  structuredData?: (page: { url: string; image: ShareImage }) => JsonLd[]
 }
 
 /**
@@ -54,6 +61,7 @@ export function pageHead({
   type = 'website',
   languages = LANGUAGES,
   article,
+  structuredData,
 }: PageSeo) {
   const urlIn = (language: Language) => `${context.siteUrl}/${language}${path}`
   // The page's own image, then a default uploaded in the CMS, then the
@@ -122,6 +130,15 @@ export function pageHead({
           ]
         : []),
     ],
+    // One <script type="application/ld+json"> each. The router writes a
+    // script's content as is, so "<" is escaped: CMS text like an article's
+    // title can then never close the tag early.
+    scripts: (
+      structuredData?.({ url: urlIn(lang), image: shareImage }) ?? []
+    ).map((data) => ({
+      type: 'application/ld+json',
+      children: JSON.stringify(data).replaceAll('<', '\\u003c'),
+    })),
     links: [
       { rel: 'canonical', href: urlIn(lang) },
       ...languages.map((language) => ({

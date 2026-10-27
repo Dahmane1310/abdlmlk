@@ -6,7 +6,9 @@ import {
   projectQuery,
   projectsQuery,
 } from '@/features/projects/projects.queries'
+import { dictionaries } from '@/lib/i18n/dictionaries'
 import { pageHead } from '@/lib/seo/page-head'
+import { breadcrumbData } from '@/lib/seo/structured-data'
 
 export const Route = createFileRoute('/$lang/projects/$slug')({
   // The list is loaded too, for the previous/next links (usually already cached).
@@ -35,14 +37,21 @@ export const Route = createFileRoute('/$lang/projects/$slug')({
   head: ({ loaderData, match, params }) => {
     if (!loaderData) return {}
     const siteName = match.context.siteSettings.siteName
+    const path = `/projects/${params.slug}`
     return pageHead({
       context: match.context,
       lang: params.lang,
-      path: `/projects/${params.slug}`,
+      path,
       title: loaderData.seo?.metaTitle ?? `${loaderData.title} — ${siteName}`,
       description: loaderData.seo?.metaDescription ?? loaderData.summary,
       image: loaderData.seo?.shareImage ?? loaderData.cover,
       languages: loaderData.languages,
+      structuredData: () => [
+        breadcrumbData(match.context, params.lang, [
+          { name: dictionaries[params.lang].nav.projects, path: '/projects' },
+          { name: loaderData.title, path },
+        ]),
+      ],
     })
   },
   component: ProjectPage,

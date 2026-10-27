@@ -98,6 +98,7 @@ src/
     seo/
       page-head.ts             pageHead(): a page's title, description, canonical, hreflang and Open Graph tags
       sitemap.server.ts        the sitemap: every page in each of its languages, read from the CMS
+      structured-data.ts       schema.org JSON-LD: the owner (Person), WebSite, ProfilePage, BlogPosting, breadcrumbs
     theme/
       config.ts                themes (light, dark, system), default, cookie
       theme.ts                 read the cookie (server and browser), save a choice
@@ -341,6 +342,12 @@ Every page is built from the same pieces, so home, about and projects feel like 
 - **`/robots.txt`** allows everything and names the sitemap. It's a route rather than a file in `public/` because the sitemap's address comes from `SITE_URL`.
 - **The site's address in files the server answers** (the feeds, the sitemap, robots.txt) comes from the same `getSiteUrl()` as the pages' heads, so a proxy's forwarded host counts everywhere.
 - **One meta tag per name or property:** the router keeps only one of each across the page, so tags meant to repeat (`og:locale:alternate`, `article:tag`) aren't used. The hreflang links already name the other languages, and an article's topics go in its structured data.
+- **Structured data** (`lib/seo/structured-data.ts`): schema.org JSON-LD, which Google reads to describe a page in its results. `pageHead()` takes it as a `structuredData` callback, handing it the page's canonical address and share image, so the two can't disagree.
+  - **Home:** a `WebSite` and the owner as a `Person`: name, headline as job title, intro, location, and the social profiles as `sameAs`. The email stays out, away from spammers. The profile comes from the root route's context, which loads it for the layout anyway.
+  - **About:** a `ProfilePage` about that `Person`.
+  - **Articles:** a `BlogPosting` (title, description, dates, share image, language, author, and the topics as `keywords`).
+  - **Breadcrumbs:** a `BreadcrumbList` (Home › Blog or Projects › the page) on articles, projects and series.
+  - **Written as `head` scripts,** `<script type="application/ld+json">`, which the router treats as data. This version's `head` type has no `'script:ld+json'` meta entry, though the router supports it. A script's content goes into the page as is, so `<` is written as `<`: CMS text can never close the tag early.
 
 ## Server and security rules
 
@@ -453,6 +460,7 @@ Every page is built from the same pieces, so home, about and projects feel like 
 | RSS feeds with summaries, one per language                        | Owner's choice: readers click through to the full article, with its code highlighting, likes and responses. Hand-written XML: a few lines, no package.                                                                                                          |
 | `SITE_URL`, falling back to the request's address                 | Full links need the public address; locally the request's own is right, and production sets it. The SEO step (canonical links, sitemap) reuses it.                                                                                                              |
 | One `pageHead()` for every page's SEO tags                        | The pages had drifted (titles only, some without descriptions); one helper gives each the same canonical, hreflang and Open Graph tags                                                                                                                          |
+| Structured data for the owner, articles and breadcrumbs           | Google can show breadcrumbs and article details in results and tie the social profiles to the site. Owner's choice: breadcrumbs on articles, projects and series.                                                                                               |
 | Sitemap built from the CMS on request, not at build time          | Publishing an article must reach search engines without a rebuild; the answer is cached for an hour                                                                                                                                                             |
 | One designed share card per language, drawn once                  | Owner's choice (the dark one). No page had an image to share; drawn in the browser, Arabic renders properly, with no package, where per-page images from satori would break Arabic text                                                                         |
 | hreflang only to translations that exist                          | A link to a missing translation is a 404 that search engines flag; Strapi's `localizations` say which ones exist                                                                                                                                                |

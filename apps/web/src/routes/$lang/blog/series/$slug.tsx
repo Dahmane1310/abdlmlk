@@ -3,7 +3,9 @@ import { createFileRoute } from '@tanstack/react-router'
 import { NotFoundPage } from '@/components/layout/not-found-page'
 import { articlesQuery, seriesQuery } from '@/features/blog/blog.queries'
 import { SeriesPage } from '@/features/blog/components/series-page'
+import { dictionaries } from '@/lib/i18n/dictionaries'
 import { pageHead } from '@/lib/seo/page-head'
+import { breadcrumbData } from '@/lib/seo/structured-data'
 
 export const Route = createFileRoute('/$lang/blog/series/$slug')({
   // An unknown slug makes getSeries throw notFound(), handled by this route's
@@ -27,13 +29,20 @@ export const Route = createFileRoute('/$lang/blog/series/$slug')({
   },
   head: ({ loaderData, match, params }) => {
     if (!loaderData) return {}
+    const path = `/blog/series/${params.slug}`
     return pageHead({
       context: match.context,
       lang: params.lang,
-      path: `/blog/series/${params.slug}`,
+      path,
       title: `${loaderData.title} — ${match.context.siteSettings.siteName}`,
       description: loaderData.description,
       languages: loaderData.languages,
+      structuredData: () => [
+        breadcrumbData(match.context, params.lang, [
+          { name: dictionaries[params.lang].nav.blog, path: '/blog' },
+          { name: loaderData.title, path },
+        ]),
+      ],
     })
   },
   component: SeriesPage,

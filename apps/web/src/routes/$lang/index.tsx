@@ -7,6 +7,7 @@ import { profileQuery } from '@/features/profile/profile.queries'
 import { projectsQuery } from '@/features/projects/projects.queries'
 import { servicesQuery } from '@/features/services/services.queries'
 import { pageHead } from '@/lib/seo/page-head'
+import { homeData } from '@/lib/seo/structured-data'
 
 export const Route = createFileRoute('/$lang/')({
   // ?newsletter= from the links in the newsletter's emails.
@@ -41,6 +42,7 @@ export const Route = createFileRoute('/$lang/')({
       path: '',
       title: siteSettings.defaultSeo?.metaTitle ?? siteSettings.siteName,
       description: siteSettings.defaultSeo?.metaDescription,
+      structuredData: () => homeData(match.context, params.lang),
     })
   },
   component: HomePage,
