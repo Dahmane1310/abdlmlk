@@ -126,6 +126,8 @@ export const en = {
     email: 'Email address',
     placeholder: 'you@example.com',
     subscribe: 'Subscribe',
+    rssPrompt: 'Prefer a feed reader?',
+    rss: 'RSS feed',
     sending: 'Sending…',
     sent: 'Almost done: check your inbox to confirm your subscription.',
     errors: {

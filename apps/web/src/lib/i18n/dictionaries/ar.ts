@@ -163,6 +163,8 @@ export const ar = {
     email: 'البريد الإلكتروني',
     placeholder: 'you@example.com',
     subscribe: 'اشتراك',
+    rssPrompt: 'تفضّل قارئ الخلاصات؟',
+    rss: 'خلاصة RSS',
     sending: 'جارٍ الإرسال…',
     sent: 'بقيت خطوة: تحقّق من بريدك لتأكيد اشتراكك.',
     errors: {

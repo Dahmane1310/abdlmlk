@@ -109,6 +109,8 @@ export const fr = {
     email: 'Adresse e-mail',
     placeholder: 'vous@exemple.com',
     subscribe: "S'abonner",
+    rssPrompt: 'Vous préférez un lecteur de flux\u00A0?',
+    rss: 'Flux RSS',
     sending: 'Envoi…',
     sent: 'Presque fini\u00A0: confirmez votre abonnement depuis votre boîte de réception.',
     errors: {

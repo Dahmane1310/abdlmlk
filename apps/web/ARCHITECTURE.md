@@ -35,6 +35,7 @@ src/
       contact.tsx
       projects/index.tsx, projects/$slug.tsx
       blog/index.tsx, blog/$slug.tsx, blog/series/$slug.tsx
+      rss[.]xml.ts             /en/rss.xml…: the blog's RSS feed, a file the server answers, not a page
 
   features/                    one folder per domain, everything about it in one place
     projects/
@@ -185,6 +186,13 @@ Likes, comments, newsletter and contact **post directly from the browser to Stra
 - **Coming back:** the links in the CMS's emails confirm or unsubscribe, then send the reader to `/{lang}?newsletter=confirmed` or `?newsletter=unsubscribed` (or `/?newsletter=invalid` for a used or unknown link, where `/` keeps the parameter through its language redirect). Home validates `?newsletter=` with Zod, ignores anything else, and shows the matching note; closing it removes the parameter.
 - **Sending new articles** to subscribers isn't built yet.
 
+**RSS** (`routes/$lang/rss[.]xml.ts`, `features/blog/rss.server.ts`): one RSS 2.0 feed per language, answered by the route's `server.handlers.GET` instead of a page.
+
+- **Summaries:** each article's title, link, date, topics and description; readers click through to the site. The XML is written by hand, with every CMS text escaped, so no package is needed. The feed is cached for an hour (`Cache-Control`).
+- **Full links** start with `SITE_URL`, or the request's own address when it isn't set.
+- **Found from any page:** the `$lang` layout's `head` adds `<link rel="alternate" type="application/rss+xml">` for its language; the newsletter box links to it as the other way to follow.
+- **An unknown language is a 404:** Start runs the `$lang` layout's parameter check before the handler, and its "not found" (a 404 for pages) would otherwise answer a file route with a 500. A small request middleware on the route (`notFoundAs404`) turns it into a plain 404.
+
 **Likes** (`features/likes/`) have no form:
 
 - **A state, not a toggle.** The browser sends whether the reader likes the article (`liked: true | false`), and the CMS adds or removes that visitor's one entry. Sending the same answer twice changes nothing, so a double click or a retry can't count twice.
@@ -311,7 +319,8 @@ Every page is built from the same pieces, so home, about and projects feel like 
 - **Environment variables** are validated in `env.ts`. Server variables are read inside server functions, never at module level. Only `VITE_`-prefixed variables reach the browser, and they hold nothing secret.
   - `VITE_STRAPI_URL` (required, `env.ts`): Strapi's public URL, for images and form posts from the browser. Baked in at build time.
   - `STRAPI_URL` (optional, `env.server.ts`): how the server reaches Strapi. In production, Strapi's internal address on Dokploy's Docker network (set up in the deployment step). Falls back to `VITE_STRAPI_URL`.
-  - Both are listed in `.env.example`; copy it to `.env.local` for development.
+  - `SITE_URL` (optional, `env.server.ts`): the site's public address, for full links (the RSS feeds). Without it, the address the request came in on; set it in production, where a proxy could report an internal one.
+  - All three are listed in `.env.example`; copy it to `.env.local` for development.
 - **Drafts are never requested.** The site only reads published content.
 
 ## Conventions
@@ -410,6 +419,8 @@ Every page is built from the same pieces, so home, about and projects feel like 
 | Touch screens get the system share sheet                          | Owner's choice. The `pointer: coarse` media query picks the layout in CSS, so nothing changes after hydration; a browser without `navigator.share` copies the link instead.                                                                                     |
 | Share links open in a new tab, and say so                         | The reader keeps the article open; screen readers hear "opens in a new tab" (WCAG G201), unlike the profile links, which stay in the same tab.                                                                                                                  |
 | Newsletter box after the series card, as a bordered card          | Owner's choice: right after reading, before a possibly long discussion; a card like the series card keeps the contact band the page's one big blue block                                                                                                        |
+| RSS feeds with summaries, one per language                        | Owner's choice: readers click through to the full article, with its code highlighting, likes and responses. Hand-written XML: a few lines, no package.                                                                                                          |
+| `SITE_URL`, falling back to the request's address                 | Full links need the public address; locally the request's own is right, and production sets it. The SEO step (canonical links, sitemap) reuses it.                                                                                                              |
 | Navbar links ignore the search part when marking the current page | `includeSearch: false`: with `exact`, the router also compared "?…", so Home lost its blue line when it had `?newsletter=`                                                                                                                                      |
 | Heading ids from our own step, not `rehype-slug`                  | `rehype-slug` starts over in every block, so two blocks could give the same id, and it doesn't return the headings for the contents. A few lines over the tree the pipeline already builds do both. Owner approved `@types/hast` (types only) for it.           |
 | Contents on wide screens only                                     | Beside the text there's room; on a phone it would push the article down a screen before the first line                                                                                                                                                          |

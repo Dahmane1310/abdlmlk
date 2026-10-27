@@ -80,7 +80,7 @@ Anonymous requests for drafts (`?status=draft`) are refused.
      OWNER_EMAIL=you@example.com
      SMTP_HOST=…   # plus SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_FROM
      ```
-   - `apps/web/.env.production.local`: `VITE_STRAPI_URL=https://cms.example.com`
+   - `apps/web/.env.production.local`: `VITE_STRAPI_URL=https://cms.example.com` and `SITE_URL=https://example.com` (the site's own address, for the RSS feeds' links)
 4. Run `pnpm build`, then `pnpm --filter cms seed` once to load the portfolio content (or copy your local `apps/cms/.tmp/data.db` and `apps/cms/public/uploads/` over instead).
 5. Run each app as its own service, not through Turbo (Turbo would strip env vars set by the service manager). Example systemd units:
 
