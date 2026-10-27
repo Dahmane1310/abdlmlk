@@ -73,7 +73,7 @@ Site footer        © · LinkedIn GitHub · English العربية Français
   - **Below 1024px:** the mark, the name, "Contact" and a menu button. The menu (a panel from the end side) lists the pages large (24px 600), the current one foreground with a 2px `primary` line on its start edge, then the languages and the theme switch at the bottom.
 - **Blueprint band:** a full-width area behind the page header with a 32px grid of 1px lines in the grid colour, closed by a 1px bottom border. Plain flat lines, not a gradient effect.
 - **Transition band and strip:** on every page, a full-width band in solid `muted` sits between the blueprint band and the plain page, closed by a 1px bottom border, so the page steps from grid to tint to plain (owner's choice; the mockup had the strip inside the grid, and pages without one felt empty). The blueprint band holds text and buttons; the transition band holds the page's figures or controls. Figures go in a strip: a row of cells with 1px vertical lines between them and the first cell flush with the text, two cells per row on phones (with a 1px line between the rows).
-  - **Home:** the headline numbers (big mono number above a grey caption).
+  - **Home:** the headline numbers (big mono number above a grey caption). A unit never sits alone on a line: the space before "%" is a no-break space ("15–25 %" in French), so on narrow phones a range breaks after its dash instead ("15–" / "25 %").
   - **About:** the CV at a glance (see "About header").
   - **Project pages:** the project's facts (mono label above a value, with an optional grey second line).
   - **Projects:** the filters, the page's controls (see "Projects filters").

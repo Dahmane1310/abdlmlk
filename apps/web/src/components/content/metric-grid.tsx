@@ -2,6 +2,11 @@ import { cn } from '@/lib/utils'
 
 import { STRIP_CELL_CLASS, STRIP_CLASS } from './strip'
 
+// French writes a space before "%" ("15–25 %"). As a no-break space, the "%"
+// stays with its number on a narrow phone; the figure can still break after
+// the dash ("15–" / "25 %") rather than overflow its cell.
+const keepUnitWithNumber = (value: string) => value.replace(/\s+%/g, '\u00A0%')
+
 /** Headline numbers as a strip (DESIGN.md): a big mono number above a grey caption. */
 export function MetricGrid({
   items,
@@ -23,7 +28,7 @@ export function MetricGrid({
           <dt className="text-sm text-muted-foreground">{item.label}</dt>
           <dd className="font-mono text-4xl font-medium tracking-tight">
             {/* Numbers read left to right, even on Arabic pages ("15–25%", not "25%–15"). */}
-            <span dir="ltr">{item.value}</span>
+            <span dir="ltr">{keepUnitWithNumber(item.value)}</span>
           </dd>
         </div>
       ))}
