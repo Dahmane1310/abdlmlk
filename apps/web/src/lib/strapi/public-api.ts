@@ -2,6 +2,17 @@ import type { z } from 'zod'
 
 import { publicEnv } from '@/env'
 
+/** Strapi refused the request; the status says why (429: too many, 403: closed…). */
+export class StrapiRequestError extends Error {
+  constructor(
+    readonly status: number,
+    path: string,
+  ) {
+    super(`Strapi answered ${String(status)} to ${path}`)
+    this.name = 'StrapiRequestError'
+  }
+}
+
 /**
  * Sends data from the browser straight to one of Strapi's public endpoints
  * (ARCHITECTURE.md, "Writing data"), so its per-visitor spam limits see the
@@ -20,8 +31,6 @@ export async function postToStrapi<Schema extends z.ZodType>(
       body: JSON.stringify(body),
     },
   )
-  if (!response.ok) {
-    throw new Error(`Strapi answered ${String(response.status)} to ${path}`)
-  }
+  if (!response.ok) throw new StrapiRequestError(response.status, path)
   return schema.parse(await response.json())
 }

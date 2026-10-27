@@ -80,7 +80,11 @@ export function ArticlePage() {
               {article.series && (
                 <SeriesParts series={article.series} current={article.slug} />
               )}
-              <CommentSection article={article.documentId} />
+              <CommentSection
+                article={article.documentId}
+                // Open unless the owner closed them (the CMS's rule too).
+                allowComments={article.allowComments !== false}
+              />
             </div>
             {showContents && (
               // Wide screens only: on a phone it would push the text down.

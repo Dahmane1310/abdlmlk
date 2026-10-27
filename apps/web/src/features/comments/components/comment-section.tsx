@@ -5,6 +5,7 @@ import { useTranslation } from '@/lib/i18n/use-translation'
 
 import { commentsQuery } from '../comments.queries'
 import { countComments } from '../threads'
+import { CommentForm } from './comment-form'
 import { CommentItem } from './comment-item'
 
 /** The id the responses link beside the like button jumps to. */
@@ -12,11 +13,19 @@ export const RESPONSES_ID = 'responses'
 
 /**
  * An article's responses (DESIGN.md, "Article page"), after the series card:
- * every approved response, oldest first, with its replies indented under it.
- * Loaded in the browser after the page, so new approvals show without the
- * article's cache having to change.
+ * the form to write one (or a note when they're closed), then every approved
+ * response, oldest first, with its replies indented under it. Loaded in the
+ * browser after the page, so new approvals show without the article's cache
+ * having to change.
  */
-export function CommentSection({ article }: { article: string }) {
+export function CommentSection({
+  article,
+  allowComments,
+}: {
+  article: string
+  /** False when the owner closed responses for this article in the CMS. */
+  allowComments: boolean
+}) {
   const t = useTranslation()
   const lang = useLanguage()
   const { data: threads, isError } = useQuery(commentsQuery(article, lang))
@@ -39,11 +48,13 @@ export function CommentSection({ article }: { article: string }) {
           </span>
         )}
       </h2>
+      {allowComments ? (
+        <CommentForm article={article} />
+      ) : (
+        <p className="text-muted-foreground">{t.comments.closed}</p>
+      )}
       {isError && (
         <p className="text-muted-foreground">{t.comments.unavailable}</p>
-      )}
-      {threads?.length === 0 && (
-        <p className="text-muted-foreground">{t.comments.empty}</p>
       )}
       {threads && threads.length > 0 && (
         <ol className="flex flex-col gap-10">

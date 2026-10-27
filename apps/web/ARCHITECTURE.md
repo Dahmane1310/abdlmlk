@@ -54,7 +54,7 @@ src/
                                page, and the reading time (reading-time.ts).
                                likes/ owns the like button: the count and the reader's own like
                                (stored-like.ts). comments/ owns an article's responses: reading them,
-                               grouped into threads (threads.ts), and the link to them.
+                               grouped into threads (threads.ts), the link to them and the form.
 
   components/
     ui/                        shadcn components, generated then adapted to our design
@@ -170,6 +170,11 @@ Likes, comments, newsletter and contact **post directly from the browser to Stra
 **Why:** Strapi's spam protection limits requests per visitor IP. Through our server, every visitor would share the server's IP, and one spammer could block everyone.
 
 **Flow:** TanStack Form validates the input with the feature's Zod schema → a TanStack Query mutation sends it → the form shows the pending, error and success states. Strapi validates again; the client check exists for instant feedback, not for security.
+
+- **The schema takes the dictionary's messages** (`commentFormSchema(t.comments.errors)`), so errors are in the page's language, and uses the CMS's own limits.
+- **Errors show once a field is left or the form is sent,** not while typing; after a failed send, the focus moves to the first field to fix. Each error is tied to its control with `aria-invalid` and `aria-describedby`.
+- **A refused request says why:** `postToStrapi()` throws a `StrapiRequestError` with the HTTP status, so the form can tell "too many" (429) and "closed" (403) from any other failure.
+- **The honeypot** (`website`) is off screen and hidden from screen readers, with `tabIndex={-1}`: only bots fill it in, and the CMS's spam guard quietly drops what has it.
 
 **Likes** (`features/likes/`) have no form:
 
@@ -390,6 +395,8 @@ Every page is built from the same pieces, so home, about and projects feel like 
 | Responses as an open list, one level of replies        | Owner's choice: nothing to click to read them, and readable on phones, where deeper nesting gets too narrow                                                                                                                                                     |
 | Responses loaded in the browser                        | The article stays cached for good and new approvals show without touching it. They're not in the first HTML; search engines that run JavaScript still see them.                                                                                                 |
 | Responses as plain text                                | A reader's text is never trusted: no HTML or Markdown means nothing to sanitize. Line breaks are kept.                                                                                                                                                          |
+| `@tanstack/react-form` for forms                       | Owner approved the dependency (1.33, stable). Field state, validation timing and submit handling without hand-written plumbing; the newsletter and contact forms will reuse it.                                                                                 |
+| Readers respond to the article only, for now           | Owner's choice: one form; the owner replies from the CMS (shown as "Author"). Reader-to-reader replies can come later.                                                                                                                                          |
 | Heading ids from our own step, not `rehype-slug`       | `rehype-slug` starts over in every block, so two blocks could give the same id, and it doesn't return the headings for the contents. A few lines over the tree the pipeline already builds do both. Owner approved `@types/hast` (types only) for it.           |
 | Contents on wide screens only                          | Beside the text there's room; on a phone it would push the article down a screen before the first line                                                                                                                                                          |
 | A series' parts in one card after the text             | Owner's choice: the whole series and the next part in one place, on phones too. Previous / Next cards alone gave no overview; a second card before the text would push the article down.                                                                        |

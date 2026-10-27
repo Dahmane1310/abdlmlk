@@ -93,8 +93,25 @@ export const en = {
     counts: { one: 'response', other: 'responses' } as PluralForms,
     // Marks the site owner's own replies.
     author: 'Author',
-    empty: 'No responses yet.',
     unavailable: "Responses can't be shown right now.",
+    // The response form.
+    name: 'Name',
+    email: 'Email',
+    emailHint: 'Never shown on the site.',
+    response: 'Your response',
+    publish: 'Publish',
+    sending: 'Sending…',
+    moderation: 'Responses appear once they are approved.',
+    sent: "Thanks! Your response will appear here once it's approved.",
+    closed: 'Responses are closed for this article.',
+    errors: {
+      name: 'Please enter your name (2 to 80 characters).',
+      email: 'Please enter a valid email address.',
+      response: 'Please write a response of at least 2 characters.',
+      tooMany:
+        'You have sent several responses in a short time. Please try again in a few minutes.',
+      failed: "Your response couldn't be sent. Please try again.",
+    },
   },
   // The blue band that closes every page.
   contact: {
