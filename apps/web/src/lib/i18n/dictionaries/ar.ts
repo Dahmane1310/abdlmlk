@@ -166,6 +166,8 @@ export const ar = {
     readCaseStudy: 'اقرأ دراسة الحالة',
   },
   content: {
+    copy: 'نسخ',
+    copied: 'تم النسخ',
     callout: {
       note: 'ملاحظة',
       tip: 'نصيحة',

@@ -5,6 +5,7 @@ import { useLanguage } from '@/lib/i18n/use-language'
 
 import type { ArticleSummary } from '../blog.functions'
 import { ArticleMeta } from './article-meta'
+import { TopicLinks } from './topic-links'
 
 /**
  * One article in the blog feed (DESIGN.md, "Blog list"): the date, reading
@@ -33,22 +34,11 @@ export function ArticleRow({ article }: { article: ArticleSummary }) {
             {article.description}
           </p>
         )}
-        {article.tags.length > 0 && (
-          <ul className="relative z-10 mt-1 flex flex-wrap gap-x-4 gap-y-1 self-start">
-            {article.tags.map((tag) => (
-              <li key={tag.slug}>
-                <Link
-                  to="/$lang/blog"
-                  params={{ lang }}
-                  search={{ tag: tag.slug }}
-                  className="font-mono text-xs text-muted-foreground hover:text-primary"
-                >
-                  {tag.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
+        {/* Above the row's link (z-10), so the topics stay clickable. */}
+        <TopicLinks
+          tags={article.tags}
+          className="relative z-10 mt-1 self-start"
+        />
       </div>
       {article.cover && (
         <ResponsiveImage

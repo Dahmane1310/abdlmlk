@@ -6,13 +6,13 @@ import { profileQuery } from '@/features/profile/profile.queries'
 import { siteSettingsQuery } from '@/features/site/site.queries'
 import { useLanguage } from '@/lib/i18n/use-language'
 import { useTranslation } from '@/lib/i18n/use-translation'
-import { initials } from '@/lib/initials'
 
 import { CONTACT_ID, getContactLinks } from './contact-band'
 import { Container } from './container'
 import { LanguageSwitcher } from './language-switcher'
 import { MobileMenu } from './mobile-menu'
 import { NAV_ITEMS } from './nav-items'
+import { SiteMark } from './site-mark'
 import { ThemeToggle } from './theme-toggle'
 
 /**
@@ -37,13 +37,7 @@ export function SiteHeader() {
           params={{ lang }}
           className="flex shrink-0 items-center gap-2.5 justify-self-start font-mono text-sm font-medium tracking-tight"
         >
-          {/* Decorative: the name is right beside it. */}
-          <span
-            aria-hidden
-            className="flex size-7 items-center justify-center rounded-[5px] bg-primary text-[0.6875rem] font-semibold text-primary-foreground"
-          >
-            {initials(site.siteName)}
-          </span>
+          <SiteMark name={site.siteName} />
           {site.siteName}
         </Link>
 

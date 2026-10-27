@@ -148,6 +148,8 @@ export const en = {
     readCaseStudy: 'Read the case study',
   },
   content: {
+    copy: 'Copy',
+    copied: 'Copied',
     // Callout titles when the CMS block has none.
     callout: {
       note: 'Note',

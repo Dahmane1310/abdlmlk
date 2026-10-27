@@ -31,18 +31,19 @@ The colour tokens are the CSS variables in `src/styles/app.css` (light and dark)
 
 **Type scale:**
 
-| Element            | Style                                                                                                                           |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------- |
-| Page title (h1)    | Plex Sans 600, `clamp(44px, 7vw, 84px)` on Home, `clamp(40px, 6vw, 72px)` elsewhere, letter-spacing −0.035em, line-height ≈1.02 |
-| Subtitle           | Plex Mono 18px in `primary` (e.g. "Full-Stack Engineer")                                                                        |
-| Lead paragraph     | 20–22px, foreground                                                                                                             |
-| Section title (h2) | 28px 600, letter-spacing −0.02em                                                                                                |
-| Card title (h3)    | 20px 600 (30px on the wide featured card)                                                                                       |
-| Body               | 16–17px, line-height 1.6                                                                                                        |
-| Secondary text     | 15px, `muted-foreground`                                                                                                        |
-| Label              | Plex Mono 12px, uppercase, letter-spacing 0.06em, `muted-foreground`                                                            |
-| Meta / dates       | Plex Mono 12–13px, `muted-foreground`                                                                                           |
-| Big numbers        | Plex Mono 500, 36px, letter-spacing −0.02em                                                                                     |
+| Element            | Style                                                                                                                                                                                                 |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Page title (h1)    | Plex Sans 600, `clamp(44px, 7vw, 84px)` on Home, `clamp(40px, 6vw, 72px)` elsewhere, `clamp(34px, 4.5vw, 52px)` on articles (a title there is a sentence), letter-spacing −0.035em, line-height ≈1.02 |
+| Article text       | Plex Serif 20px, line-height 1.75 (Arabic: Plex Sans Arabic 19px, 1.95); headings Plex Sans 26px 600                                                                                                  |
+| Subtitle           | Plex Mono 18px in `primary` (e.g. "Full-Stack Engineer")                                                                                                                                              |
+| Lead paragraph     | 20–22px, foreground                                                                                                                                                                                   |
+| Section title (h2) | 28px 600, letter-spacing −0.02em                                                                                                                                                                      |
+| Card title (h3)    | 20px 600 (30px on the wide featured card)                                                                                                                                                             |
+| Body               | 16–17px, line-height 1.6                                                                                                                                                                              |
+| Secondary text     | 15px, `muted-foreground`                                                                                                                                                                              |
+| Label              | Plex Mono 12px, uppercase, letter-spacing 0.06em, `muted-foreground`                                                                                                                                  |
+| Meta / dates       | Plex Mono 12–13px, `muted-foreground`                                                                                                                                                                 |
+| Big numbers        | Plex Mono 500, 36px, letter-spacing −0.02em                                                                                                                                                           |
 
 **Spacing:** header band padding 96px on top; 112–128px between sections; 40px from a section title to its content. About is the one exception, with 80px between sections: it's the online CV and reads as one document (owner's choice).
 
@@ -97,6 +98,11 @@ Site footer        © · LinkedIn GitHub · English العربية Français
 - **Blog list:** Medium's text-first feed, at the reading width (768px), one article per row, rows 56px apart with no lines. Each row: date · reading time · "Part 2 of 3" (mono, grey), the title (24px 600, underlined on hover), the description (17px, grey, two lines at most), the topics (small mono links). A small cover (160px, 4:3) sits on the end side only when the article has one. The whole row is clickable, like a project card.
   - **Numbers:** the transition band counts the articles, series and topics in Home's number style, with the word under each number agreeing with it in every language ("1 series", «3 مقالات»). A count of zero is left out.
   - **Topics:** each article's topic links filter the list; the address keeps the topic (`?tag=arabic`), and the filtered list opens with "Topic: Arabic ✕", the ✕ going back to every article. (A row of topic links in the band was tried and dropped: the owner found it messy.)
+- **Article page:** read like Medium, inside the site's frame.
+  - **Header:** "← All articles", the title (the article size), the description as the lead.
+  - **Transition band, the byline:** the site mark (40px) and the author's name, then date · reading time · "Part 2 of 3" in mono, with the article's topics on the end side.
+  - **Body:** the cover, when there is one (16:9, full width), then the text in a 680px column: Plex Serif 20px with a line-height of 1.75, headings in Plex Sans without the site's section numbers or lines (an article reads as one continuous text, owner's choice), pull quotes in 26px italic serif with the blue line on the start edge. Arabic articles stay in Plex Sans Arabic (Plex has no Arabic serif) and never use italics.
+  - **Code blocks:** a bar with the file name and a "Copy" button that says "Copied" for two seconds. Inline code is always a left-to-right run of its own, so its brackets don't reorder inside Arabic text.
 - **Buttons:** 44px tall (48px on the contact band), radius 6px. Primary: solid blue. Secondary: 1px `input` border. Text links with an arrow, pointing the reading way (left in Arabic): "See my work →" in Home's header (jumps to Selected work), and "All projects →" / "Full story →" at the end of a section title.
 
 ## Content map
@@ -108,7 +114,7 @@ Site footer        © · LinkedIn GitHub · English العربية Français
 | Projects     | The full list with filters                                                                                                                           |                                                                                           |
 | Project page | The case study                                                                                                                                       |                                                                                           |
 | Blog         | The blog in numbers, then the articles, newest first, filterable by topic                                                                            |                                                                                           |
-| Article      | The article (the reading page is being designed: typeface, byline, contents, progress)                                                               |                                                                                           |
+| Article      | The article, with its byline (author, date, reading time, series part, topics)                                                                       |                                                                                           |
 
 Copy introduced with the design (editable, in the dictionaries): the contact headline "Have a project in mind? Let's build it.", and the About title "Experience & skills" with its line "The jobs, tools and studies behind my work."
 

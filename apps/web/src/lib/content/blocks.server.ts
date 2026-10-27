@@ -43,6 +43,8 @@ export async function renderContentBlocks(blocks: ContentBlockInput[]) {
             key,
             filename: block.filename,
             html: await highlightCode(block.code, block.language),
+            // The plain text, for the copy button.
+            code: block.code,
           } as const
         case 'shared.callout':
           return {

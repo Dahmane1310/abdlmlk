@@ -9,6 +9,10 @@
 @import '@fontsource/ibm-plex-sans-arabic/arabic-700.css';
 @import '@fontsource/ibm-plex-mono/400.css';
 @import '@fontsource/ibm-plex-mono/500.css';
+/* Article text only (DESIGN.md, "Article page"), so other pages never download it. */
+@import '@fontsource/ibm-plex-serif/400.css';
+@import '@fontsource/ibm-plex-serif/400-italic.css';
+@import '@fontsource/ibm-plex-serif/600.css';
 
 @plugin '@tailwindcss/typography';
 
@@ -98,6 +102,8 @@
   --font-mono:
     'IBM Plex Mono', 'IBM Plex Sans Arabic', ui-monospace, SFMono-Regular,
     Menlo, Consolas, monospace;
+  /* Articles only; Arabic articles use the sans font (see .reading below). */
+  --font-serif: 'IBM Plex Serif', ui-serif, Georgia, serif;
 }
 
 /* Exposes the tokens as Tailwind colours (bg-primary, text-muted-foreground, border-input…). */
@@ -288,16 +294,68 @@ main {
   --tw-prose-td-borders: var(--border);
 }
 
-/* Inline code: a quiet chip instead of the plugin's backticks. */
+/* Inline code: a quiet chip instead of the plugin's backticks. Always a
+   left-to-right run of its own: inside Arabic text, code like
+   <span dir="ltr"> would otherwise have its brackets reordered. */
 .prose :where(code):not(:where(pre *)) {
   border-radius: var(--radius-sm);
   background-color: var(--muted);
   padding: 0.125em 0.375em;
   font-weight: 500;
+  direction: ltr;
+  unicode-bidi: isolate;
 }
 .prose :where(code):not(:where(pre *))::before,
 .prose :where(code):not(:where(pre *))::after {
   content: none;
+}
+
+/*
+ * An article's text (DESIGN.md, "Article page"), read like Medium: Plex Serif
+ * at 20px with room between the lines, headings in Plex Sans without the
+ * site's section numbers, and a large serif pull quote. Only the article's
+ * own text blocks (direct children of .reading); callouts keep their size.
+ * Unlayered, like the section titles it overrides.
+ */
+.reading > .prose {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  line-height: 1.75;
+}
+.reading > .prose h2 {
+  counter-increment: none;
+  display: block;
+  margin-top: 1.6em;
+  margin-bottom: 0.5em;
+  font-family: var(--font-sans);
+  font-size: 1.625rem;
+}
+.reading > .prose h2::before {
+  content: none;
+}
+.reading > :first-child > h2:first-child {
+  margin-top: 0;
+}
+.reading > .prose h3 {
+  font-family: var(--font-sans);
+}
+.reading blockquote {
+  font-family: var(--font-serif);
+  font-size: 1.625rem;
+  font-style: italic;
+  line-height: 1.45;
+}
+/* Plex has no Arabic serif, and a Latin serif beside Arabic sans in one line
+   looks patched, so Arabic articles stay in Plex Sans Arabic. No italics:
+   Arabic has none. */
+.reading:lang(ar) > .prose,
+.reading:lang(ar) blockquote {
+  font-family: var(--font-sans);
+  font-style: normal;
+}
+.reading:lang(ar) > .prose {
+  font-size: 1.1875rem;
+  line-height: 1.95;
 }
 
 /*

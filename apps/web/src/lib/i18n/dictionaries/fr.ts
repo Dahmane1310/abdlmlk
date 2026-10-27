@@ -141,6 +141,8 @@ export const fr = {
     readCaseStudy: "Lire l'étude de cas",
   },
   content: {
+    copy: 'Copier',
+    copied: 'Copié',
     callout: {
       note: 'Remarque',
       tip: 'Astuce',

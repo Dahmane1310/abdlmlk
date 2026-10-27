@@ -55,7 +55,14 @@ export const getArticle = createServerFn({ method: 'GET' })
       .find({
         locale: data.lang,
         filters: { slug: { $eq: data.slug } },
-        populate: ARTICLE_POPULATE,
+        populate: {
+          ...ARTICLE_POPULATE,
+          // The series' published articles, to say "Part 2 of 3".
+          series: {
+            fields: ['title', 'slug'],
+            populate: { articles: { fields: ['slug'] } },
+          },
+        },
       })
     // .at() is typed as possibly undefined, so the 404 check is real to TypeScript.
     const article = articleListSchema.parse(response).data.at(0)
@@ -65,9 +72,13 @@ export const getArticle = createServerFn({ method: 'GET' })
     return {
       ...article,
       readingMinutes: readingMinutes(blocks),
+      seriesTotal: article.series?.articles?.length ?? null,
       blocks: await renderContentBlocks(blocks),
     }
   })
 
 /** An article as the list shows it. */
 export type ArticleSummary = Awaited<ReturnType<typeof getArticles>>[number]
+
+/** An article as its own page shows it, blocks rendered. */
+export type Article = Awaited<ReturnType<typeof getArticle>>

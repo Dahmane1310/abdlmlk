@@ -2,10 +2,12 @@ import { cn } from '@/lib/utils'
 
 import { Container } from './container'
 
-// The home page's title is one step larger (DESIGN.md, "Type scale").
+// The home page's title is one step larger; an article's, a sentence long,
+// two steps smaller (DESIGN.md, "Type scale").
 const TITLE_SIZES = {
   page: 'text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.04]',
   hero: 'text-[clamp(2.75rem,7vw,5.25rem)] leading-[1.02]',
+  article: 'text-[clamp(2.125rem,4.5vw,3.25rem)] leading-[1.1]',
 }
 
 interface PageHeaderProps {
@@ -16,7 +18,7 @@ interface PageHeaderProps {
   subtitle?: string
   /** One or two sentences under the title. */
   lead?: string
-  /** "hero" for the home page's larger title. */
+  /** "hero" for the home page's larger title, "article" for an article's. */
   size?: keyof typeof TITLE_SIZES
   /**
    * The page's figures or controls (FactsStrip, MetricGrid, filters), shown

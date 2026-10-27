@@ -10,6 +10,7 @@ import type { ContentBlock } from '@/lib/content/blocks.server'
 import { useTranslation } from '@/lib/i18n/use-translation'
 import { cn } from '@/lib/utils'
 
+import { CopyButton } from './copy-button'
 import { ResponsiveImage } from './responsive-image'
 
 type CalloutVariant = Extract<ContentBlock, { type: 'callout' }>['variant']
@@ -104,11 +105,13 @@ function Block({ block }: { block: ContentBlock }) {
       return (
         // Code reads left to right, even on Arabic pages.
         <figure dir="ltr" className="overflow-hidden rounded-xl border">
-          {block.filename && (
-            <figcaption className="border-b bg-muted/50 px-4 py-2 font-mono text-xs text-muted-foreground">
-              {block.filename}
-            </figcaption>
-          )}
+          {/* The bar shows the file name, when there is one, and the copy button. */}
+          <figcaption className="flex items-center gap-4 border-b bg-muted/50 py-1 ps-4 pe-2 font-mono text-xs text-muted-foreground">
+            {block.filename && (
+              <span className="truncate">{block.filename}</span>
+            )}
+            <CopyButton text={block.code} />
+          </figcaption>
           <div
             className="text-sm"
             dangerouslySetInnerHTML={{ __html: block.html }}
