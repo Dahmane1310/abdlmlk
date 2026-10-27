@@ -16,6 +16,7 @@ import { ArticleByline } from './article-byline'
 import { BackToBlog } from './back-to-blog'
 import { ReadingProgress } from './reading-progress'
 import { SeriesParts } from './series-parts'
+import { ShareLinks } from './share-links'
 import { TableOfContents } from './table-of-contents'
 
 const routeApi = getRouteApi('/$lang/blog/$slug')
@@ -73,9 +74,13 @@ export function ArticlePage() {
                   className="reading min-w-0"
                 />
               </div>
-              <div className="flex items-center gap-6">
-                <LikeButton article={article.documentId} />
-                <ResponsesLink article={article.documentId} />
+              {/* Likes and responses on the start side, sharing on the end. */}
+              <div className="flex flex-wrap items-center justify-between gap-6">
+                <div className="flex items-center gap-6">
+                  <LikeButton article={article.documentId} />
+                  <ResponsesLink article={article.documentId} />
+                </div>
+                <ShareLinks title={article.title} />
               </div>
               {article.series && (
                 <SeriesParts series={article.series} current={article.slug} />

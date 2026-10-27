@@ -72,6 +72,10 @@ export const en = {
       likes: { one: 'like', other: 'likes' } as PluralForms,
     },
     like: 'Like',
+    share: 'Share',
+    copyLink: 'Copy link',
+    // Read after a share link's name: it opens LinkedIn or X in a new tab.
+    newTab: 'opens in a new tab',
     startSeries: 'Start with part 1',
     // Above a list filtered by topic: "Topic: Arabic ✕".
     topic: 'Topic',

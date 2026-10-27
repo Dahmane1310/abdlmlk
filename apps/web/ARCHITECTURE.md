@@ -50,8 +50,8 @@ src/
                                technology schema and the server-only logo lookup (technology-icon.server.ts).
                                services/ owns the "What I do" list and its icon map (service-icon.tsx).
                                blog/ owns articles, tags and series: the list, the topic filter, the
-                               article page with its contents, progress bar and series card, the series
-                               page, and the reading time (reading-time.ts).
+                               article page with its contents, progress bar, share links and series
+                               card, the series page, and the reading time (reading-time.ts).
                                likes/ owns the like button: the count and the reader's own like
                                (stored-like.ts). comments/ owns an article's responses: reading them,
                                grouped into threads (threads.ts), the link to them and the form.
@@ -97,6 +97,7 @@ src/
       theme-script.ts          inline <head> script: applies the theme before first paint
     cookies.ts                 read and write preference cookies in the browser (theme, language)
     initials.ts                "PM" from "Pharmacy Management System", for placeholders and logo tiles
+    use-copy.ts                useCopy(): copies to the clipboard, "Copied" for two seconds (code blocks, share)
     utils.ts                   cn() class helper
 
   styles/
@@ -397,6 +398,9 @@ Every page is built from the same pieces, so home, about and projects feel like 
 | Responses as plain text                                | A reader's text is never trusted: no HTML or Markdown means nothing to sanitize. Line breaks are kept.                                                                                                                                                          |
 | `@tanstack/react-form` for forms                       | Owner approved the dependency (1.33, stable). Field state, validation timing and submit handling without hand-written plumbing; the newsletter and contact forms will reuse it.                                                                                 |
 | Readers respond to the article only, for now           | Owner's choice: one form; the owner replies from the CMS (shown as "Author"). Reader-to-reader replies can come later.                                                                                                                                          |
+| Share links as text, not brand logos                   | lucide's brand icons are deprecated and due to be removed, and `simple-icons` has no LinkedIn logo (and is server-only here). Mono text links match the code blocks' Copy button.                                                                               |
+| Touch screens get the system share sheet               | Owner's choice. The `pointer: coarse` media query picks the layout in CSS, so nothing changes after hydration; a browser without `navigator.share` copies the link instead.                                                                                     |
+| Share links open in a new tab, and say so              | The reader keeps the article open; screen readers hear "opens in a new tab" (WCAG G201), unlike the profile links, which stay in the same tab.                                                                                                                  |
 | Heading ids from our own step, not `rehype-slug`       | `rehype-slug` starts over in every block, so two blocks could give the same id, and it doesn't return the headings for the contents. A few lines over the tree the pipeline already builds do both. Owner approved `@types/hast` (types only) for it.           |
 | Contents on wide screens only                          | Beside the text there's room; on a phone it would push the article down a screen before the first line                                                                                                                                                          |
 | A series' parts in one card after the text             | Owner's choice: the whole series and the next part in one place, on phones too. Previous / Next cards alone gave no overview; a second card before the text would push the article down.                                                                        |

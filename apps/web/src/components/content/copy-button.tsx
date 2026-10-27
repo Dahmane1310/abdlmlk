@@ -1,30 +1,18 @@
 import { CheckIcon, CopyIcon } from 'lucide-react'
-import { useEffect, useState } from 'react'
 
 import { useTranslation } from '@/lib/i18n/use-translation'
+import { useCopy } from '@/lib/use-copy'
 
 /** Copies a code block's text; says "Copied" for two seconds after a click. */
 export function CopyButton({ text }: { text: string }) {
   const t = useTranslation()
-  const [copied, setCopied] = useState(false)
-
-  useEffect(() => {
-    if (!copied) return
-    const timer = setTimeout(() => {
-      setCopied(false)
-    }, 2000)
-    return () => {
-      clearTimeout(timer)
-    }
-  }, [copied])
+  const { copied, copy } = useCopy()
 
   return (
     <button
       type="button"
       onClick={() => {
-        void navigator.clipboard.writeText(text).then(() => {
-          setCopied(true)
-        })
+        copy(text)
       }}
       className="ms-auto inline-flex items-center gap-1.5 rounded-sm px-2 py-1 font-mono text-xs text-muted-foreground hover:bg-accent hover:text-foreground"
     >
