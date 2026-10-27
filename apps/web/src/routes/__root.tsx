@@ -12,7 +12,7 @@ import { ErrorPage } from '@/components/layout/error-page'
 import { NotFoundPage } from '@/components/layout/not-found-page'
 import { SiteLayout } from '@/components/layout/site-layout'
 import { profileQuery } from '@/features/profile/profile.queries'
-import { siteSettingsQuery } from '@/features/site/site.queries'
+import { siteSettingsQuery, siteUrlQuery } from '@/features/site/site.queries'
 import { getDirection, getLanguageFromPath } from '@/lib/i18n/config'
 import { useLanguage } from '@/lib/i18n/use-language'
 import { getTheme } from '@/lib/theme/theme'
@@ -33,14 +33,16 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   beforeLoad: async ({ context, location }) => {
     const lang = getLanguageFromPath(location.pathname)
     // 'static': use what's cached, fetch only what's missing.
-    const [siteSettings] = await Promise.all([
+    const [siteSettings, siteUrl] = await Promise.all([
       context.queryClient.query({
         ...siteSettingsQuery(lang),
         staleTime: 'static',
       }),
+      // For every page's canonical link and link previews (lib/seo).
+      context.queryClient.query({ ...siteUrlQuery(), staleTime: 'static' }),
       context.queryClient.query({ ...profileQuery(lang), staleTime: 'static' }),
     ])
-    return { siteSettings }
+    return { siteSettings, siteUrl }
   },
   // Read once on load; the theme toggle invalidates the router after a change.
   loader: () => ({ theme: getTheme() }),

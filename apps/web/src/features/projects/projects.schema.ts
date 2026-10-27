@@ -2,7 +2,11 @@ import { z } from 'zod'
 
 import { technologyRefSchema } from '@/features/technologies/technologies.schema'
 import { contentBlockSchema } from '@/lib/content/blocks.schema'
-import { mediaSchema, seoSchema } from '@/lib/strapi/schemas'
+import {
+  localizationsSchema,
+  mediaSchema,
+  seoSchema,
+} from '@/lib/strapi/schemas'
 
 export const projectTypeSchema = z.enum([
   'client',
@@ -46,6 +50,8 @@ export const projectDetailSchema = projectSummarySchema.extend({
   metrics: z.array(z.object({ value: z.string(), label: z.string() })),
   content: z.array(contentBlockSchema).nullable(),
   seo: seoSchema.nullable(),
+  /** Its other languages, for hreflang. */
+  localizations: localizationsSchema,
 })
 
 export const projectDetailListSchema = z.object({

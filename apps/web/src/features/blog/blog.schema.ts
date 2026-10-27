@@ -1,7 +1,11 @@
 import { z } from 'zod'
 
 import { contentBlockSchema } from '@/lib/content/blocks.schema'
-import { mediaSchema, seoSchema } from '@/lib/strapi/schemas'
+import {
+  localizationsSchema,
+  mediaSchema,
+  seoSchema,
+} from '@/lib/strapi/schemas'
 
 export const tagSchema = z.object({
   name: z.string(),
@@ -40,6 +44,8 @@ export const articleSchema = z.object({
   allowComments: z.boolean().nullable(),
   blocks: z.array(contentBlockSchema).nullable(),
   seo: seoSchema.nullable().optional(),
+  /** Only on an article's own page: its other languages, for hreflang. */
+  localizations: localizationsSchema.optional(),
 })
 
 export const articleListSchema = z.object({
@@ -51,6 +57,7 @@ export const seriesSchema = z.object({
   title: z.string(),
   slug: z.string(),
   description: z.string().nullable(),
+  localizations: localizationsSchema,
 })
 
 export const seriesListSchema = z.object({

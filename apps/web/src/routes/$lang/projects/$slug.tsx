@@ -6,6 +6,7 @@ import {
   projectQuery,
   projectsQuery,
 } from '@/features/projects/projects.queries'
+import { pageHead } from '@/lib/seo/page-head'
 
 export const Route = createFileRoute('/$lang/projects/$slug')({
   // The list is loaded too, for the previous/next links (usually already cached).
@@ -22,23 +23,27 @@ export const Route = createFileRoute('/$lang/projects/$slug')({
         staleTime: 'static',
       }),
     ])
-    return { title: project.title, summary: project.summary, seo: project.seo }
+    // Only what the head needs: the rest is in the query cache.
+    return {
+      title: project.title,
+      summary: project.summary,
+      seo: project.seo,
+      cover: project.cover,
+      languages: project.languages,
+    }
   },
-  head: ({ loaderData, match }) => {
+  head: ({ loaderData, match, params }) => {
     if (!loaderData) return {}
     const siteName = match.context.siteSettings.siteName
-    return {
-      meta: [
-        {
-          title:
-            loaderData.seo?.metaTitle ?? `${loaderData.title} — ${siteName}`,
-        },
-        {
-          name: 'description',
-          content: loaderData.seo?.metaDescription ?? loaderData.summary,
-        },
-      ],
-    }
+    return pageHead({
+      context: match.context,
+      lang: params.lang,
+      path: `/projects/${params.slug}`,
+      title: loaderData.seo?.metaTitle ?? `${loaderData.title} — ${siteName}`,
+      description: loaderData.seo?.metaDescription ?? loaderData.summary,
+      image: loaderData.seo?.shareImage ?? loaderData.cover,
+      languages: loaderData.languages,
+    })
   },
   component: ProjectPage,
   // Needed here, not just on /$lang: a notFound() from a loader is caught by the

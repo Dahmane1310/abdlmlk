@@ -6,6 +6,7 @@ import { newsletterSearchSchema } from '@/features/newsletter/newsletter.schema'
 import { profileQuery } from '@/features/profile/profile.queries'
 import { projectsQuery } from '@/features/projects/projects.queries'
 import { servicesQuery } from '@/features/services/services.queries'
+import { pageHead } from '@/lib/seo/page-head'
 
 export const Route = createFileRoute('/$lang/')({
   // ?newsletter= from the links in the newsletter's emails.
@@ -30,6 +31,17 @@ export const Route = createFileRoute('/$lang/')({
         staleTime: 'static',
       }),
     ])
+  },
+  // The site's own title and description, from the CMS's Site settings.
+  head: ({ match, params }) => {
+    const { siteSettings } = match.context
+    return pageHead({
+      context: match.context,
+      lang: params.lang,
+      path: '',
+      title: siteSettings.defaultSeo?.metaTitle ?? siteSettings.siteName,
+      description: siteSettings.defaultSeo?.metaDescription,
+    })
   },
   component: HomePage,
 })

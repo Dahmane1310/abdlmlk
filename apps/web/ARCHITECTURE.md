@@ -94,6 +94,8 @@ src/
     markdown/
       render.server.ts         Markdown → safe HTML, code highlighted, headings with ids
       heading-ids.ts           gives h2s and h3s unique ids and lists the h2s, for an article's contents
+    seo/
+      page-head.ts             pageHead(): a page's title, description, canonical, hreflang and Open Graph tags
     theme/
       config.ts                themes (light, dark, system), default, cookie
       theme.ts                 read the cookie (server and browser), save a choice
@@ -312,6 +314,21 @@ Every page is built from the same pieces, so home, about and projects feel like 
 - **Service icons** are Lucide icons named in the CMS ("layout-dashboard"). `service-icon.tsx` maps the names in use to their components, so the browser only downloads those; a name missing from the map shows the service without an icon. Adding an icon in the CMS means adding it to the map.
 - **Accessibility:** semantic HTML, every control reachable by keyboard, visible focus, labelled inputs, sufficient contrast, motion reduced when the visitor asks for it.
 
+## SEO
+
+- **One helper for every page** (`pageHead()` in `lib/seo/page-head.ts`). Every page route's `head` returns it, so no page can leave something out:
+  - its title and description;
+  - its **canonical** address, without the query string, so a filtered list (`?tag=`, `?type=`) counts as the list itself;
+  - **hreflang** links to the same page in each language it exists in, plus `x-default` pointing to English;
+  - **Open Graph** tags (title, description, address, type, language, site name, image) and `twitter:card`, which LinkedIn, X, WhatsApp and others read for a shared link's card.
+
+  The root route keeps a default title and description for 404 pages.
+
+- **The site's address** is loaded once by the root route (`getSiteUrl`, from `SITE_URL` or the request's forwarded host) and read by every `head` from the router context.
+- **Only translations that exist:** an article, project or series asks Strapi for its `localizations`, and `languagesOf()` turns them into its list of languages. The fixed pages (Home, About, the lists) exist in all three.
+- **The share image** is the page's own SEO share image, then its cover, then the Site settings default.
+- **One meta tag per name or property:** the router keeps only one of each across the page, so tags meant to repeat (`og:locale:alternate`, `article:tag`) aren't used. The hreflang links already name the other languages, and an article's topics go in its structured data.
+
 ## Server and security rules
 
 - **Server-only files** end in `.server.ts` (or import `@tanstack/react-start/server-only`). The build refuses to put them in the browser bundle.
@@ -319,7 +336,7 @@ Every page is built from the same pieces, so home, about and projects feel like 
 - **Environment variables** are validated in `env.ts`. Server variables are read inside server functions, never at module level. Only `VITE_`-prefixed variables reach the browser, and they hold nothing secret.
   - `VITE_STRAPI_URL` (required, `env.ts`): Strapi's public URL, for images and form posts from the browser. Baked in at build time.
   - `STRAPI_URL` (optional, `env.server.ts`): how the server reaches Strapi. In production, Strapi's internal address on Dokploy's Docker network (set up in the deployment step). Falls back to `VITE_STRAPI_URL`.
-  - `SITE_URL` (optional, `env.server.ts`): the site's public address, for full links (the RSS feeds). Without it, the address the request came in on; set it in production, where a proxy could report an internal one.
+  - `SITE_URL` (optional, `env.server.ts`): the site's public address, for full links (canonical and hreflang links, link previews, the RSS feeds). Without it, the address the request came in on; set it in production, where a proxy could report an internal one.
   - All three are listed in `.env.example`; copy it to `.env.local` for development.
 - **Drafts are never requested.** The site only reads published content.
 
@@ -422,6 +439,9 @@ Every page is built from the same pieces, so home, about and projects feel like 
 | "More to read" picked from the cached article list                | The list is already cached for the blog page, so suggestions cost no request of their own after a visit there; scoring by shared topics, then date, needs no CMS feature. Owner's choice: at the very end, as compact rows.                                     |
 | RSS feeds with summaries, one per language                        | Owner's choice: readers click through to the full article, with its code highlighting, likes and responses. Hand-written XML: a few lines, no package.                                                                                                          |
 | `SITE_URL`, falling back to the request's address                 | Full links need the public address; locally the request's own is right, and production sets it. The SEO step (canonical links, sitemap) reuses it.                                                                                                              |
+| One `pageHead()` for every page's SEO tags                        | The pages had drifted (titles only, some without descriptions); one helper gives each the same canonical, hreflang and Open Graph tags                                                                                                                          |
+| hreflang only to translations that exist                          | A link to a missing translation is a 404 that search engines flag; Strapi's `localizations` say which ones exist                                                                                                                                                |
+| Canonical addresses without the query string                      | A topic or type filter shows part of the same list; counting each filter as its own page would split it in search results                                                                                                                                       |
 | Navbar links ignore the search part when marking the current page | `includeSearch: false`: with `exact`, the router also compared "?…", so Home lost its blue line when it had `?newsletter=`                                                                                                                                      |
 | Heading ids from our own step, not `rehype-slug`                  | `rehype-slug` starts over in every block, so two blocks could give the same id, and it doesn't return the headings for the contents. A few lines over the tree the pipeline already builds do both. Owner approved `@types/hast` (types only) for it.           |
 | Contents on wide screens only                                     | Beside the text there's room; on a phone it would push the article down a screen before the first line                                                                                                                                                          |

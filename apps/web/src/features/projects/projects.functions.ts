@@ -7,6 +7,7 @@ import { CONTENT_BLOCKS_POPULATE } from '@/lib/content/blocks.schema'
 import { renderContentBlocks } from '@/lib/content/blocks.server'
 import { languageSchema } from '@/lib/i18n/config'
 import { getStrapiClient } from '@/lib/strapi/client.server'
+import { languagesOf } from '@/lib/strapi/schemas'
 
 import { projectDetailListSchema, projectListSchema } from './projects.schema'
 
@@ -50,6 +51,7 @@ export const getProject = createServerFn({ method: 'GET' })
           metrics: true,
           seo: { populate: ['shareImage'] },
           content: CONTENT_BLOCKS_POPULATE,
+          localizations: { fields: ['locale'] },
         },
       })
     // .at() is typed as possibly undefined, so the 404 check is real to TypeScript.
@@ -61,6 +63,7 @@ export const getProject = createServerFn({ method: 'GET' })
       technologies: project.technologies.map(withIconPath),
       gallery: project.gallery ?? [],
       content: await renderContentBlocks(project.content ?? []),
+      languages: languagesOf(data.lang, project.localizations),
     }
   })
 

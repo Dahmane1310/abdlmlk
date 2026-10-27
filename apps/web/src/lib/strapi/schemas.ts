@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+import { type Language, languageSchema } from '@/lib/i18n/config'
+
 import { resolveMediaUrl } from './media'
 
 // A resized copy Strapi generates for uploaded images (thumbnail, small, medium, large).
@@ -38,6 +40,18 @@ export const mediaSchema = z
   }))
 
 export type Media = z.output<typeof mediaSchema>
+
+/**
+ * An entry's other languages (Strapi's `localizations`), so a page links only
+ * to translations that exist.
+ */
+export const localizationsSchema = z.array(z.object({ locale: languageSchema }))
+
+/** The entry's own language and the ones it's translated into. */
+export const languagesOf = (
+  lang: Language,
+  localizations: z.output<typeof localizationsSchema> = [],
+) => [lang, ...localizations.map(({ locale }) => locale)]
 
 export const seoSchema = z.object({
   metaTitle: z.string(),

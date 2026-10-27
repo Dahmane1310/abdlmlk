@@ -5,6 +5,7 @@ import { careerQuery } from '@/features/career/career.queries'
 import { spokenLanguagesQuery } from '@/features/profile/profile.queries'
 import { skillsQuery } from '@/features/technologies/technologies.queries'
 import { dictionaries } from '@/lib/i18n/dictionaries'
+import { pageHead } from '@/lib/seo/page-head'
 
 export const Route = createFileRoute('/$lang/about')({
   // The base profile is already loaded for the layout by the root route.
@@ -26,14 +27,14 @@ export const Route = createFileRoute('/$lang/about')({
   },
   head: ({ match, params }) => {
     const t = dictionaries[params.lang]
-    return {
-      meta: [
-        {
-          title: `${t.about.title} — ${match.context.siteSettings.siteName}`,
-        },
-        { name: 'description', content: t.about.description },
-      ],
-    }
+    return pageHead({
+      context: match.context,
+      lang: params.lang,
+      path: '/about',
+      title: `${t.about.title} — ${match.context.siteSettings.siteName}`,
+      description: t.about.description,
+      type: 'profile',
+    })
   },
   component: AboutPage,
 })

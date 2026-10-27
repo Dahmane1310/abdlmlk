@@ -7,6 +7,7 @@ import { CONTENT_BLOCKS_POPULATE } from '@/lib/content/blocks.schema'
 import { renderContentBlocks } from '@/lib/content/blocks.server'
 import { languageSchema } from '@/lib/i18n/config'
 import { getStrapiClient } from '@/lib/strapi/client.server'
+import { languagesOf } from '@/lib/strapi/schemas'
 
 import { articleListSchema, seriesListSchema } from './blog.schema'
 import { readingMinutes } from './reading-time'
@@ -69,6 +70,7 @@ export const getArticle = createServerFn({ method: 'GET' })
               },
             },
           },
+          localizations: { fields: ['locale'] },
         },
       })
     // .at() is typed as possibly undefined, so the 404 check is real to TypeScript.
@@ -89,6 +91,7 @@ export const getArticle = createServerFn({ method: 'GET' })
       headings: rendered.flatMap((block) =>
         block.type === 'rich-text' ? block.headings : [],
       ),
+      languages: languagesOf(data.lang, article.localizations),
     }
   })
 
@@ -106,10 +109,14 @@ export const getSeries = createServerFn({ method: 'GET' })
         locale: data.lang,
         filters: { slug: { $eq: data.slug } },
         fields: ['title', 'slug', 'description'],
+        populate: { localizations: { fields: ['locale'] } },
       })
     const series = seriesListSchema.parse(response).data.at(0)
     if (!series) throw notFound()
-    return series
+    return {
+      ...series,
+      languages: languagesOf(data.lang, series.localizations),
+    }
   })
 
 /** An article as the list shows it. */
