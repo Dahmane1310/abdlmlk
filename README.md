@@ -68,13 +68,22 @@ Anonymous requests for drafts (`?status=draft`) are refused.
 
 ## Deploying (Dokploy)
 
-Production runs on a VPS with [Dokploy](https://dokploy.com): the site and the CMS are two applications built from this repository's Dockerfiles, next to a PostgreSQL database, behind Dokploy's Traefik (HTTPS certificates from Let's Encrypt) and Cloudflare's proxy (SSL/TLS mode **Full (strict)**). Every push to `main` redeploys both.
+Production runs on a VPS with [Dokploy](https://dokploy.com): the site and the CMS are two applications next to a PostgreSQL database, behind Dokploy's Traefik (HTTPS certificates from Let's Encrypt) and Cloudflare's proxy (SSL/TLS mode **Full (strict)**).
 
-| Service | Built from | Address | Port |
+| Service | Image | Address | Port |
 | --- | --- | --- | --- |
-| CMS | `apps/cms/Dockerfile`, build context: the repository root | `https://cms.abdlmlk.com` | 1337 |
-| Site | `apps/web/Dockerfile`, build context: the repository root | `https://abdlmlk.com` (`www.` redirects to it) | 3000 |
+| CMS | `ghcr.io/dahmane1310/abdlmlk-cms`, from `apps/cms/Dockerfile` | `https://cms.abdlmlk.com` | 1337 |
+| Site | `ghcr.io/dahmane1310/abdlmlk-web`, from `apps/web/Dockerfile` | `https://abdlmlk.com` (`www.` redirects to it) | 3000 |
 | Database | Dokploy PostgreSQL | inside Dokploy's network only | 5432 |
+
+### Builds
+
+The images are built by GitHub Actions, not on the VPS: it has 3.7 GB of memory shared with other apps, and building Strapi's admin panel there ran it out. On a push to `main`, [`.github/workflows/cms.yml`](.github/workflows/cms.yml) and [`web.yml`](.github/workflows/web.yml) rebuild the app whose files changed (or both, for the workspace files), push the image to GitHub's container registry, then call that app's Dokploy deploy webhook; Dokploy pulls the new image and restarts the app. Either workflow can also be run by hand from the repository's Actions tab.
+
+Set up once:
+
+- **Repository secrets** (Settings → Secrets and variables → Actions): `DOKPLOY_CMS_WEBHOOK` and `DOKPLOY_WEB_WEBHOOK`, each app's webhook URL from Dokploy (the app → Deployments → Webhook URL).
+- **Public images:** after the first build, each package (`abdlmlk-cms`, `abdlmlk-web` on the GitHub profile's Packages tab) set to public in its settings, so Dokploy can pull it without a token. The images hold no secrets: settings come from Dokploy at run time.
 
 ### CMS settings
 
