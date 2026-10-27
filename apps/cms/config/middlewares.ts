@@ -1,10 +1,15 @@
 import type { Core } from '@strapi/strapi';
 
-const config: Core.Config.Middlewares = [
+const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Middlewares => [
   'strapi::logger',
   'strapi::errors',
   'strapi::security',
-  'strapi::cors',
+  {
+    name: 'strapi::cors',
+    // Only the website may call the public endpoints from a browser (likes,
+    // responses, the newsletter). The admin panel is on the CMS's own address.
+    config: { origin: [(env('SITE_URL') || 'http://localhost:3000').replace(/\/$/, '')] },
+  },
   'strapi::poweredBy',
   'strapi::query',
   'global::drafts-guard',

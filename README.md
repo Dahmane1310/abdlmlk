@@ -29,8 +29,8 @@ On first start, open http://localhost:1337/admin and create your admin account.
 ## Environment
 
 - `apps/web/.env.local`: `VITE_STRAPI_URL`, the public Strapi URL. It is baked into the build, so rebuild after changing it.
-- `apps/cms/.env`: Strapi secrets (`APP_KEYS`, `*_SALT`, `*_SECRET`, `ENCRYPTION_KEY`), `HOST`, `PORT`, plus `PUBLIC_URL` and `IS_PROXIED` in production. Generated locally by `create-strapi`; never commit it. Optional extras (see [`apps/cms/.env.example`](apps/cms/.env.example)):
-  - `SITE_URL`: the website's URL, used in newsletter links
+- `apps/cms/.env`: Strapi secrets (`APP_KEYS`, `*_SALT`, `*_SECRET`, `ENCRYPTION_KEY`), `HOST`, `PORT`, plus `PUBLIC_URL`, `IS_PROXIED`, `PROXY_IP_HEADER` and the database (`DATABASE_CLIENT`, `DATABASE_URL`) in production (see "Deploying"). Generated locally by `create-strapi`; never commit it. Optional extras (see [`apps/cms/.env.example`](apps/cms/.env.example)):
+  - `SITE_URL`: the website's URL, used in newsletter links, and the only origin allowed to call the public endpoints from a browser
   - `OWNER_EMAIL`: where contact messages and new-comment alerts go
   - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`: email sending. Without `SMTP_HOST`, emails are skipped and newsletter confirmation links are written to the CMS log instead.
   - `TURNSTILE_SECRET_KEY`: turns on a Cloudflare Turnstile captcha for the public forms
@@ -66,73 +66,56 @@ Public endpoints, protected by a honeypot field (`website`), per-IP rate limits 
 
 Anonymous requests for drafts (`?status=draft`) are refused.
 
-## Deploying to the VPS
+## Deploying (Dokploy)
 
-1. Install Node 24, then run `corepack enable` so the pinned pnpm is used.
-2. Clone the repo and run `pnpm install --frozen-lockfile`.
-3. Create the env files:
-   - `apps/cms/.env`: copy `.env.example`, then replace every secret with a fresh random value (`openssl rand -base64 32`; `APP_KEYS` takes four, comma-separated). Also set:
-     ```
-     HOST=127.0.0.1
-     PUBLIC_URL=https://cms.example.com
-     IS_PROXIED=true
-     SITE_URL=https://example.com
-     OWNER_EMAIL=you@example.com
-     SMTP_HOST=…   # plus SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_FROM
-     ```
-   - `apps/web/.env.production.local`: `VITE_STRAPI_URL=https://cms.example.com` and `SITE_URL=https://example.com` (the site's own address, for the RSS feeds' links)
-4. Run `pnpm build`, then `pnpm --filter cms seed` once to load the portfolio content (or copy your local `apps/cms/.tmp/data.db` and `apps/cms/public/uploads/` over instead).
-5. Run each app as its own service, not through Turbo (Turbo would strip env vars set by the service manager). Example systemd units:
+Production runs on a VPS with [Dokploy](https://dokploy.com): the site and the CMS are two applications built from this repository's Dockerfiles, next to a PostgreSQL database, behind Dokploy's Traefik (HTTPS certificates from Let's Encrypt) and Cloudflare's proxy (SSL/TLS mode **Full (strict)**). Every push to `main` redeploys both.
 
-   ```ini
-   # /etc/systemd/system/portfolio-cms.service
-   [Unit]
-   Description=Portfolio CMS (Strapi)
-   After=network.target
+| Service | Built from | Address | Port |
+| --- | --- | --- | --- |
+| CMS | `apps/cms/Dockerfile`, build context: the repository root | `https://cms.abdlmlk.com` | 1337 |
+| Site | `apps/web/Dockerfile`, build context: the repository root | `https://abdlmlk.com` (`www.` redirects to it) | 3000 |
+| Database | Dokploy PostgreSQL | inside Dokploy's network only | 5432 |
 
-   [Service]
-   WorkingDirectory=/srv/abdlmlk/apps/cms
-   Environment=NODE_ENV=production
-   ExecStart=/usr/bin/env pnpm start
-   Restart=always
+### CMS settings
 
-   [Install]
-   WantedBy=multi-user.target
+Environment variables (see [`apps/cms/.env.example`](apps/cms/.env.example)):
+
+```
+NODE_ENV=production
+APP_KEYS=…                 # four random values, comma-separated
+API_TOKEN_SALT=…           # each one random: openssl rand -base64 32
+ADMIN_JWT_SECRET=…
+TRANSFER_TOKEN_SALT=…
+JWT_SECRET=…
+ENCRYPTION_KEY=…
+DATABASE_CLIENT=postgres
+DATABASE_URL=…             # Dokploy's internal connection URL for the database
+PUBLIC_URL=https://cms.abdlmlk.com
+IS_PROXIED=true
+PROXY_IP_HEADER=CF-Connecting-IP
+SITE_URL=https://abdlmlk.com   # also the only origin allowed to call the public endpoints (CORS)
+OWNER_EMAIL=…              # optional, with SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_FROM
+```
+
+A volume keeps uploaded files across deploys: mounted at `/app/apps/cms/public/uploads`.
+
+### Site settings
+
+- Build argument `VITE_STRAPI_URL=https://cms.abdlmlk.com`: baked into the browser bundle, so changing it needs a rebuild.
+- Environment variables: `STRAPI_URL`, the CMS's address inside Dokploy's network (how the server reads content), and `SITE_URL=https://abdlmlk.com` (canonical links, link previews, the feeds and the sitemap).
+
+### First deploy
+
+1. **Create the admin account** at `https://cms.abdlmlk.com/admin` as soon as the CMS first starts: until then, whoever opens that page first could claim it.
+2. **Copy the local content** (entries and uploaded files) to production with Strapi's transfer. In the production admin, Settings → Transfer Tokens → create a token with "Push" access. Then, locally, with the local CMS stopped:
+
+   ```sh
+   pnpm --filter cms strapi transfer --to https://cms.abdlmlk.com/admin --to-token <token>
    ```
 
-   ```ini
-   # /etc/systemd/system/portfolio-web.service
-   [Unit]
-   Description=Portfolio site (TanStack Start)
-   After=network.target
-
-   [Service]
-   WorkingDirectory=/srv/abdlmlk/apps/web
-   Environment=NODE_ENV=production HOST=127.0.0.1 PORT=3000
-   ExecStart=/usr/bin/env node .output/server/index.mjs
-   Restart=always
-
-   [Install]
-   WantedBy=multi-user.target
-   ```
-
-6. Put Caddy in front. It handles HTTPS automatically:
-
-   ```
-   example.com {
-     reverse_proxy 127.0.0.1:3000
-   }
-
-   cms.example.com {
-     reverse_proxy 127.0.0.1:1337
-   }
-   ```
-
-To update the site later: `git pull && pnpm install --frozen-lockfile && pnpm build`, then restart both services.
+   It replaces production's content with the local content.
 
 ### Backups
 
-All content lives in two places that are not in git. Back them up:
-
-- `apps/cms/.tmp/data.db`: the SQLite database
-- `apps/cms/public/uploads/`: uploaded images and files
+- **The database:** Dokploy's scheduled backups for the PostgreSQL service.
+- **Uploaded files:** the uploads volume.

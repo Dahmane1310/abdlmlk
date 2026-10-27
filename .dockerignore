@@ -1,0 +1,26 @@
+# The images are built from the repository root (apps/*/Dockerfile). Nothing
+# local or secret goes in: dependencies are installed inside the image, and
+# settings come from Dokploy at run time.
+**/node_modules
+**/.turbo
+.git
+
+# Secrets and local settings (the examples stay)
+**/.env
+**/.env.*
+!**/.env.example
+
+# Build output, rebuilt inside the image
+apps/web/.output
+apps/web/.nitro
+apps/web/.tanstack
+apps/cms/dist
+apps/cms/.strapi
+apps/cms/build
+
+# The local database and uploads: production has its own (Postgres, a volume)
+apps/cms/.tmp
+apps/cms/public/uploads/*
+!apps/cms/public/uploads/.gitkeep
+
+**/*.log
