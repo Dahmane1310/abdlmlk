@@ -6,6 +6,7 @@
  */
 
 const data = require('../data/portfolio.json');
+const blog = require('../data/blog.json');
 
 const LOCALES = ['en', 'ar', 'fr'];
 
@@ -15,9 +16,24 @@ const slugify = (value) =>
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
 
-function lookup(map, key, kind) {
-  if (!map[key]) throw new Error(`Unknown ${kind} "${key}" in data/portfolio.json`);
+function lookup(map, key, kind, file = 'data/portfolio.json') {
+  if (!map[key]) throw new Error(`Unknown ${kind} "${key}" in ${file}`);
   return map[key];
+}
+
+// Creates the English entry, then adds the Arabic and French versions to the same document.
+// Relations and slugs are stored per language in Strapi 5, so shared fields go into every locale.
+async function createInLocales(uid, shared, localized, { publish = false } = {}) {
+  const status = publish ? { status: 'published' } : {};
+  const first = await strapi
+    .documents(uid)
+    .create({ locale: LOCALES[0], data: { ...shared, ...localized(LOCALES[0]) }, ...status });
+  for (const locale of LOCALES.slice(1)) {
+    await strapi
+      .documents(uid)
+      .update({ documentId: first.documentId, locale, data: { ...shared, ...localized(locale) }, ...status });
+  }
+  return first.documentId;
 }
 
 async function seed() {
@@ -55,20 +71,13 @@ async function seed() {
     ...(content && { content: [{ __component: 'shared.rich-text', body: content }] }),
   });
 
-  // Creates the English entry, then adds the Arabic and French versions to the same document.
-  // Relations and slugs are stored per language in Strapi 5, so shared fields go into every locale.
-  async function createLocalized(uid, entry, { publish = false } = {}) {
-    const shared = withRelations(entry.shared ?? {});
-    const status = publish ? { status: 'published' } : {};
-    const first = await strapi
-      .documents(uid)
-      .create({ locale: LOCALES[0], data: { ...shared, ...withBlocks(entry[LOCALES[0]]) }, ...status });
-    for (const locale of LOCALES.slice(1)) {
-      await strapi
-        .documents(uid)
-        .update({ documentId: first.documentId, locale, data: { ...shared, ...withBlocks(entry[locale]) }, ...status });
-    }
-  }
+  const createLocalized = (uid, entry, options) =>
+    createInLocales(
+      uid,
+      withRelations(entry.shared ?? {}),
+      (locale) => withBlocks(entry[locale]),
+      options
+    );
 
   await createLocalized('api::site-setting.site-setting', data.siteSetting);
   await createLocalized('api::profile.profile', data.profile);
@@ -84,6 +93,66 @@ async function seed() {
   );
 }
 
+// data/blog.json writes blocks in shorthand: a list of strings is Markdown paragraphs,
+// { code } names one of the article's code snippets (the same in every language),
+// { callout } and { quote } are the other blocks.
+function articleBlocks(blocks, code) {
+  return blocks.map((block) => {
+    if (Array.isArray(block)) return { __component: 'shared.rich-text', body: block.join('\n\n') };
+    if (block.code) {
+      const snippet = lookup(code, block.code, 'code snippet', 'data/blog.json');
+      return { __component: 'shared.code', ...snippet, code: snippet.code.join('\n') };
+    }
+    if (block.callout) {
+      return { __component: 'shared.callout', variant: block.callout, title: block.title, body: block.body };
+    }
+    if (block.quote) return { __component: 'shared.quote', body: block.quote, title: block.cite };
+    throw new Error(`Unknown block in data/blog.json: ${JSON.stringify(block)}`);
+  });
+}
+
+// Runs on its own condition (no articles yet), so it also fills a database seeded before the blog existed.
+async function seedBlog() {
+  if (await strapi.documents('api::article.article').findFirst({ locale: 'en', status: 'draft' })) {
+    console.log('Articles already exist. The blog seed only runs when there are none.');
+    return;
+  }
+
+  const connectByKey = (map, keys, kind) => ({
+    connect: keys.map((key) => ({ documentId: lookup(map, key, kind, 'data/blog.json') })),
+  });
+
+  const tags = {};
+  for (const { slug, ...names } of blog.tags) {
+    tags[slug] = await createInLocales('api::tag.tag', { slug }, (locale) => names[locale]);
+  }
+  const series = {};
+  for (const { slug, ...texts } of blog.series) {
+    series[slug] = await createInLocales('api::series.series', { slug }, (locale) => texts[locale]);
+  }
+  for (const article of blog.articles) {
+    const { tags: tagKeys, series: seriesKey, ...shared } = article.shared;
+    await createInLocales(
+      'api::article.article',
+      {
+        ...shared,
+        tags: connectByKey(tags, tagKeys, 'tag'),
+        ...(seriesKey && { series: connectByKey(series, [seriesKey], 'series') }),
+      },
+      (locale) => {
+        const { blocks, ...texts } = article[locale];
+        return { ...texts, blocks: articleBlocks(blocks, article.code ?? {}) };
+      },
+      { publish: true }
+    );
+  }
+
+  console.log(
+    `Seeded the blog in ${LOCALES.join(', ')}: ${blog.articles.length} articles, ` +
+      `${blog.series.length} series and ${blog.tags.length} tags.`
+  );
+}
+
 async function main() {
   const { createStrapi, compileStrapi } = require('@strapi/strapi');
 
@@ -93,6 +162,7 @@ async function main() {
   app.log.level = 'error';
 
   await seed();
+  await seedBlog();
   await app.destroy();
 
   process.exit(0);

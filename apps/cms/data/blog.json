@@ -1,0 +1,636 @@
+{
+  "tags": [
+    { "slug": "tanstack", "en": { "name": "TanStack" }, "ar": { "name": "TanStack" }, "fr": { "name": "TanStack" } },
+    { "slug": "strapi", "en": { "name": "Strapi" }, "ar": { "name": "Strapi" }, "fr": { "name": "Strapi" } },
+    { "slug": "typescript", "en": { "name": "TypeScript" }, "ar": { "name": "TypeScript" }, "fr": { "name": "TypeScript" } },
+    { "slug": "architecture", "en": { "name": "Architecture" }, "ar": { "name": "الهندسة البرمجية" }, "fr": { "name": "Architecture" } },
+    { "slug": "rtl", "en": { "name": "Right-to-left" }, "ar": { "name": "من اليمين إلى اليسار" }, "fr": { "name": "Droite à gauche" } },
+    { "slug": "arabic", "en": { "name": "Arabic" }, "ar": { "name": "العربية" }, "fr": { "name": "Arabe" } },
+    { "slug": "css", "en": { "name": "CSS" }, "ar": { "name": "CSS" }, "fr": { "name": "CSS" } },
+    { "slug": "markdown", "en": { "name": "Markdown" }, "ar": { "name": "Markdown" }, "fr": { "name": "Markdown" } },
+    { "slug": "security", "en": { "name": "Security" }, "ar": { "name": "الأمان" }, "fr": { "name": "Sécurité" } },
+    { "slug": "performance", "en": { "name": "Performance" }, "ar": { "name": "الأداء" }, "fr": { "name": "Performance" } }
+  ],
+  "series": [
+    {
+      "slug": "building-this-portfolio",
+      "en": {
+        "title": "Building this portfolio",
+        "description": "How this site is built, from the stack to the details: TanStack Start, Strapi, right-to-left design and rendering on the server."
+      },
+      "ar": {
+        "title": "بناء هذا الموقع",
+        "description": "كيف بُني هذا الموقع، من التقنيات إلى التفاصيل: TanStack Start وStrapi وتصميم من اليمين إلى اليسار والمعالجة على الخادم."
+      },
+      "fr": {
+        "title": "Construire ce portfolio",
+        "description": "Comment ce site est construit, de la stack aux détails : TanStack Start, Strapi, la droite-à-gauche et le rendu côté serveur."
+      }
+    }
+  ],
+  "articles": [
+    {
+      "shared": {
+        "slug": "why-tanstack-start-and-strapi",
+        "publishedDate": "2026-10-20",
+        "series": "building-this-portfolio",
+        "seriesPart": 1,
+        "tags": ["tanstack", "strapi", "typescript", "architecture"],
+        "featured": true,
+        "allowComments": true
+      },
+      "code": {
+        "server-function": {
+          "filename": "features/projects/projects.functions.ts",
+          "language": "typescript",
+          "code": [
+            "export const getProjects = createServerFn({ method: 'GET' })",
+            "  .validator(z.object({ lang: languageSchema }))",
+            "  .handler(async ({ data }) => {",
+            "    const response = await getStrapiClient()",
+            "      .collection('projects')",
+            "      .find({",
+            "        locale: data.lang,",
+            "        sort: ['order:asc', 'title:asc'],",
+            "        populate: CARD_POPULATE,",
+            "      })",
+            "    return projectListSchema.parse(response).data",
+            "  })"
+          ]
+        },
+        "route": {
+          "filename": "routes/$lang/projects/index.tsx",
+          "language": "tsx",
+          "code": [
+            "export const Route = createFileRoute('/$lang/projects/')({",
+            "  validateSearch: projectsSearchSchema,",
+            "  loader: ({ context, params }) =>",
+            "    context.queryClient.query({",
+            "      ...projectsQuery(params.lang),",
+            "      staleTime: 'static',",
+            "    }),",
+            "  component: ProjectsPage,",
+            "})"
+          ]
+        }
+      },
+      "en": {
+        "title": "Why I built my portfolio with TanStack Start and Strapi",
+        "description": "The stack behind this site and the reasons for it: typed routes, server functions, a CMS I host myself, and three languages from day one.",
+        "blocks": [
+          [
+            "A portfolio is a small website, and it's tempting to pick a template and move on. I wanted mine to be a real project instead: the kind of codebase I'd be happy to hand over to a client. It had to present my work in English, Arabic and French, let me change any text without touching code, and stay cheap to run on my own server.",
+            "This series walks through how it's built. This first part covers the two biggest decisions: TanStack Start for the website, and Strapi for the content."
+          ],
+          [
+            "## The shape of the project",
+            "One repository holds two apps, managed with pnpm and Turborepo:",
+            "- `apps/web` is the website: TanStack Start, TanStack Router and TanStack Query, styled with Tailwind CSS.\n- `apps/cms` is Strapi 5, where every text, project and job lives, in all three languages.",
+            "Both run as Docker containers on my own VPS, deployed with Dokploy. No platform lock-in, and one predictable monthly bill."
+          ],
+          [
+            "## Why TanStack Start",
+            "Most of my client projects use Next.js, so this was a deliberate change. Three things won me over.",
+            "**Routes are typed.** A link to a page that doesn't exist fails to compile. Every address on this site starts with a language (`/en`, `/ar`, `/fr`), and the type checker makes sure no link forgets it.",
+            "**Server functions validate their input.** Everything that reads from the CMS runs in a server function, with a Zod schema for its arguments. The browser never talks to Strapi directly and never learns its internal address."
+          ],
+          { "code": "server-function" },
+          [
+            "**Loading data composes.** Each route's loader asks TanStack Query for exactly what the page needs. Pages that need the same data share the cached result: the home page and the projects page both read the project list, so going from one to the other costs no new request."
+          ],
+          { "code": "route" },
+          [
+            "The trade-off is maturity. Next.js has years of answers on every forum; TanStack Start is younger, and a few times I read its source code instead of a blog post. For a site I maintain myself, the type safety was worth it."
+          ],
+          {
+            "callout": "tip",
+            "title": "Validate at the boundaries",
+            "body": "Every response from the CMS goes through a Zod schema before the site uses it. If a required field is missing, the error appears in one clear place instead of as a broken page somewhere else."
+          },
+          [
+            "## Why Strapi",
+            "For the content I wanted a real editing interface, proper translations, and self-hosting. Strapi 5 covers all three:",
+            "- **Translations per field.** Each text exists in English, Arabic and French, while dates, links and images are shared between languages.\n- **Draft and publish.** I can prepare a project or an article and publish it when it's ready. The site only ever requests published content.\n- **Custom endpoints where they matter.** Comments and contact messages come from the public, so they go through small custom routes with rate limits instead of the default API.",
+            "The content model mirrors the site: a profile, jobs, degrees, projects, services, and now articles, tags and series. When I add a project in the admin panel, it appears on the site without a new deployment."
+          ],
+          [
+            "## What I'd do differently",
+            "Settle the design before building pages. I built the first pages, then redesigned them twice. Now the approved design lives in a document in the repository, and every page is built from it.",
+            "Part 2 covers the part of that design I care about most: making Arabic a first-class language rather than a mirrored afterthought."
+          ]
+        ]
+      },
+      "ar": {
+        "title": "لماذا بنيت موقعي الشخصي بـ TanStack Start وStrapi",
+        "description": "التقنيات التي يقوم عليها هذا الموقع وأسباب اختيارها: مسارات مضبوطة الأنواع، ودوال خادم، ونظام محتوى أستضيفه بنفسي، وثلاث لغات منذ اليوم الأول.",
+        "blocks": [
+          [
+            "الموقع الشخصي موقع صغير، ومن المغري اختيار قالب جاهز والانتقال إلى غيره. أردت أن يكون موقعي مشروعًا حقيقيًا: من نوع الشيفرة التي يسرّني أن أسلّمها لعميل. كان عليه أن يعرض أعمالي بالإنجليزية والعربية والفرنسية، وأن يتيح لي تعديل أي نص دون لمس الشيفرة، وأن تبقى تكلفة تشغيله على خادمي الخاص منخفضة.",
+            "تشرح هذه السلسلة كيف بُني الموقع. يتناول هذا الجزء الأول أهم قرارين: TanStack Start للموقع، وStrapi لإدارة المحتوى."
+          ],
+          [
+            "## بنية المشروع",
+            "مستودع واحد يضم تطبيقين، تديرهما أداتا pnpm وTurborepo:",
+            "- `apps/web` هو الموقع: TanStack Start وTanStack Router وTanStack Query، مع Tailwind CSS للتنسيق.\n- `apps/cms` هو Strapi 5، حيث يُحفظ كل نص ومشروع ووظيفة باللغات الثلاث.",
+            "يعمل كلاهما في حاويات Docker على خادمي الافتراضي الخاص، وأنشرهما عبر Dokploy. لا ارتباط بمنصة بعينها، وفاتورة شهرية واحدة يمكن توقّعها."
+          ],
+          [
+            "## لماذا TanStack Start",
+            "أستخدم Next.js في معظم مشاريع عملائي، لذا كان هذا تغييرًا مقصودًا. أقنعتني ثلاثة أمور.",
+            "**المسارات مضبوطة الأنواع.** الرابط إلى صفحة غير موجودة يفشل عند الترجمة. كل عنوان في هذا الموقع يبدأ باللغة (`/en` و`/ar` و`/fr`)، ومدقّق الأنواع يتأكد أن أي رابط لا ينساها.",
+            "**دوال الخادم تتحقق من مدخلاتها.** كل ما يقرأ من نظام المحتوى يعمل في دالة خادم مع مخطط Zod لمعاملاتها. لا يتصل المتصفح بـ Strapi مباشرة أبدًا، ولا يعرف عنوانه الداخلي."
+          ],
+          { "code": "server-function" },
+          [
+            "**تحميل البيانات قابل للتركيب.** يطلب مُحمّل كل مسار من TanStack Query ما تحتاجه الصفحة بالضبط. والصفحات التي تحتاج البيانات نفسها تتشارك النتيجة المخزّنة: الصفحة الرئيسية وصفحة المشاريع تقرآن قائمة المشاريع نفسها، فالانتقال بينهما لا يكلّف طلبًا جديدًا."
+          ],
+          { "code": "route" },
+          [
+            "الثمن هو حداثة الأداة. لدى Next.js سنوات من الإجابات في كل منتدى، أما TanStack Start فأحدث عهدًا، وفي مرات قليلة قرأت شيفرته المصدرية بدل مقال في مدوّنة. في موقع أصونه بنفسي، كان ضبط الأنواع يستحق ذلك."
+          ],
+          {
+            "callout": "tip",
+            "title": "تحقّق عند الحدود",
+            "body": "كل استجابة من نظام المحتوى تمرّ بمخطط Zod قبل أن يستخدمها الموقع. إذا غاب حقل مطلوب، يظهر الخطأ في مكان واحد واضح بدل صفحة معطّلة في مكان آخر."
+          },
+          [
+            "## لماذا Strapi",
+            "أردت للمحتوى واجهة تحرير حقيقية، وترجمات سليمة، واستضافة ذاتية. يلبّي Strapi 5 الثلاثة:",
+            "- **ترجمة لكل حقل.** كل نص موجود بالإنجليزية والعربية والفرنسية، بينما تتشارك اللغات التواريخ والروابط والصور.\n- **مسودة ثم نشر.** أستطيع تجهيز مشروع أو مقال ونشره حين يكتمل، ولا يطلب الموقع إلا المحتوى المنشور.\n- **مسارات مخصّصة حيث يلزم.** التعليقات ورسائل التواصل تأتي من العموم، لذا تمرّ عبر مسارات مخصّصة صغيرة بحدود للطلبات بدل الواجهة الافتراضية.",
+            "يعكس نموذج المحتوى بنية الموقع: ملف شخصي، ووظائف، وشهادات، ومشاريع، وخدمات، والآن مقالات ووسوم وسلاسل. حين أضيف مشروعًا من لوحة الإدارة، يظهر في الموقع دون نشر جديد."
+          ],
+          [
+            "## ما الذي سأفعله بشكل مختلف",
+            "أن أحسم التصميم قبل بناء الصفحات. بنيت الصفحات الأولى ثم أعدت تصميمها مرتين. اليوم يعيش التصميم المعتمد في وثيقة داخل المستودع، وتُبنى كل صفحة انطلاقًا منه.",
+            "يتناول الجزء الثاني الجانب الذي يهمّني أكثر في هذا التصميم: أن تكون العربية لغة أصيلة في الموقع، لا نسخة معكوسة تُضاف في النهاية."
+          ]
+        ]
+      },
+      "fr": {
+        "title": "Pourquoi j'ai construit mon portfolio avec TanStack Start et Strapi",
+        "description": "La stack derrière ce site et ses raisons : des routes typées, des fonctions serveur, un CMS que j'héberge moi-même, et trois langues dès le premier jour.",
+        "blocks": [
+          [
+            "Un portfolio est un petit site, et il est tentant de prendre un modèle tout fait et de passer à autre chose. Je voulais que le mien soit un vrai projet : le genre de code que je serais fier de confier à un client. Il devait présenter mon travail en anglais, en arabe et en français, me permettre de modifier n'importe quel texte sans toucher au code, et rester peu coûteux à faire tourner sur mon propre serveur.",
+            "Cette série explique comment il est construit. Cette première partie couvre les deux choix les plus importants : TanStack Start pour le site, et Strapi pour le contenu."
+          ],
+          [
+            "## L'organisation du projet",
+            "Un seul dépôt contient deux applications, gérées avec pnpm et Turborepo :",
+            "- `apps/web` est le site : TanStack Start, TanStack Router et TanStack Query, mis en forme avec Tailwind CSS.\n- `apps/cms` est Strapi 5, où vivent chaque texte, chaque projet et chaque poste, dans les trois langues.",
+            "Les deux tournent dans des conteneurs Docker sur mon propre VPS, déployés avec Dokploy. Aucune dépendance à une plateforme, et une seule facture mensuelle prévisible."
+          ],
+          [
+            "## Pourquoi TanStack Start",
+            "J'utilise Next.js pour la plupart de mes projets clients, ce changement était donc délibéré. Trois choses m'ont convaincu.",
+            "**Les routes sont typées.** Un lien vers une page qui n'existe pas ne compile pas. Chaque adresse de ce site commence par une langue (`/en`, `/ar`, `/fr`), et le vérificateur de types s'assure qu'aucun lien ne l'oublie.",
+            "**Les fonctions serveur valident leurs entrées.** Tout ce qui lit le CMS passe par une fonction serveur, avec un schéma Zod pour ses arguments. Le navigateur ne parle jamais directement à Strapi et ne connaît jamais son adresse interne."
+          ],
+          { "code": "server-function" },
+          [
+            "**Le chargement des données se compose.** Le loader de chaque route demande à TanStack Query exactement ce dont la page a besoin. Les pages qui partagent des données partagent le résultat en cache : la page d'accueil et la page des projets lisent la même liste, et passer de l'une à l'autre ne coûte aucune nouvelle requête."
+          ],
+          { "code": "route" },
+          [
+            "La contrepartie, c'est la maturité. Next.js a des années de réponses sur tous les forums ; TanStack Start est plus jeune, et il m'est arrivé de lire son code source plutôt qu'un article de blog. Pour un site que je maintiens moi-même, la sûreté des types en valait la peine."
+          ],
+          {
+            "callout": "tip",
+            "title": "Valider aux frontières",
+            "body": "Chaque réponse du CMS passe par un schéma Zod avant d'être utilisée par le site. S'il manque un champ obligatoire, l'erreur apparaît à un endroit clair plutôt que sous la forme d'une page cassée ailleurs."
+          },
+          [
+            "## Pourquoi Strapi",
+            "Pour le contenu, je voulais une vraie interface d'édition, des traductions dignes de ce nom et l'auto-hébergement. Strapi 5 coche les trois cases :",
+            "- **Des traductions par champ.** Chaque texte existe en anglais, en arabe et en français, tandis que les dates, les liens et les images sont partagés entre les langues.\n- **Brouillon et publication.** Je peux préparer un projet ou un article et le publier quand il est prêt. Le site ne demande jamais que du contenu publié.\n- **Des routes sur mesure là où il le faut.** Les commentaires et les messages de contact viennent du public : ils passent par de petites routes dédiées, avec des limites de requêtes, plutôt que par l'API par défaut.",
+            "Le modèle de contenu reflète le site : un profil, des postes, des diplômes, des projets, des services, et désormais des articles, des tags et des séries. Quand j'ajoute un projet dans l'interface d'administration, il apparaît sur le site sans nouveau déploiement."
+          ],
+          [
+            "## Ce que je ferais autrement",
+            "Arrêter le design avant de construire les pages. J'ai construit les premières pages, puis je les ai redessinées deux fois. Aujourd'hui, le design validé vit dans un document du dépôt, et chaque page est construite à partir de lui.",
+            "La partie 2 traite de l'aspect de ce design qui me tient le plus à cœur : faire de l'arabe une langue à part entière, et non une version inversée ajoutée à la fin."
+          ]
+        ]
+      }
+    },
+    {
+      "shared": {
+        "slug": "right-to-left-done-right",
+        "publishedDate": "2026-10-23",
+        "series": "building-this-portfolio",
+        "seriesPart": 2,
+        "tags": ["rtl", "arabic", "css"],
+        "featured": false,
+        "allowComments": true
+      },
+      "code": {
+        "bullets": {
+          "filename": "styles/app.css",
+          "language": "css",
+          "code": [
+            "@utility square-bullets {",
+            "  & ul > li {",
+            "    @apply relative ps-5;",
+            "  }",
+            "  & ul > li::before {",
+            "    content: '';",
+            "    @apply absolute inset-s-0 top-[0.7em] size-1.5 bg-primary;",
+            "  }",
+            "}"
+          ]
+        },
+        "arrow": {
+          "filename": "components/content/arrow-link.tsx",
+          "language": "tsx",
+          "code": ["<ArrowRightIcon aria-hidden className=\"size-4 rtl:rotate-180\" />"]
+        },
+        "digits": {
+          "filename": "lib/i18n/format.ts",
+          "language": "typescript",
+          "code": [
+            "// Arabic uses Latin digits to match the CMS content (\"19/20\", \"15–25%\").",
+            "const INTL_LOCALES: Record<Language, string> = {",
+            "  en: 'en',",
+            "  ar: 'ar-u-nu-latn',",
+            "  fr: 'fr',",
+            "}"
+          ]
+        },
+        "fonts": {
+          "filename": "styles/app.css",
+          "language": "css",
+          "code": [
+            "@theme {",
+            "  /* Plex Mono has no Arabic letters; without Plex Sans Arabic next, browsers",
+            "     fall back to a system monospace font that renders Arabic disconnected. */",
+            "  --font-mono:",
+            "    'IBM Plex Mono', 'IBM Plex Sans Arabic', ui-monospace, SFMono-Regular,",
+            "    Menlo, Consolas, monospace;",
+            "}"
+          ]
+        }
+      },
+      "en": {
+        "title": "Right-to-left done right: lessons from an Arabic-first site",
+        "description": "Logical CSS, mirrored arrows, Latin digits and fonts without Arabic letters: the details that make an Arabic interface feel native instead of flipped.",
+        "blocks": [
+          [
+            "Most of my client work is for Arabic speakers, and I've seen what usually happens to the Arabic versions of websites: the English layout, flipped at the last minute, with arrows pointing the wrong way and numbers that read backwards.",
+            "On this site, Arabic was part of the design from the first day. Here are the details that made the difference."
+          ],
+          [
+            "## Think in start and end, not left and right",
+            "Setting `dir=\"rtl\"` on the page reverses the text, but every `margin-left` and `left: 0` in the stylesheet stays exactly where it was. The fix is to stop writing left and right altogether.",
+            "CSS logical properties describe the start and the end of a line instead, and Tailwind has them for everything: `ps-` and `pe-` for padding, `ms-` and `me-` for margins, `border-s`, `inset-s`, `text-start`. The timeline's date column, the blue bullets in this article, the dividers between figures and the slide-in menu all use them. In Arabic they all move to the right, with no extra CSS."
+          ],
+          { "code": "bullets" },
+          [
+            "## Mirror what points, not what shows",
+            "Arrows that mean \"next\" or \"back\" must point the other way in Arabic. A logo, a play button or a check mark must not. So only directional icons flip, and only on right-to-left pages:"
+          ],
+          { "code": "arrow" },
+          [
+            "The diagonal \"opens elsewhere\" arrow is flipped horizontally instead, with `rtl:-scale-x-100`, so it keeps pointing up."
+          ],
+          [
+            "## Keep numbers left to right",
+            "Arabic runs right to left, but numbers inside it still read left to right. That holds for a single number and breaks for a range: \"15–25%\" can come out as \"25%–15\". Two rules fix it:",
+            "- Figures that mix digits and symbols get their own direction: `<span dir=\"ltr\">15–25%</span>`.\n- Dates and durations use Latin digits, the norm in Algeria and across North Africa, so they match the numbers typed in the CMS."
+          ],
+          { "code": "digits" },
+          [
+            "## Check what your fonts actually contain",
+            "IBM Plex has an excellent Arabic font, IBM Plex Sans Arabic. IBM Plex Mono, the monospaced font for labels and code, has no Arabic letters at all. Every Arabic word in a monospaced label fell back to a system font, with letters that didn't join.",
+            "The fix is one line in the font stack: Plex Mono for Latin text, then Plex Sans Arabic for anything Plex Mono can't draw."
+          ],
+          { "code": "fonts" },
+          {
+            "callout": "warning",
+            "title": "Uppercase and letter-spacing don't translate",
+            "body": "Small uppercase labels with wide letter-spacing are a staple of technical design. Arabic has no capital letters, and spacing out its letters breaks the joins between them. On Arabic pages the same labels use the regular font with normal spacing."
+          },
+          [
+            "## The small things",
+            "- Arabic needs more room between lines than Latin text; Arabic pages use a line height of 1.75.\n- Lists joined in code use the Arabic comma \"،\" instead of \",\".\n- Initials, like the ones shown for a project without a screenshot, are separated by an invisible zero-width non-joiner. Without it, two Arabic letters join into what reads like a word."
+          ],
+          [
+            "## Test it like a visitor would",
+            "None of this shows up in a code review. Every page on this site is checked in Arabic in a real browser, at phone width too: does the menu slide in from the left, do the arrows point the right way, does anything overflow? It takes longer than checking the English page, and it's the only way an Arabic visitor gets a site that feels made for them.",
+            "Part 3 goes behind the content itself: how Markdown and code from the CMS become safe, highlighted HTML on the server."
+          ]
+        ]
+      },
+      "ar": {
+        "title": "الاتجاه من اليمين إلى اليسار كما ينبغي: دروس من موقع عربي أولًا",
+        "description": "خصائص CSS المنطقية، والأسهم المعكوسة، والأرقام اللاتينية، والخطوط التي لا تحوي حروفًا عربية: تفاصيل تجعل الواجهة العربية أصيلة لا مقلوبة.",
+        "blocks": [
+          [
+            "معظم عملي لعملاء يتحدثون العربية، وقد رأيت ما يحدث عادةً للنسخ العربية من المواقع: التصميم الإنجليزي نفسه، معكوسًا في اللحظة الأخيرة، بأسهم تشير إلى الجهة الخطأ وأرقام تُقرأ بالمقلوب.",
+            "في هذا الموقع، كانت العربية جزءًا من التصميم منذ اليوم الأول. هذه هي التفاصيل التي صنعت الفرق."
+          ],
+          [
+            "## فكّر في البداية والنهاية، لا في اليمين واليسار",
+            "ضبط `dir=\"rtl\"` على الصفحة يعكس اتجاه النص، لكن كل `margin-left` و`left: 0` في ملف التنسيق يبقى في مكانه تمامًا. والحل هو التوقف عن كتابة اليمين واليسار أصلًا.",
+            "تصف خصائص CSS المنطقية بداية السطر ونهايته بدلًا من ذلك، ولدى Tailwind ما يقابلها لكل شيء: `ps-` و`pe-` للحشو، و`ms-` و`me-` للهوامش، و`border-s` و`inset-s` و`text-start`. عمود التواريخ في الخط الزمني، والنقاط الزرقاء في هذا المقال، والفواصل بين الأرقام، والقائمة المنزلقة كلها تستخدمها. وفي العربية تنتقل كلها إلى اليمين دون أي CSS إضافي."
+          ],
+          { "code": "bullets" },
+          [
+            "## اعكس ما يشير، لا ما يُعرض",
+            "الأسهم التي تعني «التالي» أو «رجوع» يجب أن تشير إلى الجهة الأخرى في العربية. أما الشعار وزر التشغيل وعلامة الصح فلا. لذا لا تنعكس إلا الأيقونات الدالّة على اتجاه، وفي الصفحات من اليمين إلى اليسار فقط:"
+          ],
+          { "code": "arrow" },
+          [
+            "أما السهم المائل الذي يعني «يُفتح في مكان آخر» فيُعكس أفقيًا بـ `rtl:-scale-x-100`، فيبقى متجهًا إلى الأعلى."
+          ],
+          [
+            "## أبقِ الأرقام من اليسار إلى اليمين",
+            "تُكتب العربية من اليمين إلى اليسار، لكن الأرقام داخلها تُقرأ من اليسار إلى اليمين. يصحّ ذلك مع الرقم المفرد ويتعطّل مع المدى: قد تظهر «15–25%» على شكل «25%–15». قاعدتان تصلحان ذلك:",
+            "- الأرقام التي تمزج الخانات بالرموز تأخذ اتجاهها الخاص: `<span dir=\"ltr\">15–25%</span>`.\n- التواريخ والمدد تُكتب بالأرقام اللاتينية، وهي المعتادة في الجزائر وفي شمال إفريقيا عمومًا، فتتّسق مع الأرقام المكتوبة في نظام المحتوى."
+          ],
+          { "code": "digits" },
+          [
+            "## تحقّق مما تحويه خطوطك فعلًا",
+            "لعائلة IBM Plex خط عربي ممتاز هو IBM Plex Sans Arabic. أما IBM Plex Mono، الخط أحادي المسافة للتسميات والشيفرة، فلا يحوي أي حرف عربي. كل كلمة عربية في تسمية أحادية المسافة كانت تُعرض بخط النظام البديل، بحروف لا تتصل ببعضها.",
+            "الحل سطر واحد في قائمة الخطوط: Plex Mono للنص اللاتيني، ثم Plex Sans Arabic لكل ما لا يستطيع Plex Mono رسمه."
+          ],
+          { "code": "fonts" },
+          {
+            "callout": "warning",
+            "title": "الأحرف الكبيرة وتباعد الحروف لا يُترجمان",
+            "body": "التسميات الصغيرة بالأحرف الكبيرة وتباعد واسع بين الحروف سمة مألوفة في التصميم التقني. لكن العربية لا تعرف الأحرف الكبيرة، وتباعد حروفها يقطع الوصل بينها. في الصفحات العربية تستخدم التسميات نفسها الخط العادي بتباعد طبيعي."
+          },
+          [
+            "## التفاصيل الصغيرة",
+            "- تحتاج العربية مسافة بين الأسطر أكبر من النص اللاتيني، لذا تستخدم الصفحات العربية ارتفاع سطر 1.75.\n- القوائم التي تُجمع في الشيفرة تستخدم الفاصلة العربية «،» بدل «,».\n- الأحرف الأولى، كتلك التي تظهر لمشروع بلا صورة، يُفصل بينها بمحرف غير مرئي هو «فاصل منع الوصل». من دونه يتصل الحرفان العربيان فيُقرآن ككلمة."
+          ],
+          [
+            "## اختبره كما يفعل الزائر",
+            "لا شيء من هذا يظهر في مراجعة الشيفرة. تُفحص كل صفحة في هذا الموقع بالعربية في متصفح حقيقي، وبعرض الهاتف أيضًا: هل تنزلق القائمة من اليسار؟ هل تشير الأسهم إلى الجهة الصحيحة؟ هل يتجاوز شيء حدود الشاشة؟ يستغرق ذلك وقتًا أطول من فحص الصفحة الإنجليزية، وهو السبيل الوحيد لأن يحصل الزائر العربي على موقع يشعر أنه صُنع له.",
+            "يتناول الجزء الثالث ما وراء المحتوى نفسه: كيف تتحوّل نصوص Markdown والشيفرة القادمة من نظام المحتوى إلى HTML آمن ومُلوّن على الخادم."
+          ]
+        ]
+      },
+      "fr": {
+        "title": "La droite-à-gauche bien faite : leçons d'un site pensé pour l'arabe",
+        "description": "CSS logique, flèches inversées, chiffres latins et polices sans lettres arabes : les détails qui rendent une interface arabe naturelle plutôt que simplement retournée.",
+        "blocks": [
+          [
+            "La plupart de mes clients sont arabophones, et j'ai vu ce qui arrive en général aux versions arabes des sites : la mise en page anglaise, retournée à la dernière minute, avec des flèches qui pointent du mauvais côté et des nombres qui se lisent à l'envers.",
+            "Sur ce site, l'arabe faisait partie du design dès le premier jour. Voici les détails qui ont fait la différence."
+          ],
+          [
+            "## Penser début et fin, pas gauche et droite",
+            "Mettre `dir=\"rtl\"` sur la page inverse le texte, mais chaque `margin-left` et chaque `left: 0` de la feuille de style restent exactement où ils étaient. La solution, c'est de ne plus écrire gauche ni droite du tout.",
+            "Les propriétés logiques de CSS décrivent le début et la fin d'une ligne, et Tailwind les propose pour tout : `ps-` et `pe-` pour les marges intérieures, `ms-` et `me-` pour les marges, `border-s`, `inset-s`, `text-start`. La colonne des dates, les puces bleues de cet article, les séparateurs entre les chiffres et le menu coulissant les utilisent tous. En arabe, tout passe à droite, sans une ligne de CSS en plus."
+          ],
+          { "code": "bullets" },
+          [
+            "## Inverser ce qui indique, pas ce qui illustre",
+            "Les flèches qui signifient « suivant » ou « retour » doivent pointer dans l'autre sens en arabe. Un logo, un bouton lecture ou une coche, non. Seules les icônes de direction s'inversent, et seulement sur les pages de droite à gauche :"
+          ],
+          { "code": "arrow" },
+          [
+            "La flèche en diagonale, qui signifie « s'ouvre ailleurs », est retournée horizontalement avec `rtl:-scale-x-100`, pour continuer de pointer vers le haut."
+          ],
+          [
+            "## Garder les nombres de gauche à droite",
+            "L'arabe s'écrit de droite à gauche, mais les nombres s'y lisent toujours de gauche à droite. Ça fonctionne pour un nombre seul et ça casse pour un intervalle : « 15–25% » peut s'afficher « 25%–15 ». Deux règles corrigent cela :",
+            "- Les valeurs qui mêlent chiffres et symboles reçoivent leur propre sens : `<span dir=\"ltr\">15–25%</span>`.\n- Les dates et les durées utilisent les chiffres latins, la norme en Algérie et dans tout le Maghreb, pour correspondre aux nombres saisis dans le CMS."
+          ],
+          { "code": "digits" },
+          [
+            "## Vérifier ce que contiennent vraiment ses polices",
+            "IBM Plex a une excellente police arabe, IBM Plex Sans Arabic. Mais IBM Plex Mono, la police à chasse fixe des étiquettes et du code, ne contient aucune lettre arabe. Chaque mot arabe dans une étiquette à chasse fixe s'affichait dans une police système, avec des lettres qui ne se liaient pas.",
+            "La solution tient en une ligne dans la pile de polices : Plex Mono pour le texte latin, puis Plex Sans Arabic pour tout ce que Plex Mono ne sait pas dessiner."
+          ],
+          { "code": "fonts" },
+          {
+            "callout": "warning",
+            "title": "Les majuscules et l'espacement ne se traduisent pas",
+            "body": "Les petites étiquettes en majuscules avec un large espacement des lettres sont un classique du design technique. L'arabe n'a pas de majuscules, et espacer ses lettres casse leurs liaisons. Sur les pages en arabe, les mêmes étiquettes utilisent la police normale avec un espacement normal."
+          },
+          [
+            "## Les petits détails",
+            "- L'arabe a besoin de plus d'espace entre les lignes que le texte latin : les pages en arabe utilisent une hauteur de ligne de 1,75.\n- Les listes assemblées dans le code utilisent la virgule arabe « ، » au lieu de « , ».\n- Les initiales, comme celles affichées pour un projet sans capture d'écran, sont séparées par un caractère invisible, l'antiliant sans chasse. Sans lui, deux lettres arabes se lient et se lisent comme un mot."
+          ],
+          [
+            "## Tester comme un visiteur",
+            "Rien de tout cela ne se voit en relecture de code. Chaque page de ce site est vérifiée en arabe dans un vrai navigateur, y compris en largeur de téléphone : le menu glisse-t-il depuis la gauche, les flèches pointent-elles du bon côté, quelque chose déborde-t-il ? C'est plus long que de vérifier la page anglaise, et c'est le seul moyen d'offrir aux visiteurs arabophones un site qui semble fait pour eux.",
+            "La partie 3 passe derrière le contenu lui-même : comment le Markdown et le code du CMS deviennent du HTML sûr et coloré, sur le serveur."
+          ]
+        ]
+      }
+    },
+    {
+      "shared": {
+        "slug": "markdown-and-code-on-the-server",
+        "publishedDate": "2026-10-27",
+        "series": "building-this-portfolio",
+        "seriesPart": 3,
+        "tags": ["markdown", "typescript", "security", "performance"],
+        "featured": false,
+        "allowComments": true
+      },
+      "code": {
+        "pipeline": {
+          "filename": "lib/markdown/render.server.ts",
+          "language": "typescript",
+          "code": [
+            "function createMarkdownProcessor(highlighter: Highlighter) {",
+            "  return (",
+            "    unified()",
+            "      .use(remarkParse)",
+            "      .use(remarkGfm)",
+            "      // Raw HTML in the Markdown is dropped, not passed through.",
+            "      .use(remarkRehype)",
+            "      // Defence in depth: strips unsafe URLs (javascript:…) and attributes.",
+            "      .use(rehypeSanitize)",
+            "      // After sanitizing, which would otherwise strip Shiki's colours.",
+            "      .use(rehypeShikiFromHighlighter, highlighter, {",
+            "        ...SHIKI_OPTIONS,",
+            "        defaultLanguage: 'text',",
+            "        fallbackLanguage: 'text',",
+            "      })",
+            "      .use(rehypeStringify)",
+            "  )",
+            "}"
+          ]
+        },
+        "shiki-options": {
+          "filename": "lib/markdown/render.server.ts",
+          "language": "typescript",
+          "code": [
+            "// Light and dark colours both go into the HTML as CSS variables; app.css picks",
+            "// one from the site theme, so highlighted code switches theme with no re-render.",
+            "const SHIKI_OPTIONS = {",
+            "  themes: { light: 'github-light', dark: 'github-dark' },",
+            "  defaultColor: false,",
+            "} as const"
+          ]
+        },
+        "theme-css": {
+          "filename": "styles/app.css",
+          "language": "css",
+          "code": [
+            ".shiki,",
+            ".shiki span {",
+            "  color: var(--shiki-light);",
+            "}",
+            ".dark .shiki,",
+            ".dark .shiki span {",
+            "  color: var(--shiki-dark);",
+            "}"
+          ]
+        },
+        "once": {
+          "filename": "lib/markdown/render.server.ts",
+          "language": "typescript",
+          "code": [
+            "// Loading grammars is slow, so the highlighter and processor are created once per server.",
+            "let highlighter: Promise<Highlighter> | undefined",
+            "",
+            "function getHighlighter() {",
+            "  highlighter ??= createHighlighter({",
+            "    themes: Object.values(SHIKI_OPTIONS.themes),",
+            "    langs: LANGUAGES,",
+            "  })",
+            "  return highlighter",
+            "}"
+          ]
+        }
+      },
+      "en": {
+        "title": "Rendering Markdown and code on the server",
+        "description": "How this site turns Markdown from the CMS into safe, highlighted HTML before it reaches the browser, with unified, rehype-sanitize and Shiki.",
+        "blocks": [
+          [
+            "Case studies, job descriptions and articles like this one are written in Markdown in the CMS. Turning Markdown into HTML is easy. Doing it safely, with highlighted code, and without making every visitor download a parser and a highlighter takes a little more thought."
+          ],
+          [
+            "## Do the work once, on the server",
+            "The browser never sees Markdown. Server functions fetch the content from Strapi, render it to HTML and send the result. Fields that hold rendered HTML end in `Html` (`achievementsHtml`, `descriptionHtml`), so a component can tell at a glance that a string is ready to display.",
+            "The benefits add up: no Markdown parser or highlighter in the JavaScript bundle, nothing to compute on a slow phone, and a single place where content becomes HTML."
+          ],
+          { "quote": "Do the expensive work once, where it's cheapest, and send the result." },
+          [
+            "## The pipeline",
+            "Rendering is a unified pipeline: parse the Markdown, add GitHub-flavoured extras like tables, convert it to HTML, sanitize it, highlight the code, and turn it back into a string."
+          ],
+          { "code": "pipeline" },
+          {
+            "callout": "note",
+            "title": "Order matters",
+            "body": "Sanitizing removes anything that isn't safe HTML, including the inline styles Shiki uses for colours. So the sanitizer runs first, on the content from the CMS, and Shiki runs after it. Everything Shiki adds is generated by the site itself, not taken from the content."
+          },
+          [
+            "## Safe by default",
+            "The content comes from a CMS I control, so why sanitize at all? Because \"I control it\" holds until it doesn't: a pasted snippet, a compromised account, a guest author one day. Two layers protect every page:",
+            "- Raw HTML inside the Markdown is dropped during conversion, never passed through.\n- `rehype-sanitize` then removes anything unsafe that's left, such as `javascript:` links."
+          ],
+          [
+            "## Light and dark code with no re-render",
+            "Shiki can write both the light and the dark colour of every token into the HTML at once, as CSS variables. The stylesheet picks one from the current theme, so code changes colour the instant the theme does: no second request, no re-render, no flash."
+          ],
+          { "code": "shiki-options" },
+          { "code": "theme-css" },
+          [
+            "## Create the expensive things once",
+            "Loading Shiki's grammars takes a while, so the highlighter and the processor are created once per server and shared by every request after that."
+          ],
+          { "code": "once" },
+          [
+            "That's the series for now. One last detail: this article went through the same pipeline, so the code above was highlighted by the code above."
+          ]
+        ]
+      },
+      "ar": {
+        "title": "تحويل Markdown والشيفرة على الخادم",
+        "description": "كيف يحوّل هذا الموقع نصوص Markdown القادمة من نظام المحتوى إلى HTML آمن ومُلوّن قبل أن يصل إلى المتصفح، باستخدام unified وrehype-sanitize وShiki.",
+        "blocks": [
+          [
+            "دراسات الحالة ووصف الوظائف والمقالات مثل هذا المقال تُكتب بصيغة Markdown في نظام المحتوى. تحويل Markdown إلى HTML أمر سهل. أما فعل ذلك بأمان، مع تلوين الشيفرة، ودون أن يُضطر كل زائر إلى تنزيل محلّل ومُلوّن، فيتطلب تفكيرًا أكثر قليلًا."
+          ],
+          [
+            "## أنجز العمل مرة واحدة، على الخادم",
+            "لا يرى المتصفح Markdown أبدًا. تجلب دوال الخادم المحتوى من Strapi، وتحوّله إلى HTML، وترسل النتيجة. الحقول التي تحمل HTML جاهزًا تنتهي بـ `Html` (`achievementsHtml` و`descriptionHtml`)، فيعرف المكوّن من النظرة الأولى أن النص جاهز للعرض.",
+            "تتراكم الفوائد: لا محلّل Markdown ولا مُلوّن في حزمة JavaScript، ولا حسابات على هاتف بطيء، ومكان واحد فقط يتحوّل فيه المحتوى إلى HTML."
+          ],
+          { "quote": "أنجز العمل المكلف مرة واحدة، حيث يكون أرخص، وأرسل النتيجة." },
+          [
+            "## سلسلة المعالجة",
+            "المعالجة سلسلة unified: تحليل Markdown، وإضافة امتدادات GitHub مثل الجداول، والتحويل إلى HTML، والتنقية، وتلوين الشيفرة، ثم إعادتها نصًا."
+          ],
+          { "code": "pipeline" },
+          {
+            "callout": "note",
+            "title": "الترتيب مهم",
+            "body": "التنقية تحذف كل ما ليس HTML آمنًا، بما في ذلك التنسيقات المضمّنة التي يستخدمها Shiki للألوان. لذا تعمل التنقية أولًا على المحتوى القادم من نظام المحتوى، ثم يعمل Shiki بعدها. وكل ما يضيفه Shiki يولّده الموقع نفسه، لا يُؤخذ من المحتوى."
+          },
+          [
+            "## آمن افتراضيًا",
+            "المحتوى يأتي من نظام أتحكّم فيه، فلماذا التنقية أصلًا؟ لأن «أنا أتحكّم فيه» يصحّ إلى أن لا يصحّ: مقطع منسوخ، أو حساب مخترق، أو كاتب ضيف ذات يوم. طبقتان تحميان كل صفحة:",
+            "- يُحذف HTML الخام داخل Markdown أثناء التحويل، ولا يُمرَّر أبدًا.\n- ثم يزيل `rehype-sanitize` كل ما تبقّى من عناصر غير آمنة، مثل روابط `javascript:`."
+          ],
+          [
+            "## شيفرة فاتحة وداكنة دون إعادة عرض",
+            "يستطيع Shiki أن يكتب اللونين الفاتح والداكن لكل رمز في HTML معًا، على شكل متغيّرات CSS. ويختار ملف التنسيق أحدهما بحسب السمة الحالية، فيتغيّر لون الشيفرة لحظة تغيّر السمة: لا طلب ثانٍ، ولا إعادة عرض، ولا وميض."
+          ],
+          { "code": "shiki-options" },
+          { "code": "theme-css" },
+          [
+            "## أنشئ الأشياء المكلفة مرة واحدة",
+            "تحميل قواعد Shiki اللغوية يستغرق وقتًا، لذا يُنشأ المُلوّن والمعالج مرة واحدة لكل خادم، وتتشاركهما كل الطلبات بعد ذلك."
+          ],
+          { "code": "once" },
+          [
+            "هذا كل ما في السلسلة حاليًا. وتفصيل أخير: مرّ هذا المقال بالسلسلة نفسها، فالشيفرة أعلاه لوّنتها الشيفرة أعلاه."
+          ]
+        ]
+      },
+      "fr": {
+        "title": "Rendre le Markdown et le code côté serveur",
+        "description": "Comment ce site transforme le Markdown du CMS en HTML sûr et coloré avant qu'il n'atteigne le navigateur, avec unified, rehype-sanitize et Shiki.",
+        "blocks": [
+          [
+            "Les études de cas, les descriptions de postes et les articles comme celui-ci sont écrits en Markdown dans le CMS. Transformer du Markdown en HTML, c'est facile. Le faire de façon sûre, avec du code coloré, et sans obliger chaque visiteur à télécharger un analyseur et un coloriseur demande un peu plus de réflexion."
+          ],
+          [
+            "## Faire le travail une fois, sur le serveur",
+            "Le navigateur ne voit jamais de Markdown. Les fonctions serveur récupèrent le contenu dans Strapi, le transforment en HTML et envoient le résultat. Les champs qui contiennent du HTML prêt à l'emploi finissent par `Html` (`achievementsHtml`, `descriptionHtml`) : un composant sait d'un coup d'œil qu'il peut l'afficher tel quel.",
+            "Les bénéfices s'additionnent : ni analyseur Markdown ni coloriseur dans le JavaScript envoyé au navigateur, rien à calculer sur un téléphone lent, et un seul endroit où le contenu devient du HTML."
+          ],
+          { "quote": "Faire le travail coûteux une seule fois, là où il coûte le moins, et envoyer le résultat." },
+          [
+            "## La chaîne de traitement",
+            "Le rendu est une chaîne unified : analyser le Markdown, ajouter les extensions de GitHub comme les tableaux, convertir en HTML, nettoyer, colorer le code, puis tout remettre sous forme de texte."
+          ],
+          { "code": "pipeline" },
+          {
+            "callout": "note",
+            "title": "L'ordre compte",
+            "body": "Le nettoyage supprime tout ce qui n'est pas du HTML sûr, y compris les styles en ligne que Shiki utilise pour les couleurs. Le nettoyage passe donc en premier, sur le contenu du CMS, et Shiki ensuite. Tout ce que Shiki ajoute est produit par le site lui-même, pas repris du contenu."
+          },
+          [
+            "## Sûr par défaut",
+            "Le contenu vient d'un CMS que je contrôle : pourquoi le nettoyer ? Parce que « je le contrôle » reste vrai jusqu'au jour où ça ne l'est plus : un extrait copié-collé, un compte compromis, un auteur invité un jour. Deux couches protègent chaque page :",
+            "- Le HTML brut présent dans le Markdown est supprimé à la conversion, jamais transmis.\n- `rehype-sanitize` retire ensuite tout ce qui reste de dangereux, comme les liens `javascript:`."
+          ],
+          [
+            "## Du code clair et sombre sans nouveau rendu",
+            "Shiki peut écrire d'un coup les couleurs claire et sombre de chaque élément dans le HTML, sous forme de variables CSS. La feuille de style choisit l'une des deux selon le thème actif : le code change de couleur à l'instant où le thème change, sans nouvelle requête, sans nouveau rendu, sans clignotement."
+          ],
+          { "code": "shiki-options" },
+          { "code": "theme-css" },
+          [
+            "## Créer une seule fois ce qui coûte cher",
+            "Charger les grammaires de Shiki prend du temps : le coloriseur et la chaîne de traitement sont donc créés une fois par serveur, puis partagés par toutes les requêtes suivantes."
+          ],
+          { "code": "once" },
+          [
+            "C'est tout pour cette série, pour l'instant. Un dernier détail : cet article est passé par la même chaîne, et le code ci-dessus a donc été coloré par le code ci-dessus."
+          ]
+        ]
+      }
+    }
+  ]
+}
