@@ -9,6 +9,7 @@ import { PageHeader } from '@/components/layout/page-header'
 import { CommentSection } from '@/features/comments/components/comment-section'
 import { ResponsesLink } from '@/features/comments/components/responses-link'
 import { LikeButton } from '@/features/likes/components/like-button'
+import { NewsletterBox } from '@/features/newsletter/components/newsletter-box'
 import { cn } from '@/lib/utils'
 
 import { articleQuery } from '../blog.queries'
@@ -85,6 +86,7 @@ export function ArticlePage() {
               {article.series && (
                 <SeriesParts series={article.series} current={article.slug} />
               )}
+              <NewsletterBox />
               <CommentSection
                 article={article.documentId}
                 // Open unless the owner closed them (the CMS's rule too).

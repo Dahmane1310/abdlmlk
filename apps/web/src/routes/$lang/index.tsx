@@ -2,11 +2,14 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { careerQuery } from '@/features/career/career.queries'
 import { HomePage } from '@/features/home/components/home-page'
+import { newsletterSearchSchema } from '@/features/newsletter/newsletter.schema'
 import { profileQuery } from '@/features/profile/profile.queries'
 import { projectsQuery } from '@/features/projects/projects.queries'
 import { servicesQuery } from '@/features/services/services.queries'
 
 export const Route = createFileRoute('/$lang/')({
+  // ?newsletter= from the links in the newsletter's emails.
+  validateSearch: newsletterSearchSchema,
   // The layout loads the profile too; the page still declares what it needs.
   loader: async ({ context, params }) => {
     await Promise.all([

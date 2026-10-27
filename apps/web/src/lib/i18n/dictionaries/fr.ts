@@ -102,6 +102,28 @@ export const fr = {
       failed: "Votre réponse n'a pas pu être envoyée. Réessayez.",
     },
   },
+  newsletter: {
+    label: 'Newsletter',
+    title: 'Recevez les nouveaux articles par e-mail',
+    description: 'Un e-mail par nouvel article. Désabonnement à tout moment.',
+    email: 'Adresse e-mail',
+    placeholder: 'vous@exemple.com',
+    subscribe: "S'abonner",
+    sending: 'Envoi…',
+    sent: 'Presque fini\u00A0: confirmez votre abonnement depuis votre boîte de réception.',
+    errors: {
+      email: 'Indiquez une adresse e-mail valide.',
+      tooMany: 'Trop de tentatives. Réessayez plus tard.',
+      failed: "Votre abonnement n'a pas pu être envoyé. Réessayez.",
+    },
+    notice: {
+      confirmed:
+        'Vous êtes abonné. Les nouveaux articles arriveront dans votre boîte de réception.',
+      unsubscribed: "Vous êtes désabonné. Vous ne recevrez plus d'e-mails.",
+      invalid: 'Ce lien a expiré ou a déjà été utilisé.',
+      close: 'Fermer',
+    },
+  },
   contact: {
     label: 'Contact',
     // No-break space: French puts a space before "?", never at a line start.

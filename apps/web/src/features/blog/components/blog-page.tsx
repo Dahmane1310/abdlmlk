@@ -5,6 +5,7 @@ import { XIcon } from 'lucide-react'
 import { MetricGrid } from '@/components/content/metric-grid'
 import { Page } from '@/components/layout/page'
 import { PageHeader } from '@/components/layout/page-header'
+import { NewsletterBox } from '@/features/newsletter/components/newsletter-box'
 import { pluralForm } from '@/lib/i18n/format'
 import { useLanguage } from '@/lib/i18n/use-language'
 import { useTranslation } from '@/lib/i18n/use-translation'
@@ -88,6 +89,7 @@ export function BlogPage() {
           )}
         </div>
       )}
+      <NewsletterBox />
     </Page>
   )
 }

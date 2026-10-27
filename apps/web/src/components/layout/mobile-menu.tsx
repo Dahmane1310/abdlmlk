@@ -59,7 +59,8 @@ export function MobileMenu() {
                   <Link
                     to={item.to}
                     params={{ lang }}
-                    activeOptions={{ exact: item.exact }}
+                    // As in the header: whatever follows "?".
+                    activeOptions={{ exact: item.exact, includeSearch: false }}
                     className="block border-s-2 border-transparent px-3 py-3 text-2xl font-semibold tracking-tight text-muted-foreground hover:text-foreground data-[status=active]:border-primary data-[status=active]:text-foreground"
                   >
                     {t.nav[item.label]}

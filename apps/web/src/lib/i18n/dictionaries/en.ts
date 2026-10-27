@@ -117,6 +117,29 @@ export const en = {
       failed: "Your response couldn't be sent. Please try again.",
     },
   },
+  // The box after articles and the blog list, and the note on Home after a
+  // reader follows a link from one of its emails (?newsletter=…).
+  newsletter: {
+    label: 'Newsletter',
+    title: 'Get new articles by email',
+    description: 'One email per new article. Unsubscribe anytime.',
+    email: 'Email address',
+    placeholder: 'you@example.com',
+    subscribe: 'Subscribe',
+    sending: 'Sending…',
+    sent: 'Almost done: check your inbox to confirm your subscription.',
+    errors: {
+      email: 'Please enter a valid email address.',
+      tooMany: 'Too many attempts. Please try again later.',
+      failed: "Your subscription couldn't be sent. Please try again.",
+    },
+    notice: {
+      confirmed: "You're subscribed. New articles will arrive in your inbox.",
+      unsubscribed: "You're unsubscribed. You won't get any more emails.",
+      invalid: 'That link has expired or was already used.',
+      close: 'Close',
+    },
+  },
   // The blue band that closes every page.
   contact: {
     label: 'Contact',

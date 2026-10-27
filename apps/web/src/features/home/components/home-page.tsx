@@ -5,6 +5,7 @@ import { Page } from '@/components/layout/page'
 import { PageSection } from '@/components/layout/page-section'
 import { careerQuery } from '@/features/career/career.queries'
 import { ExperienceList } from '@/features/career/components/experience-list'
+import { NewsletterNotice } from '@/features/newsletter/components/newsletter-notice'
 import { profileQuery } from '@/features/profile/profile.queries'
 import { projectsQuery } from '@/features/projects/projects.queries'
 import { ServiceList } from '@/features/services/components/service-list'
@@ -33,7 +34,13 @@ export function HomePage() {
 
   return (
     <Page
-      header={<Hero profile={profile} showWorkLink={featured.length > 0} />}
+      header={
+        <>
+          {/* Only after a link from a newsletter email (?newsletter=). */}
+          <NewsletterNotice />
+          <Hero profile={profile} showWorkLink={featured.length > 0} />
+        </>
+      }
     >
       <SelectedWork projects={featured} />
       {services.length > 0 && (

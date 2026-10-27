@@ -38,7 +38,7 @@ function confirmationEmail(language: Language, link: string) {
     text: `${copy.intro}\n\n${link}\n\n${copy.ignore}`,
     html: `<div dir="${dir}" style="font-family:system-ui,sans-serif;line-height:1.6">
 <p>${escapeHtml(copy.intro)}</p>
-<p><a href="${link}" style="display:inline-block;padding:10px 18px;background:#173a40;color:#fff;border-radius:8px;text-decoration:none">${escapeHtml(copy.button)}</a></p>
+<p><a href="${link}" style="display:inline-block;padding:10px 18px;background:#2760f5;color:#fff;border-radius:8px;text-decoration:none">${escapeHtml(copy.button)}</a></p>
 <p style="color:#666;font-size:13px">${escapeHtml(copy.ignore)}</p>
 </div>`,
   };

@@ -53,7 +53,9 @@ export function SiteHeader() {
                 <Link
                   to={item.to}
                   params={{ lang }}
-                  activeOptions={{ exact: item.exact }}
+                  // A page is current whatever follows "?" (Home's
+                  // ?newsletter=, the blog's ?tag=).
+                  activeOptions={{ exact: item.exact, includeSearch: false }}
                   className="relative flex h-full items-center mono-label hover:text-foreground data-[status=active]:text-foreground data-[status=active]:after:absolute data-[status=active]:after:inset-x-0 data-[status=active]:after:-bottom-px data-[status=active]:after:h-0.5 data-[status=active]:after:bg-primary"
                 >
                   {t.nav[item.label]}
