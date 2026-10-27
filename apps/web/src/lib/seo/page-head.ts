@@ -8,13 +8,20 @@ const OG_LOCALES: Record<Language, string> = {
   fr: 'fr_FR',
 }
 
+/** What a share image needs: a CMS image, or one of the site's own cards. */
+type ShareImage = Pick<Media, 'url' | 'width' | 'height' | 'alternativeText'>
+
+// The site's own share cards (design/share-image.html), one per language, in
+// public/share/.
+const SHARE_CARD = { width: 1200, height: 630 }
+
 interface PageSeo {
   /** The root route's context: the site's address, name and default image. */
   context: {
     siteUrl: string
     siteSettings: {
       siteName: string
-      defaultSeo?: { shareImage: Media | null } | null
+      defaultSeo?: { metaTitle: string; shareImage: Media | null } | null
     }
   }
   lang: Language
@@ -22,7 +29,7 @@ interface PageSeo {
   path: string
   title: string
   description?: string | null
-  /** The page's own image; the site's default share image otherwise. */
+  /** The page's own image; the site's default otherwise (see shareImage). */
   image?: Media | null
   type?: 'website' | 'profile' | 'article'
   /** The languages the page exists in. All three unless it says otherwise. */
@@ -49,7 +56,16 @@ export function pageHead({
   article,
 }: PageSeo) {
   const urlIn = (language: Language) => `${context.siteUrl}/${language}${path}`
-  const shareImage = image ?? context.siteSettings.defaultSeo?.shareImage
+  // The page's own image, then a default uploaded in the CMS, then the
+  // site's card in the page's language.
+  const shareImage: ShareImage = image ??
+    context.siteSettings.defaultSeo?.shareImage ?? {
+      url: `${context.siteUrl}/share/${lang}.png`,
+      ...SHARE_CARD,
+      alternativeText:
+        context.siteSettings.defaultSeo?.metaTitle ??
+        context.siteSettings.siteName,
+    }
 
   return {
     meta: [
@@ -68,53 +84,26 @@ export function pageHead({
       // per name or property, and those repeat. The hreflang links below
       // name the other languages; the topics go in the structured data.
       { property: 'og:locale', content: OG_LOCALES[lang] },
-      ...(shareImage
+      { property: 'og:image', content: shareImage.url },
+      ...(shareImage.width && shareImage.height
         ? [
-            { property: 'og:image', content: shareImage.url },
-            ...(shareImage.width && shareImage.height
-              ? [
-                  {
-                    property: 'og:image:width',
-                    content: String(shareImage.width),
-                  },
-                  {
-                    property: 'og:image:height',
-                    content: String(shareImage.height),
-                  },
-                ]
-              : []),
-            ...(shareImage.alternativeText
-              ? [
-                  {
-                    property: 'og:image:alt',
-                    content: shareImage.alternativeText,
-                  },
-                ]
-              : []),
+            { property: 'og:image:width', content: String(shareImage.width) },
+            { property: 'og:image:height', content: String(shareImage.height) },
           ]
+        : []),
+      ...(shareImage.alternativeText
+        ? [{ property: 'og:image:alt', content: shareImage.alternativeText }]
         : []),
       // X falls back to the og: tags, but not every preview tool does, so its
       // own are spelled out too. (No twitter:url: X doesn't read it.)
-      {
-        name: 'twitter:card',
-        content: shareImage ? 'summary_large_image' : 'summary',
-      },
+      { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:title', content: title },
       ...(description
         ? [{ name: 'twitter:description', content: description }]
         : []),
-      ...(shareImage
-        ? [
-            { name: 'twitter:image', content: shareImage.url },
-            ...(shareImage.alternativeText
-              ? [
-                  {
-                    name: 'twitter:image:alt',
-                    content: shareImage.alternativeText,
-                  },
-                ]
-              : []),
-          ]
+      { name: 'twitter:image', content: shareImage.url },
+      ...(shareImage.alternativeText
+        ? [{ name: 'twitter:image:alt', content: shareImage.alternativeText }]
         : []),
       ...(article
         ? [

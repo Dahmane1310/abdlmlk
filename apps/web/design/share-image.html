@@ -1,0 +1,217 @@
+<!doctype html>
+<!--
+  The site's share images (DESIGN.md, "Share image"): public/share/en.png,
+  ar.png and fr.png, 1200x630, shown when a page with no image of its own is
+  shared. Pick the language with the hash (#en, #ar, #fr).
+
+  To remake them after changing this file, run this in PowerShell from
+  apps/web. Its own browser profile keeps it from handing off to an open Edge
+  window; the time budget lets the fonts load before the screenshot.
+
+    $edge = 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
+    $page = 'file:///' + ($PWD.Path -replace '\\', '/') + '/design/share-image.html'
+    foreach ($lang in 'en', 'ar', 'fr') {
+      Start-Process $edge -Wait -NoNewWindow -ArgumentList '--headless=new', '--hide-scrollbars', "--user-data-dir=$env:TEMP\share-image-$lang", '--window-size=1200,630', '--virtual-time-budget=3000', "--screenshot=$PWD\public\share\$lang.png", "$page#$lang"
+    }
+-->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      @font-face {
+        font-family: 'Plex Sans';
+        src: url('../node_modules/@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2')
+          format('woff2');
+        font-weight: 100 700;
+      }
+      @font-face {
+        font-family: 'Plex Mono';
+        src: url('../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2')
+          format('woff2');
+        font-weight: 400;
+      }
+      @font-face {
+        font-family: 'Plex Mono';
+        src: url('../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-500-normal.woff2')
+          format('woff2');
+        font-weight: 500;
+      }
+      @font-face {
+        font-family: 'Plex Arabic';
+        src: url('../node_modules/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-400-normal.woff2')
+          format('woff2');
+        font-weight: 400;
+      }
+      @font-face {
+        font-family: 'Plex Arabic';
+        src: url('../node_modules/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-600-normal.woff2')
+          format('woff2');
+        font-weight: 600;
+      }
+
+      /* The site's dark theme (app.css). */
+      :root {
+        --bg: oklch(0.15 0.008 264);
+        --fg: oklch(0.97 0.003 264);
+        --muted: oklch(0.71 0.012 264);
+        --border: oklch(0.27 0.01 264);
+        --primary: oklch(0.68 0.19 259);
+        --on-primary: oklch(0.15 0.008 264);
+        --grid: oklch(0.68 0.19 259 / 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      html,
+      body {
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+      }
+      body {
+        font-family: 'Plex Sans', 'Plex Arabic', sans-serif;
+        background-color: var(--bg);
+        color: var(--fg);
+        /* The blueprint band: a 32px grid in faint blue. */
+        background-image:
+          linear-gradient(var(--grid) 1px, transparent 1px),
+          linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+        background-size: 32px 32px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 64px 80px;
+      }
+      :lang(ar) body {
+        font-family: 'Plex Arabic', 'Plex Sans', sans-serif;
+      }
+      .mono {
+        font-family: 'Plex Mono', 'Plex Arabic', monospace;
+      }
+      .top {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+      /* 500: Plex Mono has no 600, which the browser would fake. */
+      .mark {
+        width: 56px;
+        height: 56px;
+        border-radius: 9px;
+        background: var(--primary);
+        color: var(--on-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        font-weight: 500;
+      }
+      /* Like the site's mono labels: small, grey, spaced capitals. */
+      .label {
+        font-size: 22px;
+        color: var(--muted);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      :lang(ar) .label {
+        letter-spacing: 0;
+        font-size: 24px;
+      }
+      .name {
+        font-size: 112px;
+        line-height: 1.02;
+        letter-spacing: -0.035em;
+        font-weight: 600;
+      }
+      :lang(ar) .name {
+        letter-spacing: 0;
+        line-height: 1.25;
+      }
+      .headline {
+        margin-top: 28px;
+        font-size: 38px;
+        color: var(--primary);
+      }
+      .bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid var(--border);
+        padding-top: 26px;
+        font-size: 22px;
+        color: var(--muted);
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      :lang(ar) .bottom {
+        letter-spacing: 0;
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--primary);
+        display: inline-block;
+        margin-inline-end: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="top">
+      <div class="mark mono" id="mark"></div>
+      <div class="label mono" id="label"></div>
+    </div>
+    <div>
+      <h1 class="name" id="name"></h1>
+      <p class="headline mono" id="headline"></p>
+    </div>
+    <!-- No availability: social networks cache these images for a long time. -->
+    <div class="bottom mono">
+      <span id="sections"></span
+      ><span dir="ltr"><span class="dot"></span>EN · AR · FR</span>
+    </div>
+    <script>
+      // The headline and section names as the site shows them in each language.
+      const COPY = {
+        en: {
+          name: ['Dahmane', 'Abdelmalek'],
+          label: 'Portfolio',
+          mark: 'DA',
+          headline: 'Full-Stack Engineer',
+          sections: 'Projects · Writing',
+        },
+        fr: {
+          name: ['Dahmane', 'Abdelmalek'],
+          label: 'Portfolio',
+          mark: 'DA',
+          headline: 'Ingénieur Full-Stack',
+          sections: 'Projets · Écrits',
+        },
+        // Like the site's mark, a zero-width non-joiner keeps the Arabic initials apart.
+        ar: {
+          name: ['دحمان', 'عبد الملك'],
+          label: 'معرض الأعمال',
+          mark: 'د‌ع',
+          headline: 'مهندس Full-Stack',
+          sections: 'المشاريع · كتابات',
+        },
+      }
+
+      const lang = location.hash.slice(1) || 'en'
+      const copy = COPY[lang]
+      document.documentElement.lang = lang
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'
+      document
+        .getElementById('name')
+        .replaceChildren(
+          copy.name[0],
+          document.createElement('br'),
+          copy.name[1],
+        )
+      for (const key of ['label', 'mark', 'headline', 'sections'])
+        document.getElementById(key).textContent = copy[key]
+    </script>
+  </body>
+</html>
