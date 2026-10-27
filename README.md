@@ -106,7 +106,7 @@ SITE_URL=https://abdlmlk.com   # also the only origin allowed to call the public
 OWNER_EMAIL=…              # optional, with SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_FROM
 ```
 
-A volume keeps uploaded files across deploys: mounted at `/app/apps/cms/public/uploads`.
+A volume keeps uploaded files across deploys: mounted at `/app/apps/cms/public`, the folder that holds `uploads/`. Not on `uploads/` itself: Strapi's transfer renames that folder to back it up, which a mount point can't be.
 
 ### Site settings
 
