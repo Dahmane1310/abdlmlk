@@ -1,10 +1,9 @@
 import { createFileRoute, isNotFound } from '@tanstack/react-router'
 import { createMiddleware } from '@tanstack/react-start'
 
-import { getServerEnv } from '@/env.server'
 import { getArticles } from '@/features/blog/blog.functions'
 import { buildRssFeed } from '@/features/blog/rss.server'
-import { getSiteSettings } from '@/features/site/site.functions'
+import { getSiteSettings, getSiteUrl } from '@/features/site/site.functions'
 import { dictionaries } from '@/lib/i18n/dictionaries'
 
 // The $lang layout rejects an unknown language with the router's "not found",
@@ -25,15 +24,15 @@ export const Route = createFileRoute('/$lang/rss.xml')({
   server: {
     middleware: [notFoundAs404],
     handlers: {
-      GET: async ({ request, params }) => {
-        const [articles, siteSettings] = await Promise.all([
+      GET: async ({ params }) => {
+        const [articles, siteSettings, siteUrl] = await Promise.all([
           getArticles({ data: { lang: params.lang } }),
           getSiteSettings({ data: { lang: params.lang } }),
+          getSiteUrl(),
         ])
         const t = dictionaries[params.lang]
         const xml = buildRssFeed({
-          // Without SITE_URL (locally), the address the request came in on.
-          siteUrl: getServerEnv().siteUrl ?? new URL(request.url).origin,
+          siteUrl,
           lang: params.lang,
           title: `${t.blog.title} — ${siteSettings.siteName}`,
           description: t.blog.description,

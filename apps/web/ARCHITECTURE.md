@@ -28,6 +28,7 @@ src/
   routes/                      URL structure only. Thin files: validate params, load data, set <head>, render a feature
     __root.tsx                 <html> shell: lang, dir, theme, fonts
     index.tsx                  "/" redirects to the visitor's language
+    sitemap[.]xml.ts           /sitemap.xml, and robots[.]txt.ts /robots.txt: files the server answers (SEO)
     $lang/
       route.tsx                validates the language, renders header and footer
       index.tsx                home
@@ -96,6 +97,7 @@ src/
       heading-ids.ts           gives h2s and h3s unique ids and lists the h2s, for an article's contents
     seo/
       page-head.ts             pageHead(): a page's title, description, canonical, hreflang and Open Graph tags
+      sitemap.server.ts        the sitemap: every page in each of its languages, read from the CMS
     theme/
       config.ts                themes (light, dark, system), default, cookie
       theme.ts                 read the cookie (server and browser), save a choice
@@ -103,6 +105,7 @@ src/
     cookies.ts                 read and write preference cookies in the browser (theme, language)
     initials.ts                "PM" from "Pharmacy Management System", for placeholders and logo tiles
     use-copy.ts                useCopy(): copies to the clipboard, "Copied" for two seconds (code blocks, share)
+    xml.ts                     escapeXml(), for the RSS feeds and the sitemap
     utils.ts                   cn() class helper
 
   styles/
@@ -334,6 +337,9 @@ Every page is built from the same pieces, so home, about and projects feel like 
 - **Only translations that exist:** an article, project or series asks Strapi for its `localizations`, and `languagesOf()` turns them into its list of languages. The fixed pages (Home, About, the lists) exist in all three.
 - **The share image** is the page's own SEO share image, then its cover, then a default uploaded in the Site settings, then the site's card in the page's language (`public/share/{lang}.png`, 1200×630, alt text the Site settings title). So every page has one.
 - **The share cards** are drawn once from `design/share-image.html` in the browser, with the site's fonts and dark theme, and saved as PNGs; remake them when the name or headline changes. Drawing an image per page on the server (satori) was ruled out: it doesn't shape Arabic text.
+- **The sitemap** (`/sitemap.xml`, `lib/seo/sitemap.server.ts`) lists every page in each language it exists in, with the same hreflang alternates as the heads. Home, About and the two lists exist in all three languages; projects, articles and series are read from the CMS one language at a time (slugs and last-change dates only, following its pages of 100) and matched by their document id, shared by an entry's translations. Their `lastmod` is the CMS's `updatedAt`. Filtered lists, the feeds and `/` aren't pages of their own.
+- **`/robots.txt`** allows everything and names the sitemap. It's a route rather than a file in `public/` because the sitemap's address comes from `SITE_URL`.
+- **The site's address in files the server answers** (the feeds, the sitemap, robots.txt) comes from the same `getSiteUrl()` as the pages' heads, so a proxy's forwarded host counts everywhere.
 - **One meta tag per name or property:** the router keeps only one of each across the page, so tags meant to repeat (`og:locale:alternate`, `article:tag`) aren't used. The hreflang links already name the other languages, and an article's topics go in its structured data.
 
 ## Server and security rules
@@ -343,7 +349,7 @@ Every page is built from the same pieces, so home, about and projects feel like 
 - **Environment variables** are validated in `env.ts`. Server variables are read inside server functions, never at module level. Only `VITE_`-prefixed variables reach the browser, and they hold nothing secret.
   - `VITE_STRAPI_URL` (required, `env.ts`): Strapi's public URL, for images and form posts from the browser. Baked in at build time.
   - `STRAPI_URL` (optional, `env.server.ts`): how the server reaches Strapi. In production, Strapi's internal address on Dokploy's Docker network (set up in the deployment step). Falls back to `VITE_STRAPI_URL`.
-  - `SITE_URL` (optional, `env.server.ts`): the site's public address, for full links (canonical and hreflang links, link previews, the RSS feeds). Without it, the address the request came in on; set it in production, where a proxy could report an internal one.
+  - `SITE_URL` (optional, `env.server.ts`): the site's public address, for full links (canonical and hreflang links, link previews, the RSS feeds, the sitemap and robots.txt). Without it, the address the request came in on; set it in production, where a proxy could report an internal one.
   - All three are listed in `.env.example`; copy it to `.env.local` for development.
 - **Drafts are never requested.** The site only reads published content.
 
@@ -447,6 +453,7 @@ Every page is built from the same pieces, so home, about and projects feel like 
 | RSS feeds with summaries, one per language                        | Owner's choice: readers click through to the full article, with its code highlighting, likes and responses. Hand-written XML: a few lines, no package.                                                                                                          |
 | `SITE_URL`, falling back to the request's address                 | Full links need the public address; locally the request's own is right, and production sets it. The SEO step (canonical links, sitemap) reuses it.                                                                                                              |
 | One `pageHead()` for every page's SEO tags                        | The pages had drifted (titles only, some without descriptions); one helper gives each the same canonical, hreflang and Open Graph tags                                                                                                                          |
+| Sitemap built from the CMS on request, not at build time          | Publishing an article must reach search engines without a rebuild; the answer is cached for an hour                                                                                                                                                             |
 | One designed share card per language, drawn once                  | Owner's choice (the dark one). No page had an image to share; drawn in the browser, Arabic renders properly, with no package, where per-page images from satori would break Arabic text                                                                         |
 | hreflang only to translations that exist                          | A link to a missing translation is a 404 that search engines flag; Strapi's `localizations` say which ones exist                                                                                                                                                |
 | Canonical addresses without the query string                      | A topic or type filter shows part of the same list; counting each filter as its own page would split it in search results                                                                                                                                       |

@@ -1,18 +1,7 @@
 import type { Language } from '@/lib/i18n/config'
+import { escapeXml } from '@/lib/xml'
 
 import type { ArticleSummary } from './blog.functions'
-
-const XML_ENTITIES: Record<string, string> = {
-  '&': '&amp;',
-  '<': '&lt;',
-  '>': '&gt;',
-  '"': '&quot;',
-  "'": '&apos;',
-}
-
-/** CMS text goes into the XML as text, never as markup. */
-const escapeXml = (text: string) =>
-  text.replace(/[&<>"']/g, (char) => XML_ENTITIES[char] ?? char)
 
 // RSS dates are RFC 822, which toUTCString() writes: "Tue, 27 Oct 2026 00:00:00 GMT".
 const rssDate = (isoDate: string) => new Date(isoDate).toUTCString()
