@@ -15,6 +15,7 @@ export const ar = {
     home: 'الرئيسية',
     about: 'نبذة عني',
     projects: 'المشاريع',
+    blog: 'المدونة',
   },
   dates: {
     present: 'الآن',
@@ -49,6 +50,50 @@ export const ar = {
     education: 'التعليم',
     spokenLanguages: 'اللغات',
     currently: 'حاليًا',
+  },
+  blog: {
+    title: 'كتابات',
+    description:
+      'ملاحظات عن بناء منتجات الويب: الهندسة البرمجية، والواجهات العربية، والتفاصيل بينهما.',
+    // Arabic counting forms: 1 مقال, 2 مقالان, 3–10 مقالات, 11–99 مقالًا.
+    counts: {
+      articles: {
+        zero: 'مقالات',
+        one: 'مقال',
+        two: 'مقالان',
+        few: 'مقالات',
+        many: 'مقالًا',
+        other: 'مقال',
+      },
+      series: {
+        zero: 'سلاسل',
+        one: 'سلسلة',
+        two: 'سلسلتان',
+        few: 'سلاسل',
+        many: 'سلسلة',
+        other: 'سلسلة',
+      },
+      topics: {
+        zero: 'مواضيع',
+        one: 'موضوع',
+        two: 'موضوعان',
+        few: 'مواضيع',
+        many: 'موضوعًا',
+        other: 'موضوع',
+      },
+    },
+    topic: 'الموضوع',
+    empty: 'لا توجد مقالات هنا بعد.',
+    showAll: 'عرض كل المقالات',
+    backToAll: 'كل المقالات',
+    // Arabic counts: 1 دقيقة, 2 دقيقتان, 3–10 دقائق, 11 and up دقيقة.
+    readingTime: (minutes: number) => {
+      if (minutes === 1) return 'قراءة دقيقة واحدة'
+      if (minutes === 2) return 'قراءة دقيقتين'
+      return `قراءة ${String(minutes)} ${minutes <= 10 ? 'دقائق' : 'دقيقة'}`
+    },
+    seriesPart: (part: number, total: number) =>
+      `الجزء ${String(part)} من ${String(total)}`,
   },
   contact: {
     label: 'تواصل',

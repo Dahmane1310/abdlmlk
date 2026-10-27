@@ -1,0 +1,42 @@
+import { z } from 'zod'
+
+import { contentBlockSchema } from '@/lib/content/blocks.schema'
+import { mediaSchema, seoSchema } from '@/lib/strapi/schemas'
+
+export const tagSchema = z.object({
+  name: z.string(),
+  slug: z.string(),
+})
+
+const seriesRefSchema = z.object({
+  title: z.string(),
+  slug: z.string(),
+})
+
+/** An article as the CMS sends it: what the list shows, plus its blocks. */
+export const articleSchema = z.object({
+  title: z.string(),
+  slug: z.string(),
+  description: z.string().nullable(),
+  cover: mediaSchema.nullable(),
+  publishedDate: z.iso.date(),
+  updatedDate: z.iso.date().nullable(),
+  tags: z.array(tagSchema),
+  series: seriesRefSchema.nullable(),
+  /** Its place in the series: 1, 2, 3… */
+  seriesPart: z.number().nullable(),
+  allowComments: z.boolean().nullable(),
+  blocks: z.array(contentBlockSchema).nullable(),
+  seo: seoSchema.nullable().optional(),
+})
+
+export const articleListSchema = z.object({
+  data: z.array(articleSchema),
+})
+
+/** The filter in the URL (?tag=arabic). An unknown tag shows the empty state. */
+export const blogSearchSchema = z.object({
+  tag: z.string().optional().catch(undefined),
+})
+
+export type Tag = z.output<typeof tagSchema>

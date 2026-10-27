@@ -15,6 +15,7 @@ export const fr = {
     home: 'Accueil',
     about: 'À propos',
     projects: 'Projets',
+    blog: 'Blog',
   },
   dates: {
     present: "Aujourd'hui",
@@ -50,10 +51,27 @@ export const fr = {
     spokenLanguages: 'Langues parlées',
     currently: 'Actuellement',
   },
+  blog: {
+    title: 'Écrits',
+    description:
+      'Des notes sur la construction de produits web\u00A0: architecture, interfaces en arabe et tous les détails entre les deux.',
+    counts: {
+      articles: { one: 'article', other: 'articles' },
+      series: { one: 'série', other: 'séries' },
+      topics: { one: 'sujet', other: 'sujets' },
+    },
+    topic: 'Sujet',
+    empty: "Aucun article ici pour l'instant.",
+    showAll: 'Voir tous les articles',
+    backToAll: 'Tous les articles',
+    readingTime: (minutes: number) => `${String(minutes)}\u00A0min de lecture`,
+    seriesPart: (part: number, total: number) =>
+      `Partie ${String(part)} sur ${String(total)}`,
+  },
   contact: {
     label: 'Contact',
     // No-break space: French puts a space before "?", never at a line start.
-    question: 'Un projet en tête ?',
+    question: 'Un projet en tête\u00A0?',
     answer: 'Construisons-le.',
   },
   technologies: {

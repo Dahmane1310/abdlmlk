@@ -21,6 +21,34 @@ export function formatMonthYear(isoDate: string, language: Language) {
 }
 
 /**
+ * A word's forms by count, keyed by plural category ("one", "two", "few"…).
+ * English and French need "one" and "other"; Arabic uses all of them.
+ */
+export type PluralForms = Partial<Record<Intl.LDMLPluralRule, string>> & {
+  other: string
+}
+
+/** The form of a word for a count: "article" or "articles"; مقال, مقالان, مقالات, مقالًا. */
+export function pluralForm(
+  forms: PluralForms,
+  count: number,
+  language: Language,
+) {
+  const category = new Intl.PluralRules(INTL_LOCALES[language]).select(count)
+  return forms[category] ?? forms.other
+}
+
+/** "Oct 27, 2026", "27 oct. 2026", "27 أكتوبر 2026": a day, formatted in UTC like formatMonthYear. */
+export function formatDate(isoDate: string, language: Language) {
+  return new Intl.DateTimeFormat(INTL_LOCALES[language], {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(new Date(isoDate))
+}
+
+/**
  * A length of time in months, in words: "2 years 5 months", "سنتان و5 أشهر",
  * "8 mois". Long unit names: the short ones are unclear in French ("5 m.").
  */

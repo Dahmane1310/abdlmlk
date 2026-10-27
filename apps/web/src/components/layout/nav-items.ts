@@ -15,4 +15,6 @@ export const NAV_ITEMS = [
   { to: '/$lang/about', label: 'about', exact: true },
   // Not exact: stays active on project pages under /projects.
   { to: '/$lang/projects', label: 'projects', exact: false },
+  // Not exact either: stays active on articles under /blog.
+  { to: '/$lang/blog', label: 'blog', exact: false },
 ] as const satisfies readonly NavItem[]

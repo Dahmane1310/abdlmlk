@@ -1,3 +1,5 @@
+import type { PluralForms } from '../format'
+
 /** English interface text. Its shape is the reference every other language must match. */
 export const en = {
   layout: {
@@ -14,6 +16,7 @@ export const en = {
     home: 'Home',
     about: 'About',
     projects: 'Projects',
+    blog: 'Blog',
   },
   dates: {
     // End of a date range that hasn't ended: "Jun 2024 — Present".
@@ -49,6 +52,26 @@ export const en = {
     education: 'Education',
     spokenLanguages: 'Spoken languages',
     currently: 'Currently',
+  },
+  blog: {
+    title: 'Writing',
+    description:
+      'Notes on building web products: architecture, Arabic interfaces and the details in between.',
+    // The words under the blog's numbers, by count (lib/i18n/format.ts, pluralForm).
+    counts: {
+      articles: { one: 'article', other: 'articles' } as PluralForms,
+      series: { one: 'series', other: 'series' } as PluralForms,
+      topics: { one: 'topic', other: 'topics' } as PluralForms,
+    },
+    // Above a list filtered by topic: "Topic: Arabic ✕".
+    topic: 'Topic',
+    empty: 'No articles here yet.',
+    showAll: 'Show all articles',
+    backToAll: 'All articles',
+    // Numbers in words follow each language's rules, so these are functions.
+    readingTime: (minutes: number) => `${String(minutes)} min read`,
+    seriesPart: (part: number, total: number) =>
+      `Part ${String(part)} of ${String(total)}`,
   },
   // The blue band that closes every page.
   contact: {

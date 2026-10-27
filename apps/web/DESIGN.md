@@ -49,7 +49,7 @@ The colour tokens are the CSS variables in `src/styles/app.css` (light and dark)
 ## Page anatomy
 
 ```
-Site header        [DA] name          HOME  ABOUT  PROJECTS          language · theme · [Contact]
+Site header        [DA] name       HOME  ABOUT  PROJECTS  BLOG       language · theme · [Contact]
 Blueprint band     label (mono, uppercase)
                    page title
                    subtitle (mono, blue) and/or lead text (Home's intro, a project summary)
@@ -76,6 +76,7 @@ Site footer        © · LinkedIn GitHub · English العربية Français
   - **About:** the CV at a glance (see "About header").
   - **Project pages:** the project's facts (mono label above a value, with an optional grey second line).
   - **Projects:** the filters, the page's controls (see "Projects filters").
+  - **Blog:** the blog in numbers, like Home: articles, series, topics (see "Blog list").
 - **Projects filters:** the types as a strip: one cell per type (and "All"), a mono label above its project count (36px mono, like Home's numbers), the whole cell a link. The chosen cell's label and count turn `primary`, with a 2px `primary` line along its bottom edge; the others keep a black count and a grey label. Type is the only filter: the owner removed the technology filter (few projects list their technologies). No bordered chips (owner found them busy). Each cell is a link, so each filtered view has its own shareable address.
 - **Section title:** a mono number in `primary` ("01", hidden from screen readers), the title, and an optional link at the end of the row ("All projects", "Full story"). No line after the title: right under the header band it doubled the band's bottom edge (owner's choice). Numbers count the sections shown on the page.
 - **Section divider:** a 1px line in `border`, running edge to edge like the header band's bottom edge, midway between two sections. None above the first section (the band's edge is there) and none above the contact band (the blue card separates itself). Owner's choice, so the page reads as a stack of full-width bands. A case study's own sections (its headings in the CMS text) are spaced and divided the same way.
@@ -93,6 +94,9 @@ Site footer        © · LinkedIn GitHub · English العربية Français
   - **Education:** label: the period. Content: degree and field (20px 600), the school and place like a job's, and a short grey description.
   - **Languages:** label: the language. Content: the level in words, a five-step meter (filled steps in `primary`, the rest in `border`) and the CEFR level in mono, at fixed widths so the meters line up.
 - **Contact band:** solid `primary`, text in `on-primary`, radius 16px, 56px padding. A white (`on-primary`) "Email me" button with blue text, and an outlined "LinkedIn ↗".
+- **Blog list:** Medium's text-first feed, at the reading width (768px), one article per row, rows 56px apart with no lines. Each row: date · reading time · "Part 2 of 3" (mono, grey), the title (24px 600, underlined on hover), the description (17px, grey, two lines at most), the topics (small mono links). A small cover (160px, 4:3) sits on the end side only when the article has one. The whole row is clickable, like a project card.
+  - **Numbers:** the transition band counts the articles, series and topics in Home's number style, with the word under each number agreeing with it in every language ("1 series", «3 مقالات»). A count of zero is left out.
+  - **Topics:** each article's topic links filter the list; the address keeps the topic (`?tag=arabic`), and the filtered list opens with "Topic: Arabic ✕", the ✕ going back to every article. (A row of topic links in the band was tried and dropped: the owner found it messy.)
 - **Buttons:** 44px tall (48px on the contact band), radius 6px. Primary: solid blue. Secondary: 1px `input` border. Text links with an arrow, pointing the reading way (left in Arabic): "See my work →" in Home's header (jumps to Selected work), and "All projects →" / "Full story →" at the end of a section title.
 
 ## Content map
@@ -103,6 +107,8 @@ Site footer        © · LinkedIn GitHub · English العربية Français
 | About        | The online CV: a plain header with Download CV, the CV at a glance, jobs with achievements, skills, education, languages, contact                    | Who I am (name, photo, bio, status, location), the headline numbers, project descriptions |
 | Projects     | The full list with filters                                                                                                                           |                                                                                           |
 | Project page | The case study                                                                                                                                       |                                                                                           |
+| Blog         | The blog in numbers, then the articles, newest first, filterable by topic                                                                            |                                                                                           |
+| Article      | The article (the reading page is being designed: typeface, byline, contents, progress)                                                               |                                                                                           |
 
 Copy introduced with the design (editable, in the dictionaries): the contact headline "Have a project in mind? Let's build it.", and the About title "Experience & skills" with its line "The jobs, tools and studies behind my work."
 

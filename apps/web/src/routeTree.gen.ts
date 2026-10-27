@@ -13,6 +13,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as LangRouteRouteImport } from './routes/$lang/route'
 import { Route as LangIndexRouteImport } from './routes/$lang/index'
 import { Route as LangAboutRouteImport } from './routes/$lang/about'
+import { Route as LangBlogIndexRouteImport } from './routes/$lang/blog/index'
+import { Route as LangBlogSlugRouteImport } from './routes/$lang/blog/$slug'
 import { Route as LangProjectsIndexRouteImport } from './routes/$lang/projects/index'
 import { Route as LangProjectsSlugRouteImport } from './routes/$lang/projects/$slug'
 
@@ -36,6 +38,16 @@ const LangAboutRoute = LangAboutRouteImport.update({
   path: '/about',
   getParentRoute: () => LangRouteRoute,
 } as any)
+const LangBlogIndexRoute = LangBlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => LangRouteRoute,
+} as any)
+const LangBlogSlugRoute = LangBlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => LangRouteRoute,
+} as any)
 const LangProjectsIndexRoute = LangProjectsIndexRouteImport.update({
   id: '/projects/',
   path: '/projects/',
@@ -52,14 +64,18 @@ export interface FileRoutesByFullPath {
   '/$lang': typeof LangRouteRouteWithChildren
   '/$lang/about': typeof LangAboutRoute
   '/$lang/': typeof LangIndexRoute
+  '/$lang/blog/$slug': typeof LangBlogSlugRoute
   '/$lang/projects/$slug': typeof LangProjectsSlugRoute
+  '/$lang/blog/': typeof LangBlogIndexRoute
   '/$lang/projects/': typeof LangProjectsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$lang/about': typeof LangAboutRoute
   '/$lang': typeof LangIndexRoute
+  '/$lang/blog/$slug': typeof LangBlogSlugRoute
   '/$lang/projects/$slug': typeof LangProjectsSlugRoute
+  '/$lang/blog': typeof LangBlogIndexRoute
   '/$lang/projects': typeof LangProjectsIndexRoute
 }
 export interface FileRoutesById {
@@ -68,7 +84,9 @@ export interface FileRoutesById {
   '/$lang': typeof LangRouteRouteWithChildren
   '/$lang/about': typeof LangAboutRoute
   '/$lang/': typeof LangIndexRoute
+  '/$lang/blog/$slug': typeof LangBlogSlugRoute
   '/$lang/projects/$slug': typeof LangProjectsSlugRoute
+  '/$lang/blog/': typeof LangBlogIndexRoute
   '/$lang/projects/': typeof LangProjectsIndexRoute
 }
 export interface FileRouteTypes {
@@ -78,14 +96,18 @@ export interface FileRouteTypes {
     | '/$lang'
     | '/$lang/about'
     | '/$lang/'
+    | '/$lang/blog/$slug'
     | '/$lang/projects/$slug'
+    | '/$lang/blog/'
     | '/$lang/projects/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/$lang/about'
     | '/$lang'
+    | '/$lang/blog/$slug'
     | '/$lang/projects/$slug'
+    | '/$lang/blog'
     | '/$lang/projects'
   id:
     | '__root__'
@@ -93,7 +115,9 @@ export interface FileRouteTypes {
     | '/$lang'
     | '/$lang/about'
     | '/$lang/'
+    | '/$lang/blog/$slug'
     | '/$lang/projects/$slug'
+    | '/$lang/blog/'
     | '/$lang/projects/'
   fileRoutesById: FileRoutesById
 }
@@ -132,6 +156,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangAboutRouteImport
       parentRoute: typeof LangRouteRoute
     }
+    '/$lang/blog/': {
+      id: '/$lang/blog/'
+      path: '/blog'
+      fullPath: '/$lang/blog/'
+      preLoaderRoute: typeof LangBlogIndexRouteImport
+      parentRoute: typeof LangRouteRoute
+    }
+    '/$lang/blog/$slug': {
+      id: '/$lang/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/$lang/blog/$slug'
+      preLoaderRoute: typeof LangBlogSlugRouteImport
+      parentRoute: typeof LangRouteRoute
+    }
     '/$lang/projects/': {
       id: '/$lang/projects/'
       path: '/projects'
@@ -152,14 +190,18 @@ declare module '@tanstack/react-router' {
 interface LangRouteRouteChildren {
   LangAboutRoute: typeof LangAboutRoute
   LangIndexRoute: typeof LangIndexRoute
+  LangBlogSlugRoute: typeof LangBlogSlugRoute
   LangProjectsSlugRoute: typeof LangProjectsSlugRoute
+  LangBlogIndexRoute: typeof LangBlogIndexRoute
   LangProjectsIndexRoute: typeof LangProjectsIndexRoute
 }
 
 const LangRouteRouteChildren: LangRouteRouteChildren = {
   LangAboutRoute: LangAboutRoute,
   LangIndexRoute: LangIndexRoute,
+  LangBlogSlugRoute: LangBlogSlugRoute,
   LangProjectsSlugRoute: LangProjectsSlugRoute,
+  LangBlogIndexRoute: LangBlogIndexRoute,
   LangProjectsIndexRoute: LangProjectsIndexRoute,
 }
 
