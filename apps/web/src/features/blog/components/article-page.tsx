@@ -12,10 +12,12 @@ import { LikeButton } from '@/features/likes/components/like-button'
 import { NewsletterBox } from '@/features/newsletter/components/newsletter-box'
 import { cn } from '@/lib/utils'
 
-import { articleQuery } from '../blog.queries'
+import { articleQuery, articlesQuery } from '../blog.queries'
+import { pickRelated } from '../related-articles'
 import { ArticleByline } from './article-byline'
 import { BackToBlog } from './back-to-blog'
 import { ReadingProgress } from './reading-progress'
+import { RelatedArticles } from './related-articles'
 import { SeriesParts } from './series-parts'
 import { ShareLinks } from './share-links'
 import { TableOfContents } from './table-of-contents'
@@ -25,12 +27,13 @@ const routeApi = getRouteApi('/$lang/blog/$slug')
 /**
  * An article (DESIGN.md, "Article page"): the header with the title and
  * subtitle, the byline in the transition band, then the cover and the text
- * in a Medium-like reading column, followed by the series' parts when the
- * article belongs to one.
+ * in a Medium-like reading column, followed by likes and sharing, the
+ * series' parts, the newsletter box, the responses and more to read.
  */
 export function ArticlePage() {
   const { lang, slug } = routeApi.useParams()
   const { data: article } = useSuspenseQuery(articleQuery(lang, slug))
+  const { data: articles } = useSuspenseQuery(articlesQuery(lang))
   const text = useRef<HTMLDivElement>(null)
   // A single section needs no contents.
   const showContents = article.headings.length > 1
@@ -92,6 +95,7 @@ export function ArticlePage() {
                 // Open unless the owner closed them (the CMS's rule too).
                 allowComments={article.allowComments !== false}
               />
+              <RelatedArticles articles={pickRelated(article, articles)} />
             </div>
             {showContents && (
               // Wide screens only: on a phone it would push the text down.

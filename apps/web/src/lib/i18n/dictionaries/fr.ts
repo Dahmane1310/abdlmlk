@@ -68,6 +68,7 @@ export const fr = {
     copyLink: 'Copier le lien',
     newTab: 'ouvre un nouvel onglet',
     startSeries: 'Commencer par la partie 1',
+    moreToRead: 'À lire aussi',
     topic: 'Sujet',
     empty: "Aucun article ici pour l'instant.",
     showAll: 'Voir tous les articles',

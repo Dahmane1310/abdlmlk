@@ -1,17 +1,24 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 import { NotFoundPage } from '@/components/layout/not-found-page'
-import { articleQuery } from '@/features/blog/blog.queries'
+import { articleQuery, articlesQuery } from '@/features/blog/blog.queries'
 import { ArticlePage } from '@/features/blog/components/article-page'
 
 export const Route = createFileRoute('/$lang/blog/$slug')({
   // An unknown slug makes getArticle throw notFound(), handled by this route's
   // notFoundComponent below.
   loader: async ({ context, params }) => {
-    const article = await context.queryClient.query({
-      ...articleQuery(params.lang, params.slug),
-      staleTime: 'static',
-    })
+    const [article] = await Promise.all([
+      context.queryClient.query({
+        ...articleQuery(params.lang, params.slug),
+        staleTime: 'static',
+      }),
+      // For "More to read": the blog page's list, cached after a visit there.
+      context.queryClient.query({
+        ...articlesQuery(params.lang),
+        staleTime: 'static',
+      }),
+    ])
     return {
       title: article.title,
       description: article.description,

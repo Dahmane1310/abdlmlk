@@ -77,6 +77,8 @@ export const en = {
     // Read after a share link's name: it opens LinkedIn or X in a new tab.
     newTab: 'opens in a new tab',
     startSeries: 'Start with part 1',
+    // After an article's responses: other articles to read next.
+    moreToRead: 'More to read',
     // Above a list filtered by topic: "Topic: Arabic ✕".
     topic: 'Topic',
     empty: 'No articles here yet.',

@@ -111,6 +111,7 @@ export const ar = {
     copyLink: 'نسخ الرابط',
     newTab: 'يفتح في علامة تبويب جديدة',
     startSeries: 'ابدأ بالجزء الأول',
+    moreToRead: 'اقرأ أيضًا',
     topic: 'الموضوع',
     empty: 'لا توجد مقالات هنا بعد.',
     showAll: 'عرض كل المقالات',
