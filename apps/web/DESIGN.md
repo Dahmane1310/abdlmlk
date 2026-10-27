@@ -105,6 +105,7 @@ Site footer        © · LinkedIn GitHub · English العربية Français
   - **Code blocks:** a bar with the file name and a "Copy" button that says "Copied" for two seconds. Inline code is always a left-to-right run of its own, so its brackets don't reorder inside Arabic text.
   - **Contents:** on wide screens, an article with two sections or more lists them beside the text under a mono "Contents" label, and the list follows the reader down the page. The section being read is marked like the current page in the navbar: foreground text and a 2px blue line, here on the start edge. A section opened from the list stops just under the navbar. Phones don't show it, so the text starts right away.
   - **Reading progress:** a 2px blue bar along the top of the screen fills as the text is read, from the start edge (the right in Arabic).
+  - **Series:** an article in a series ends with one bordered card like the code blocks, 56px below the text and on every screen size: "Series" in mono, the series title, then every part in order with its number in mono. The part being read is marked like the contents (foreground, 2px blue line on the start edge); the others are grey links, and the one after it says "Next →" in blue on the end side. The last part has no "Next".
 - **Buttons:** 44px tall (48px on the contact band), radius 6px. Primary: solid blue. Secondary: 1px `input` border. Text links with an arrow, pointing the reading way (left in Arabic): "See my work →" in Home's header (jumps to Selected work), and "All projects →" / "Full story →" at the end of a section title.
 
 ## Content map
@@ -116,7 +117,7 @@ Site footer        © · LinkedIn GitHub · English العربية Français
 | Projects     | The full list with filters                                                                                                                           |                                                                                           |
 | Project page | The case study                                                                                                                                       |                                                                                           |
 | Blog         | The blog in numbers, then the articles, newest first, filterable by topic                                                                            |                                                                                           |
-| Article      | The article, with its byline (author, date, reading time, series part, topics)                                                                       |                                                                                           |
+| Article      | The article, with its byline (author, date, reading time, series part, topics), and its series' parts after the text                                 |                                                                                           |
 
 Copy introduced with the design (editable, in the dictionaries): the contact headline "Have a project in mind? Let's build it.", and the About title "Experience & skills" with its line "The jobs, tools and studies behind my work."
 

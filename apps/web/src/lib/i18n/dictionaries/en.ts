@@ -69,6 +69,9 @@ export const en = {
     showAll: 'Show all articles',
     backToAll: 'All articles',
     contents: 'Contents',
+    // The card listing a series' parts after an article; "Next" marks the part to read next.
+    series: 'Series',
+    nextPart: 'Next',
     // Numbers in words follow each language's rules, so these are functions.
     readingTime: (minutes: number) => `${String(minutes)} min read`,
     seriesPart: (part: number, total: number) =>

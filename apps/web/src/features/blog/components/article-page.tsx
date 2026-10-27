@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils'
 import { articleQuery } from '../blog.queries'
 import { ArticleByline } from './article-byline'
 import { ReadingProgress } from './reading-progress'
+import { SeriesParts } from './series-parts'
 import { TableOfContents } from './table-of-contents'
 
 const routeApi = getRouteApi('/$lang/blog/$slug')
@@ -20,7 +21,8 @@ const routeApi = getRouteApi('/$lang/blog/$slug')
 /**
  * An article (DESIGN.md, "Article page"): the header with the title and
  * subtitle, the byline in the transition band, then the cover and the text
- * in a Medium-like reading column.
+ * in a Medium-like reading column, followed by the series' parts when the
+ * article belongs to one.
  */
 export function ArticlePage() {
   const t = useTranslation()
@@ -71,11 +73,17 @@ export function ArticlePage() {
             {/* "reading" sets the article typography (app.css). The column is
                 about 680px, Medium's line length; min-w-0 keeps a long code
                 line scrolling inside its block instead of widening the page. */}
-            <div ref={text} className="min-w-0">
-              <ContentBlocks
-                blocks={article.blocks}
-                className="reading max-w-170 min-w-0"
-              />
+            <div className="flex max-w-170 min-w-0 flex-col gap-14">
+              {/* The progress bar measures the text alone, not the card after it. */}
+              <div ref={text}>
+                <ContentBlocks
+                  blocks={article.blocks}
+                  className="reading min-w-0"
+                />
+              </div>
+              {article.series && (
+                <SeriesParts series={article.series} current={article.slug} />
+              )}
             </div>
             {showContents && (
               // Wide screens only: on a phone it would push the text down.

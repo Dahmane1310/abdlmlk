@@ -58,10 +58,16 @@ export const getArticle = createServerFn({ method: 'GET' })
         filters: { slug: { $eq: data.slug } },
         populate: {
           ...ARTICLE_POPULATE,
-          // The series' published articles, to say "Part 2 of 3".
+          // The series' published articles, in order, for "Part 2 of 3" and
+          // the parts card after the text.
           series: {
             fields: ['title', 'slug'],
-            populate: { articles: { fields: ['slug'] } },
+            populate: {
+              articles: {
+                fields: ['title', 'slug', 'seriesPart'],
+                sort: ['seriesPart:asc'],
+              },
+            },
           },
         },
       })

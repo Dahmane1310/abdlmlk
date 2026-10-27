@@ -87,6 +87,8 @@ export const ar = {
     showAll: 'عرض كل المقالات',
     backToAll: 'كل المقالات',
     contents: 'المحتويات',
+    series: 'سلسلة',
+    nextPart: 'التالي',
     // Arabic counts: 1 دقيقة, 2 دقيقتان, 3–10 دقائق, 11 and up دقيقة.
     readingTime: (minutes: number) => {
       if (minutes === 1) return 'قراءة دقيقة واحدة'

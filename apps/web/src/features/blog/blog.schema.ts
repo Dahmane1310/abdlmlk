@@ -11,8 +11,16 @@ export const tagSchema = z.object({
 const seriesRefSchema = z.object({
   title: z.string(),
   slug: z.string(),
-  /** Only on an article's own page, to count the series' parts. */
-  articles: z.array(z.object({ slug: z.string() })).optional(),
+  /** Only on an article's own page: the series' parts, for its parts card. */
+  articles: z
+    .array(
+      z.object({
+        title: z.string(),
+        slug: z.string(),
+        seriesPart: z.number().nullable(),
+      }),
+    )
+    .optional(),
 })
 
 /** An article as the CMS sends it: what the list shows, plus its blocks. */
