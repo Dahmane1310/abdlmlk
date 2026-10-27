@@ -1,13 +1,22 @@
-import { highlightCode, renderMarkdown } from '@/lib/markdown/render.server'
+import {
+  highlightCode,
+  renderMarkdown,
+  renderMarkdownWithHeadings,
+} from '@/lib/markdown/render.server'
 
 import type { ContentBlockInput } from './blocks.schema'
 
 /**
  * Turns CMS blocks into ready-to-display data on the server: Markdown becomes
  * safe HTML and code becomes highlighted HTML, so the browser never downloads
- * a Markdown parser or a highlighter. Empty blocks are dropped.
+ * a Markdown parser or a highlighter. Empty blocks are dropped. With
+ * `headingIds` (the ids already taken on the page), headings get ids and each
+ * text block lists its h2s, for an article's table of contents.
  */
-export async function renderContentBlocks(blocks: ContentBlockInput[]) {
+export async function renderContentBlocks(
+  blocks: ContentBlockInput[],
+  { headingIds }: { headingIds?: Set<string> } = {},
+) {
   const rendered = await Promise.all(
     blocks.map(async (block) => {
       const key = `${block.__component}-${String(block.id)}`
@@ -17,7 +26,7 @@ export async function renderContentBlocks(blocks: ContentBlockInput[]) {
             ? ({
                 type: 'rich-text',
                 key,
-                html: await renderMarkdown(block.body),
+                ...(await renderMarkdownWithHeadings(block.body, headingIds)),
               } as const)
             : null
         case 'shared.quote':

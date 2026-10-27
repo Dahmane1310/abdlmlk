@@ -103,6 +103,8 @@ Site footer        © · LinkedIn GitHub · English العربية Français
   - **Transition band, the byline:** the site mark (40px) and the author's name, then date · reading time · "Part 2 of 3" in mono, with the article's topics on the end side.
   - **Body:** the cover, when there is one (16:9, full width), then the text in a 680px column: Plex Serif 20px with a line-height of 1.75, headings in Plex Sans without the site's section numbers or lines (an article reads as one continuous text, owner's choice), pull quotes in 26px italic serif with the blue line on the start edge. Arabic articles stay in Plex Sans Arabic (Plex has no Arabic serif) and never use italics.
   - **Code blocks:** a bar with the file name and a "Copy" button that says "Copied" for two seconds. Inline code is always a left-to-right run of its own, so its brackets don't reorder inside Arabic text.
+  - **Contents:** on wide screens, an article with two sections or more lists them beside the text under a mono "Contents" label, and the list follows the reader down the page. The section being read is marked like the current page in the navbar: foreground text and a 2px blue line, here on the start edge. A section opened from the list stops just under the navbar. Phones don't show it, so the text starts right away.
+  - **Reading progress:** a 2px blue bar along the top of the screen fills as the text is read, from the start edge (the right in Arabic).
 - **Buttons:** 44px tall (48px on the contact band), radius 6px. Primary: solid blue. Secondary: 1px `input` border. Text links with an arrow, pointing the reading way (left in Arabic): "See my work →" in Home's header (jumps to Selected work), and "All projects →" / "Full story →" at the end of a section title.
 
 ## Content map

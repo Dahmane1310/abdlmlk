@@ -333,6 +333,10 @@ main {
 .reading > .prose h2::before {
   content: none;
 }
+/* A jump from the table of contents stops below the sticky site header. */
+.reading > .prose :is(h2, h3) {
+  scroll-margin-top: 6rem;
+}
 .reading > :first-child > h2:first-child {
   margin-top: 0;
 }

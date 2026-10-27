@@ -1,15 +1,19 @@
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { getRouteApi, Link } from '@tanstack/react-router'
 import { ArrowLeftIcon } from 'lucide-react'
+import { useRef } from 'react'
 
 import { ContentBlocks } from '@/components/content/content-blocks'
 import { ResponsiveImage } from '@/components/content/responsive-image'
 import { Page } from '@/components/layout/page'
 import { PageHeader } from '@/components/layout/page-header'
 import { useTranslation } from '@/lib/i18n/use-translation'
+import { cn } from '@/lib/utils'
 
 import { articleQuery } from '../blog.queries'
 import { ArticleByline } from './article-byline'
+import { ReadingProgress } from './reading-progress'
+import { TableOfContents } from './table-of-contents'
 
 const routeApi = getRouteApi('/$lang/blog/$slug')
 
@@ -22,6 +26,9 @@ export function ArticlePage() {
   const t = useTranslation()
   const { lang, slug } = routeApi.useParams()
   const { data: article } = useSuspenseQuery(articleQuery(lang, slug))
+  const text = useRef<HTMLDivElement>(null)
+  // A single section needs no contents.
+  const showContents = article.headings.length > 1
 
   return (
     <article>
@@ -55,15 +62,33 @@ export function ArticlePage() {
               className="aspect-video w-full rounded-xl border object-cover"
             />
           )}
-          {/* "reading" sets the article typography (app.css). The column is
-              about 680px, Medium's line length; min-w-0 keeps a long code
-              line scrolling inside its block instead of widening the page. */}
-          <ContentBlocks
-            blocks={article.blocks}
-            className="reading max-w-170 min-w-0"
-          />
+          <div
+            className={cn(
+              'grid grid-cols-1 gap-x-16',
+              showContents && 'lg:grid-cols-[minmax(0,42.5rem)_minmax(0,1fr)]',
+            )}
+          >
+            {/* "reading" sets the article typography (app.css). The column is
+                about 680px, Medium's line length; min-w-0 keeps a long code
+                line scrolling inside its block instead of widening the page. */}
+            <div ref={text} className="min-w-0">
+              <ContentBlocks
+                blocks={article.blocks}
+                className="reading max-w-170 min-w-0"
+              />
+            </div>
+            {showContents && (
+              // Wide screens only: on a phone it would push the text down.
+              <div className="hidden lg:block">
+                <div className="sticky top-28">
+                  <TableOfContents headings={article.headings} />
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </Page>
+      <ReadingProgress target={text} />
     </article>
   )
 }

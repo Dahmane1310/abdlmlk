@@ -64,6 +64,7 @@ export const fr = {
     empty: "Aucun article ici pour l'instant.",
     showAll: 'Voir tous les articles',
     backToAll: 'Tous les articles',
+    contents: 'Sommaire',
     readingTime: (minutes: number) => `${String(minutes)}\u00A0min de lecture`,
     seriesPart: (part: number, total: number) =>
       `Partie ${String(part)} sur ${String(total)}`,

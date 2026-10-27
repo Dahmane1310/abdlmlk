@@ -2,6 +2,7 @@ import { notFound } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { z } from 'zod'
 
+import { CONTACT_ID } from '@/components/layout/contact-band'
 import { CONTENT_BLOCKS_POPULATE } from '@/lib/content/blocks.schema'
 import { renderContentBlocks } from '@/lib/content/blocks.server'
 import { languageSchema } from '@/lib/i18n/config'
@@ -69,11 +70,19 @@ export const getArticle = createServerFn({ method: 'GET' })
     if (!article) throw notFound()
 
     const blocks = article.blocks ?? []
+    // Headings get ids for the table of contents; the page's own ids (the
+    // contact band's) are taken, so a heading named "Contact" can't steal it.
+    const rendered = await renderContentBlocks(blocks, {
+      headingIds: new Set([CONTACT_ID]),
+    })
     return {
       ...article,
       readingMinutes: readingMinutes(blocks),
       seriesTotal: article.series?.articles?.length ?? null,
-      blocks: await renderContentBlocks(blocks),
+      blocks: rendered,
+      headings: rendered.flatMap((block) =>
+        block.type === 'rich-text' ? block.headings : [],
+      ),
     }
   })
 

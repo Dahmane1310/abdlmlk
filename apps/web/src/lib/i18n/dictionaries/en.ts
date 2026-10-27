@@ -68,6 +68,7 @@ export const en = {
     empty: 'No articles here yet.',
     showAll: 'Show all articles',
     backToAll: 'All articles',
+    contents: 'Contents',
     // Numbers in words follow each language's rules, so these are functions.
     readingTime: (minutes: number) => `${String(minutes)} min read`,
     seriesPart: (part: number, total: number) =>
